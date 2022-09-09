@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+  <main class="tab-pane fade show active" id="deposit" role="tabpanel">
+    <div class="main-box">
+      <div class="header-area">
+        <h4>Deposit</h4>
+      </div>
+      <form action="" method="post">
+        <div class="container justify-content-between mb-5 row w-auto">
+          <div class="col-7 form-group justify-content-between row">
+            <label>Fill in deposit amount</label>
+            <div class="col-12 row">
+              <div class="col-5 px-0">
+                  <input type="text" class="profile-input" placeholder="Deposit amount" name="amount" style="margin-right: 15px;width: 70%;">
+                  <small id="deposit-currency">VND</small>
+              </div>
+              <div class="align-items-center d-flex px-0">
+                  <small class="mb-0">+ <span id="deposit-amount">2.40392</span> into your wallet</small>
+              </div>
+            </div>
+            <small class="mt-2 text-danger" style="margin-left: 18px;font-size: 13px;" id="deposit-amount-err"></small>
+          </div>
+          <div class="col-4 form-group px-0">
+            <div class="row">
+              <label>Notes</label>
+              <div class="col-12 px-0" id="deposit-note">
+                <small>Exchange rate: <span>1 USD = 23,400 VND</span></small><br>
+                <small>Deposit range: <span>10,000 - 10,000,000 VND</span></small>
+              </div>
+            </div>   
+          </div>
+        </div>
+
+        <p>Select a payment method from those listed below</p>
+        <div class="container justify-content-between my-4 row w-auto">
+          <div class="align-items-center d-flex form-check">
+            <input class="form-check-input" type="radio" name="payments" id="vnpay" value="0" checked hidden>
+            <label class="form-check-label" for="vnpay">
+              <img src="/images/defaults/vnpay.png" width="150" style="border-radius: 10px;">
+            </label>
+          </div>
+          <div class="align-items-center d-flex form-check">
+            <input class="form-check-input" type="radio" name="payments" id="momo" value="1" hidden>
+            <label class="form-check-label" for="momo">
+              <img src="/images/defaults/momo.png" width="80" style="border-radius: 10px;">
+            </label>
+          </div>
+          <div class="align-items-center d-flex form-check">
+            <input class="form-check-input" type="radio" name="payments" id="bitcoin" value="2" hidden>
+            <label class="form-check-label" for="bitcoin">
+              <img src="/images/defaults/bitcoin.png" width="80" style="border-radius: 10px;">
+            </label>
+          </div>
+          <div class="align-items-center d-flex form-check">
+            <input class="form-check-input" type="radio" name="payments" id="paypal" value="3" hidden>
+            <label class="form-check-label" for="paypal">
+              <img src="/images/defaults/paypal.png" width="100" style="border-radius: 10px;">
+            </label>
+          </div>
+          <div class="align-items-center d-flex form-check">
+            <input class="form-check-input" type="radio" name="payments" id="onepay" value="4" hidden>
+            <label class="form-check-label" for="onepay">
+              <img src="/images/defaults/onepay.png" width="150" style="border-radius: 10px;">
+            </label>
+          </div>
+        </div>
+        <div class="container justify-content-end mt-5 row w-auto">
+          <button class="btn" style="background-color: #fa009f; color: #fff;" type="button" id="btn-proceed-payment">Proceed payment</button>   
+        </div>
+      </form>
+    </div>
+  </main>
+</body>
+
+</html>
+

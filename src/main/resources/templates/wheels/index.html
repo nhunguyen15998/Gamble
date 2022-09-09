@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{:: #static-js}
+                                         )}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Home Page</title>
+
+
+    <th:block id="static-css">
+        <style>
+            html, body {
+                margin: 0; 
+                height: 100%; 
+                overflow: hidden
+            }
+            body{
+                background: #410269 !important;
+            }
+            #c {
+                position: absolute;
+                top: 0;
+                right: 0;
+                display: block;
+            }
+
+            #game-bg {
+                background: url('../images/defaults/wheel-bg.png') no-repeat;
+                background-position: center;
+                background-size: cover;
+            }
+
+            #rotate-bg {
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+            }
+
+            #rotate-bg img{
+                width: 100%;
+                margin: -290px auto;
+                left:calc(50% - 290px);
+            }
+
+            .box-game-history{
+                /* margin-left: 30px;
+                box-shadow: inset 0px 0px 10px 5px #43066e, 0px 0px 10px #7429b4; */
+                padding: 30px;
+                /* border-radius: 20px; */
+                background-color: #3c0651ad;
+            }
+            
+        </style>
+    </th:block>
+</head>
+
+<body>
+    <div class="preloader hide" id="preloader">
+        <div class="loader loader-1">
+            <div class="loader-outter"></div>
+            <div class="loader-inner">
+                
+            </div>
+        </div>
+    </div>
+    <div id="main-content">
+        <div id="game-bg" class="position-absolute" style="width: 100%; height: 100%; z-index: 0;"></div>
+        <div id="rotate-bg" class="position-absolute">
+            <img src="../images/defaults/rotate-bg.png"/>
+        </div>
+        <div class="row">
+            <div class="col-3 p-5">
+                <div class="box-game-history mb-5" style="height: 55vh;">
+                    <h4 class="text-center mb-3">Game Records</h4>
+                    <div style="overflow: scroll scroll;">
+                        <table class="table text-white" style="font-size: 12px;">
+                            <thead>
+                              <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Result</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Time</th>
+                              </tr>
+                            </thead>
+                            <tbody id="wheel-game-history">
+                              <tr>
+                                <td colspan="4" class="text-center">None</td>
+                              </tr>
+                              <!-- <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
+                              </tr> -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="box-game-history" style='height: 200px; color: #FFF; font-family: "Josefin Sans", sans-serif;'>
+                    <div class="d-flex justify-content-between mb-3">
+                        <label class="mb-0">Balance</label>
+                        <div class="w-50 d-flex justify-content-end">
+                            <span class="mr-2">$</span>
+                            <p class="mb-0" th:text="${balance}" id="wheel-balance"></p>
+                        </div>
+                    </div>
+                    <div class="row align-items-baseline mb-2">
+                        <label class="col-3 pr-0 mb-0">Bet</label>
+                        <div class="col-9 mb-0">
+                            <div class="align-items-center d-flex form-group mb-0">
+                                <span class="mr-2">$</span>
+                                <input type="text" class="input-field m-0" name="wheel_bet_amount" placeholder="Amount" style="height: 40px !important;padding: 0 15px;">
+                            </div>
+                            <small style="margin-left: 30px;" class="text-danger" id="wheel-bet-amount-err"></small>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <button id="btn-wheel-bet" type="button" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 6px;width: 100%;">Bet</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="cv-container position-relative"
+                    style="width: 700px; height:700px; margin: calc(50% - 275px) auto;">
+                    <div id="arrow" class="position-absolute d-none" style="    width: 40px;
+                    z-index: 4;
+                    left: calc(50% + 45px);
+                    top: calc(50% - 26px);
+                    display: flex;">
+                        <img src="/images/defaults/wheel-arrow.png" />
+                    </div>
+                    <div id="rotate-button" class="position-absolute" style="width: 120px; height: 120px; z-index:6; left:calc(50% - 60px); top: calc(50% - 60px); display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 45px;
+                        cursor: pointer;
+                        box-shadow: 0 0 40px 5px #280459;
+                        border-radius: 50%;
+                        color: #fff;">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </div>
+                    <div id="rotate-wheel" class="position-absolute animate__animated animate__pulse"
+                        style="width: 120px; height: 120px; z-index:5; left:calc(50% - 60px); top: calc(50% - 60px); animation-iteration-count: infinite; ">
+                        <img src="/images/defaults/wheel-play-btn.png" />
+                        <!-- <canvas id="cv-rotate-wheel" width="100" height="100"></canvas> -->
+                    </div>
+                    <div class="position-absolute" style="z-index:4; left:calc(50% - 250px); top: calc(50% - 250px)">
+                        <img src="/images/defaults/output-onlinegiftools.gif" style="overflow: hidden; opacity: 0.1;" />
+                    </div>
+                    <div id="cv-sm" class=" position-absolute" style="width: 300px; height: 300px; z-index: 3; left: calc(50% - 150px);
+                    top: calc(50% - 150px);  box-shadow: 0 0 40px 2px #280459; border-radius: 50%;">
+                        <div id="ov-cv-sm" class="position-absolute d-none"
+                            style="width: 100%; height: 100%; background-color: rgba(40,4,89,0.7); border-radius: 50%; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                        <canvas id="sm-wheel" width="300" height="300"></canvas>
+                    </div>
+                    <div id="cv-md" class="position-absolute" style="width: 500px; height: 500px; z-index: 2; left: calc(50% - 250px);
+                    top: calc(50% - 250px);  box-shadow: 0 0 40px 5px #280459; border-radius: 50%;">
+                        <div id="ov-cv-md" class="position-absolute d-none"
+                            style="width: 100%; height: 100%; background-color: rgba(40,4,89,0.7); border-radius: 50%; z-index: 3; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                        <canvas id="md-wheel" width="500" height="500"></canvas>
+                    </div>
+                    <div id="cv-large" class="position-absolute" style="width: 720px; height: 720px; z-index: 1; left: calc(50% - 360px);
+                    top: calc(50% - 360px); box-shadow: 0 0 40px 30px #280459; border-radius: 50%;">
+                        <div id="ov-cv-large" class="position-absolute d-none"
+                            style="width: 100%; height: 100%; background-color: rgba(40,4,89,0.7); border-radius: 50%; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                        </div>
+                        <canvas id="large-wheel" width="720" height="720"></canvas>
+                        </didv>
+                    </div>
+                </div>
+
+            </div>
+            <div id="wp-character" class="col-3 position-relative" style="">
+                <div class="position-absolute">
+                    <canvas id="c"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <th:block id="static-js">
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
+        <script src="/js/inflate.min.js"></script>
+        <script src="/js/FBXLoader.js"></script>
+        <!--script src='https://cdn.jsdelivr.net/gh/mrdoob/Three.js@r92/examples/js/loaders/GLTFLoader.js'></script-->
+        <script src="/js/games/wheel.js"></script>
+    </th:block>
+</body>
+
+</html>

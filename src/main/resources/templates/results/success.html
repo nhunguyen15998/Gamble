@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::#staticJS}
+                                         )}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Home Page</title>
+    <th:block id="static-css">
+        <style>
+            body {
+                text-align: center;
+                padding: 40px 0;
+            }
+            h1 {
+                color: #88B04B;
+                font-weight: 900;
+                font-size: 40px;
+                margin-bottom: 10px;
+            }
+            p {
+                color: #404F5E;
+                font-size:20px;
+                margin: 0;
+            }
+            .card {
+                background: white;
+                padding: 60px;
+                border-radius: 4px;
+                box-shadow: 0 2px 3px #C8D0D8;
+                display: inline-block;
+                margin: 0 auto;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <div id="main-body" style="position: relative;">
+            <img class="shape parallax5 position-absolute" src="/images/defaults/h2-shape.png" alt="" style="transform: matrix(1, 0, 0, 1, 12.4, -7.2875);">
+            <div class="container">
+                <div class="login-modal">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h1>Success</h1> 
+                            <h5 th:text="${msg}"></h5>
+                            <a th:href="@{/user/my-wallet}" class="btn btn-sm text-white" style="background-color:#fa009f;">Back to your wallet</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="static-js">
+
+    </th:block>
+</body>
+</html>

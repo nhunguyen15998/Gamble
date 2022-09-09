@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="breadcrumb-area gamer-profile" th:fragment="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="breadcrumb-list">
+                        <li>
+                            <a th:href="@{/}">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Players</a>
+                        </li>
+                        <li>
+                            <a href="#">Gamer's profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="bc-content">
+                        <div class="left">
+                            <h3 class="user-name" th:text="${session.firstName + ' ' + session.lastName}"></h3>
+                            <p>Member since <span th:text="${session.createdAt}"></span></p>
+                        </div>
+                        <div class="right">
+                            <div class="player-wrapper">
+                                <span>Players</span>
+                                <h6>28</h6>
+                            </div>
+                            <ul>
+                                <li>
+                                    <a href="#">
+                                        <img th:src="@{/images/defaults/sm1.png}" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img th:src="@{/images/defaults/sm2.png}" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img th:src="@{/images/defaults/sm3.png}" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img th:src="@{/images/defaults/sm4.png}" alt="">
+                                    </a>
+                                </li>
+                                <li>
+                                    <span>
+                                        32+
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

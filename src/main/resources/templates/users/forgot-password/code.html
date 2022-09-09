@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::staticJS}
+                                         )}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Forgot password code</title>
+    <th:block id="static-css">
+
+    </th:block>
+</head>
+
+<body>
+    <div class="preloader hide" id="preloader">
+        <div class="loader loader-1">
+            <div class="loader-outter"></div>
+            <div class="loader-inner"></div>
+        </div>
+    </div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <div id="main-body" style="position: relative;">
+            <img class="shape parallax5 position-absolute" src="/images/defaults/h2-shape.png" alt="" style="transform: matrix(1, 0, 0, 1, 12.4, -7.2875);">
+            <div class="container">
+                <div class="login-modal">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-m_login" role="tabpanel"
+                                    aria-labelledby="pills-m_login-tab">
+                                    <div class="header-area">
+                                        <h5 class="title">Forgot password</h5>
+                                        <p>Please fill out your reset password code</p>
+                                    </div>
+                                    <div th:text="${successMsg}?:''" th:class="${successMsg}?'alert alert-success':''" role="alert"></div>
+                                    <div th:text="${errorMsg}?:''" th:class="${errorMsg}?'alert alert-danger':''" role="alert"></div>
+                                    <div class="form-area">
+                                        <form th:action="@{/user/forgot-password-code}" th:object="${codeMapper}" method="POST">
+                                            <div class="form-group">
+                                                <input type="text" class="input-field" th:field="*{code}" placeholder="Code">
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('code')}" th:errors="*{code}" style="margin-left: 30px;"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="mybtn2">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+        
+                                </div>
+                                
+                            </div>
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    <th:block id="static-js">
+
+    </th:block>
+</body>
+
+</html>

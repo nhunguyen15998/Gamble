@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::staticJS}
+                                         )}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Register</title>
+    <th:block id="static-css">
+
+    </th:block>
+</head>
+
+<body>
+    <div class="preloader hide" id="preloader">
+        <div class="loader loader-1">
+            <div class="loader-outter"></div>
+            <div class="loader-inner"></div>
+        </div>
+    </div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+
+        <div class="">
+            <img class="shape parallax5 position-absolute" src="/images/defaults/h2-shape.png" alt="" style="transform: matrix(1, 0, 0, 1, 12.4, -7.2875);">
+            <div class="container">
+                <div class="login-modal">
+                    <div class="modal-content">
+        
+                        <div class="modal-body">
+                            <ul class="nav l-nav" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link mybtn2" th:href="@{/user/sign-in}">Login</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link mybtn2 active" th:href="@{/user/sign-up}">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="pills-tabContent">
+                                
+                                <div class="tab-pane fade show active" id="pills-m_register" role="tabpanel"
+                                    aria-labelledby="pills-m_register-tab">
+                                    <div class="header-area">
+                                        <p class="text">
+                                            Fill this outyour majesty &amp; Get Your Bonus
+                                        </p>
+                                    </div>
+                                    <div class="form-area">
+                                        <form th:action="@{/user/sign-up}" method="POST" th:object="${signUpMapper}">
+                                            <div class="row justify-content-between">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="input-field" th:field="*{first_name}" placeholder="First name">
+                                                        <small th:class="text-danger" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}" style="margin-left: 30px;"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <input type="text" class="input-field" th:field="*{last_name}" placeholder="Last name">
+                                                        <small th:class="text-danger" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}" style="margin-left: 30px;"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" class="input-field" th:field="*{phone}" placeholder="Phone">
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="margin-left: 30px;"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="email" class="input-field" th:field="*{email}" placeholder="Email">
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="margin-left: 30px;"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" class="input-field" th:field="*{plain_password}" placeholder="Password">
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('plain_password')}" th:errors="*{plain_password}" style="margin-left: 30px;"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="password" class="input-field" th:field="*{confirm_password}" placeholder="Confirmation password">
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('confirm_password')}" th:errors="*{confirm_password}" style="margin-left: 30px;"></small>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="check-group">
+                                                    <input type="checkbox" class="check-box-field" id="input-terms" checked="">
+                                                    <label for="input-terms">
+                                                        I agree with <a href="#">terms and Conditions</a> and <a
+                                                            href="#">privacy
+                                                            policy</a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="mybtn2">Register</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+        
+        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+    <th:block id="static-js">
+
+    </th:block>
+</body>
+
+</html>

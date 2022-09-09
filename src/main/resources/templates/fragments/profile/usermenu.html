@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="usermenu-section" th:fragment="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="usermenu-inner">
+                        <div class="left-area">
+                            <ul>
+                                <li>
+                                    <a th:href="@{/user/my-account/information}" class="active">Overview</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/my-account/friend}">Friends</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/my-account/statistic}">statistics</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/my-account/play-history}">play history</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/my-account/achievement}">achievement</a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/user/my-wallet}">wallets</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="right-area">
+                            <a href="#" class="mybtn2">Follow</a>
+                            <a href="#" class="mybtn2">Invite to Team</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section class="gamer-profile-top" th:fragment="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="gamer-profile-top-inner">
+                        <div class="profile-photo">
+                            <div class="img">
+                                <!--avatar-->
+                                <img class="thumbnails" th:src='${session.thumbnail == null ? "/images/defaults/no-user.jpeg" : session.thumbnail}' style="border-radius: 50%; margin-right: 10px; height: 160px;"/>
+                            </div>
+                            <div class="mybadge">
+                                <img th:src="@{/images/defaults/badge.png}" alt="">
+                                <span>12</span>
+                            </div>
+                        </div>
+                        <div class="g-p-t-counters">
+                            <div class="g-p-t-single-counter">
+                                <div class="img">
+                                    <img th:src="@{/images/defaults/c1.png}" alt="">
+                                </div>
+                                <div class="content">
+                                    <h4>687</h4>
+                                    <span>Total Match</span>
+                                </div>
+                            </div>
+                            <div class="g-p-t-single-counter">
+                                <div class="img">
+                                    <img th:src="@{/images/defaults/c2.png}" alt="">
+                                </div>
+                                <div class="content">
+                                    <h4>687</h4>
+                                    <span>Win Ratio</span>
+                                </div>
+                            </div>
+                            <div class="g-p-t-single-counter">
+                                <div class="img">
+                                    <img th:src="@{/images/defaults/c3.png}" alt="">
+                                </div>
+                                <div class="content">
+                                    <h4>687</h4>
+                                    <span>Achievements</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="msg-btn-wrapper">
+                            <a href="#" class="msg-btn" data-toggle="modal" data-target="#gamer-chat">
+                                <img th:src="@{/images/defaults/envelop.png}" alt="">
+                                <span>Message</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

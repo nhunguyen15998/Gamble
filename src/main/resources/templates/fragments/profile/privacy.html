@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <main class="tab-pane fade" id="privacy-tab" role="tabpanel">
+      <div class="main-box">
+        <div class="d-flex header-area justify-content-between mb-5">
+          <h4 class="mb-0">Privacy</h4>
+        </div>
+        <div class="d-flex flex-column justify-content-between">
+            <!-- is logged in on -->
+            <div class="mb-3" style="border: 1px solid; border-radius: 10px; padding: 10px;">
+                <div class="align-items-center d-flex justify-content-between">
+                    <p style="font-family: 'Josefin Sans', sans-serif;" class="mb-0">Currently signed in on devices</p>
+                    <a class="btn" data-toggle="collapse" href="#signedInDevices" role="button" aria-expanded="true" aria-controls="changePassword" style="color: #fff;">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </div>
+                <div class="mt-4 collapse" id="signedInDevices" style="">
+                    <div class="" style="max-height: 200px; overflow: scroll;">
+                        <table class="table">
+                            <tbody>
+                                <tr style="background-color: #54068f !important;">
+                                    <td class="border-0">
+                                        <div class="align-items-center d-flex">
+                                            <i class="fa-desktop fa-solid mr-3 text-white" style="font-size: 30px;"></i>
+                                            <div class="d-flex flex-column text-white" style="font-size: 15px;">
+                                                <p class="mb-0 text-white">hahaha</p>
+                                                <small>kakakak</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="background-color: #fa009f !important;">
+                                    <td class="border-0">
+                                        <div class="align-items-center d-flex">
+                                            <i class="fa-desktop fa-solid mr-3 text-white" style="font-size: 30px;"></i>
+                                            <div class="d-flex flex-column text-white" style="font-size: 15px;">
+                                                <p class="mb-0 text-white">hahaha</p>
+                                                <small>kakakak</small>
+                                            </div>
+                                        </div>
+                                    </td>           
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- change pass -->
+            <div class="mb-3" style="border: 1px solid; border-radius: 10px; padding: 10px;">
+                <div class="align-items-center d-flex justify-content-between">
+                    <p style="font-family: 'Josefin Sans', sans-serif;" class="mb-0">Change password</p>
+                    <a class="btn" data-toggle="collapse" href="#changePassword" role="button" aria-expanded="true" aria-controls="changePassword" style="color: #fff;">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                </div>
+                <div class="mt-4 collapse" id="changePassword">
+                    <div class="d-flex flex-column">
+                        <div class="align-items-center form-group justify-content-center mb-4 row">
+                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Current password</label>
+                            <div class="d-flex flex-column w-50">
+                                <input type="text" class="profile-input" placeholder="Current password">
+                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
+                            </div>
+                        </div>
+                        <div class="align-items-center form-group justify-content-center mb-4 row">
+                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">New password</label>
+                            <div class="d-flex flex-column w-50">
+                                <input type="text" class="profile-input" placeholder="New password">
+                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
+                            </div>
+                        </div>
+                        <div class="align-items-center form-group justify-content-center mb-4 row">
+                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Confirm new password</label>
+                            <div class="d-flex flex-column w-50">
+                                <input type="text" class="profile-input" placeholder="Confirm new password">
+                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mb-3 mt-5">
+                            <div class="d-flex justify-content-between" style="width: 45%;">
+                                <button type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-profile-save">Save</button>
+                                <button type="submit" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 12px;width: 47%;">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+            
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

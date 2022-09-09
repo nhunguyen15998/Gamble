@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+th:replace="~{layouts/main-layout :: main-fragment( ~{::title},
+                                                    ~{:: #static-css},
+                                                    ~{::header},
+                                                    ~{:: #slider},
+                                                    ~{:: #main-content},  
+                                                    ~{::footer},
+                                                    ~{::#staticJS}
+                                                )}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <section class="breadcrumb-area gamer-profile" th:replace="~{/fragments/profile/breadcrumb :: section}"></section>
+        <section class="gamer-profile-top" th:replace="~{/fragments/profile/profile_top :: section}"></section>
+        <section class="usermenu-section" th:replace="~{/fragments/profile/usermenu :: section}"></section>
+        <section class="user-main-dashboard">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4">
+                        <aside>
+                            <div class="about">
+                                <h4>My Profile</h4>
+                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link nav-parent active" id="btn-about" data-toggle="pill" type="button" href="#about-tab" role="tab">About</a>
+                                    <a class="nav-link nav-parent" id="a-settings" data-toggle="collapse" href=".settings-pills" role="button">Settings</a>
+                                    <div class="nav flex-column nav-pills" id="settings-menu" role="tablist" aria-orientation="vertical">
+                                        <a class="nav-link collapse settings-pills" data-toggle="pill" href="#settings-tab" role="tab" style="padding-left: 30px;">General</a>
+                                        <a class="nav-link collapse settings-pills" data-toggle="pill" href="#privacy-tab" role="tab" style="padding-left: 30px;">Privacy</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="col-xl-9 col-lg-8 tab-content" id="v-pills-tabContent">
+                        <main th:replace="~{/fragments/profile/about :: main}"></main>
+                        <main th:replace="~{/fragments/profile/settings :: main}"></main>
+                        <main th:replace="~{/fragments/profile/privacy :: main}"></main>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/profile/subscribe_area :: section}"></div>
+    </div>
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="staticJS">
+        <script src="/js/ajax/information.js"></script>
+        <script>
+            $('#a-settings').on('click', () => {
+                if(!$('.settings-pills').hasClass('show')){
+                    $('.nav-link').removeClass('active')
+                    $('#a-settings').addClass('active')
+                    $('#settings-menu').children('a:first-child').addClass('active')
+                } else {
+                    $('#a-settings').css('background-color', 'transparent')
+                    $('#settings-menu').children('a:first-child').removeClass('active')
+                }
+            })
+            $('.nav-parent').on('click', () => {
+                if(!$('#a-settings').hasClass('active')){
+                    $('#a-settings').addClass('collapsed')
+                    $('#a-settings').attr('aria-expanded', false)
+                    $('#settings-menu').children('a').removeClass('show')
+                }
+            })
+        </script>
+    </th:block>
+</body>
+
+</html>

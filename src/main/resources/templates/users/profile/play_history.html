@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" 
+th:replace="~{layouts/main-layout :: main-fragment( ~{::title},
+                                                    ~{:: #static-css},
+                                                    ~{::header},
+                                                    ~{:: #slider},
+                                                    ~{:: #main-content},  
+                                                    ~{::footer},
+                                                    ~{::staticJS}
+                                                )}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <section class="breadcrumb-area gamer-profile" th:replace="~{/fragments/profile/breadcrumb :: section}"></section>
+        <section class="gamer-profile-top" th:replace="~{/fragments/profile/profile_top :: section}"></section>
+        <section class="usermenu-section" th:replace="~{/fragments/profile/usermenu :: section}"></section>
+        <section class="user-main-dashboard">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-10">
+						<main>
+							<div class="main-box">
+								<div class="header-area">
+									<h4>Games Playing</h4>
+								</div>
+								<div class="table-responsive">
+									<table class="table table-borderless">
+										<tbody>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g1.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g2.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g3.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g4.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g5.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										  <tr>
+											<td>
+												<div class="game-info">
+													<img th:src="@{/images/defaults/g6.png}" alt="">
+													<div class="content">
+														<h6>Fortnite</h6>
+														<span>Wager Challenge</span>
+													</div>
+												</div>
+											</td>
+											<td>
+												<div class="players">
+													<ul>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm1.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm2.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm3.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<a href="#">
+																<img th:src="@{/images/defaults/sm4.png}" alt="">
+															</a>
+														</li>
+														<li>
+															<span>
+																32+
+															</span>
+														</li>
+													</ul>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Win Ratio</span>
+													<h4>63%</h4>
+												</div>
+											</td>
+											<td>
+												<div class="ratio">
+													<span>Elo Ratings </span>
+													<h4>2368</h4>
+												</div>
+											</td>
+											<td>
+												<a href="#" class="mybtn2">Challenge</a>
+											</td>
+										  </tr>
+										 
+										</tbody>
+									  </table>
+								</div>
+							</div>
+						</main>
+					</div>
+				</div>
+			</div>
+		</section>
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/profile/subscribe_area :: section}"></div>
+    </div>
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="static-js">
+
+    </th:block>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::#staticJS}
+                                         )}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Home Page</title>
+    <th:block id="static-css">
+        <style>
+            #main-content{
+                background: url(/images/defaults/cs-bg.png);
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <div style="margin: 200px auto 140px; text-align: center; padding: 50px 0; max-width: 500px; background: rgba(255, 255, 255, 0.1);" class="single-play">
+            <div class="justify-content-center mb-3 row">
+                <div class="col-9 d-flex justify-content-between">
+                    <h5 class="w-100">Momo deposit</h5>
+                    <input type="hidden" th:value="${transactionCode}" id="transactionCode">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <img th:src="@{'https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data='+'https://payment.momo.vn/pay/store/'+${maddress}+'&qzone=1&margin=0&size=300x300&ecc=L'}"/>
+                    <p class="mb-3 mt-3" style="padding: 0 80px; font-size: 14px;">To complete your payment, please open app momo then scan the above QR code in <span style="color: #fa009f;">00:05:00</span></p>
+                </div>
+                <div class="col-12 mt-3">
+                    <a type="button" class="mybtn1" style="text-transform: none; font-size: 16px; font-weight: 500;" id="btn-regenerate-momo">Regenerate QR</a>                
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="staticJS">
+        <script>
+            var transactionCode = $('#transactionCode').val()
+        </script> 
+      <script src="/js/ajax/deposit.js"></script>
+    </th:block>
+</body>
+</html>

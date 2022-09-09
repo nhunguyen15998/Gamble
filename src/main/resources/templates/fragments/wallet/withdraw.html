@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+  <main class="tab-pane fade" id="withdraw" role="tabpanel" aria-labelledby="pills-contact-tab">
+    <div class="main-box">
+      <div class="header-area">
+        <h4>Withdraw</h4>
+      </div>
+      <div>
+        <ul class="nav nav-pills mb-3" id="pills-withdraw" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="withdraw-bank-tab" data-toggle="pill" href="#withdraw-bank" role="tab" aria-controls="withdraw-bank" aria-selected="true">Bank</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="withdraw-bitcoin-tab" data-toggle="pill" href="#withdraw-bitcoin" role="tab" aria-controls="withdraw-bitcoin" aria-selected="false">Bitcoin</a>
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent-withdraw">
+          <div class="tab-pane fade show active" id="withdraw-bank" role="tabpanel" aria-labelledby="withdraw-bank-tab" style="margin: 35px 0px 10px;">
+            <div>
+              <div class="row form-group" style="margin-bottom: 35px;">
+                <div class="col-4">
+                  <label>Account Name</label>
+                  <input type="text" class="profile-input w-100" placeholder="Account Name" name="account_name" style="margin-right: 15px;width: 70%;">
+                  <small class="px-3 text-danger" id="withdraw-account-name-err"></small>
+                </div>
+                <div class="col-4">
+                  <label>Account Number</label>
+                  <input type="text" class="profile-input w-100" placeholder="Account Number" name="account_number" style="margin-right: 15px;width: 70%;">
+                  <small class="px-3 text-danger" id="withdraw-account-number-err"></small>
+                </div>
+                <div class="col-4">
+                  <label>Bank</label>
+                  <input type="text" class="profile-input w-100" placeholder="Bank" name="bank" style="margin-right: 15px;width: 70%;">
+                  <small class="px-3 text-danger" id="withdraw-bank-err"></small>
+                </div>
+              </div>
+              <div class="row form-group" style="margin-bottom: 35px;">
+                <div class="col-4">
+                  <label>Amount</label>
+                  <div class="align-items-center d-flex justify-content-between">
+                      <input type="text" class="col-10 profile-input w-100" placeholder="Amount" name="bank_amount">
+                      <span>VND</span>
+                  </div>
+                    <small class="px-3 text-danger" id="withdraw-bank-amount-err"></small>
+                </div>
+                <div class="col-8">
+                  <label>Notes</label>
+                  <input type="text" class="profile-input w-100" placeholder="Notes" name="notes" style="margin-right: 15px;width: 70%;">
+                  <small class="px-3 text-danger"></small>
+                </div>
+              </div>
+              <div class="justify-content-end row">
+                <div class="col-6">
+                  <small>Exchange rate: 1 VND = <span id="span-exchange-rate"></span> USD</small><br>
+                  <small>Remaining amount after withdraw proccess will be: <span id="span-wallet"></span></small>
+                </div>
+                <div class="align-items-center col-6 d-flex justify-content-end">
+                  <button class="btn col- text-white" type="button" style="background-color: #fa009f;height: fit-content;" id="btn-bank-request">Request</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="withdraw-bitcoin" role="tabpanel" aria-labelledby="withdraw-bitcoin-tab">
+            <div>
+              <div class="row form-group" style="margin-bottom: 35px;">
+                <div class="col-4">
+                  <label>Amount</label>
+                  <div class="align-items-center d-flex justify-content-between">
+                      <input type="text" class="col-10 profile-input w-100" placeholder="Amount" name="bitcoin_amount">
+                      <span>BTC</span>
+                  </div>
+                    <small class="px-3 text-danger" id="withdraw-bitcoin-amount-err"></small>
+                </div>
+                <div class="col-8">
+                  <label>Address</label>
+                  <div>
+                    <input type="text" class="profile-input w-100" placeholder="Address" name="bitcoin_address" style="position: relative; padding-right: 50px;">
+                    <button class="btn p-0 text-white" type="button" style="height: fit-content;position: absolute;top: 45px;right: 25px;" id="btn-bitcoin-address">
+                        <img src="/images/defaults/bitcoin.png" width="30" style="border-radius: 10px;">  
+                    </button>  
+                  </div>
+                  <small class="px-3 text-danger" id="withdraw-bitcoin-address-err"></small>
+                </div>
+              </div>
+              <div class="justify-content-end row">
+                <div class="col-6">
+                  <small>Exchange rate: 1 BTC = <span id="span-bitcoin-exchange-rate"></span> USD</small><br>
+                  <small>Remaining amount after withdraw proccess will be: <span id="span-bitcoin-wallet"></span></small>
+                </div>
+                <div class="align-items-center col-6 d-flex justify-content-end">
+                  <button class="btn col- text-white" type="button" style="background-color: #fa009f;height: fit-content;" id="btn-bitcoin-request">Request</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
+
+

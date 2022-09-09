@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+  <main class="tab-pane fade" id="transfer" role="tabpanel">
+    <div class="main-box">
+      <div class="header-area">
+        <h4>Transfer</h4>
+      </div>
+      <div id="div-transfer">
+        <div class="row form-group" style="margin-bottom: 35px;">
+          <div class="col-3">
+            <label>Phone</label>
+            <div class="align-items-center d-flex justify-content-between">
+              <input type="text" class="profile-input w-100" placeholder="Phone" name="transfer_phone" style="position: relative;padding-right: 50px;">
+              <button class="btn text-white" type="button" style="position: absolute;top: 45px;right: 25px;background-color: #fa009f;border-radius: 50%;padding: 3px 8px;" id="btn-bitcoin-address">
+                <i class="fa-solid fa-magnifying-glass" style="font-size: 15px;"></i>
+              </button>
+            </div>
+            <small class="px-3 text-danger" id="transfer-phone-err"></small>
+          </div>
+          <div class="col-3">
+            <label>Amount</label>
+            <div class="align-items-center d-flex justify-content-between">
+                <input type="text" class="col-9 profile-input w-100" placeholder="Amount" name="transfer_amount">
+                <span>USD</span>
+            </div>
+              <small class="px-3 text-danger" id="transfer-amount-err"></small>
+          </div>
+          <div class="col-6">
+            <label>Notes</label>
+            <input type="text" class="profile-input w-100" placeholder="Notes" name="transfer_notes" style="margin-right: 15px;width: 70%;">
+            <small class="px-3 text-danger"></small>
+          </div>
+        </div>
+        <div class="justify-content-end row">
+          <div class="align-items-center col-6 d-flex justify-content-end btn-transfer">
+            <button class="btn col- text-white" type="button" style="background-color: #fa009f;height: fit-content;" id="btn-transfer-request">Transfer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
