@@ -59,7 +59,7 @@ $('#span-wallet').text($('#span-balance').text())
 $('input[name="bank_amount"]').on('input', () => {
     let amount = $('input[name="bank_amount"]').val()
     let exrate = $('#span-exchange-rate').text()
-    if(amount.match("^[+ -]?[0-9]*([.][0-9]*)?$")){
+    if(amount.trim().match("^[+]?[0-9]*([.][0-9]*)?$")){
         let wallet = parseFloat($('#span-balance').text().replace("$", ""))
         let substract = parseFloat(amount)*parseFloat(exrate)
         $('#span-wallet').text(`$${wallet-substract}`)
@@ -72,7 +72,7 @@ $('input[name="bank_amount"]').on('input', () => {
 $('input[name="bitcoin_amount"]').on('input', () => {
     let amount = $('input[name="bitcoin_amount"]').val()
     let exrate = $('#span-bitcoin-exchange-rate').text()
-    if(amount.match("^[+ -]?[0-9]*([.][0-9]*)?$")){
+    if(amount.trim().match("^[+]?[0-9]*([.][0-9]*)?$")){
         let wallet = parseFloat($('#span-balance').text().replace("$", ""))
         let substract = parseFloat(amount)*parseFloat(exrate)
         $('#span-bitcoin-wallet').text(`$${wallet-substract}`)

@@ -46,16 +46,21 @@ public class UserWalletService extends BaseService<UserWallet> implements UserWa
                 obj.put("amount", "Required");
                 return obj;
             }
-            if(!betAmount.matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+            if(!betAmount.trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
                 obj.put("amount", "Invalid format");
+                return obj;
+            }
+            var bet = Double.parseDouble(betAmount);
+            if(bet <= 0){
+                obj.put("code", 400);
+                obj.put("amount", "Invalid amount");  
                 return obj;
             }
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "user_id", "=", userId, ""));
             var userWallet = this.getFirstBy(null, conditions, null);
             var curAmount = Double.parseDouble(userWallet.get("cur_amount").toString());
-            var bet = Double.parseDouble(betAmount);
             if(bet > curAmount){
                 obj.put("code", 400);
                 obj.put("amount", "Invalid amount");

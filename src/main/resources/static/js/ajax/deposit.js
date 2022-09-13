@@ -114,7 +114,7 @@ $('#momo').on('click', () => {   ///MOMO
 $('input[name="amount"]').on('input', () => {
     //alert(exchangeRate)
     let amount = $('input[name="amount"]').val()
-    if(amount != "" && amount.match("^[+ -]?[0-9]*([.][0-9]*)?$")){
+    if(amount != "" && amount.trim().match("^[+]?[0-9]*([.][0-9]*)?$")){
         $('#deposit-amount-err').text("") 
         $('#deposit-amount').text((parseFloat(amount)*exchangeRate).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:6}))
     } else {

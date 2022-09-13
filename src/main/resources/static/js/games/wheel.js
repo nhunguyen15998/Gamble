@@ -5,8 +5,8 @@ camera,
 mixer, // THREE.js animations mixer
 clock = new THREE.Clock() // Used for anims, which run to a clock instead of frame rate 
 
+onLoad()
 init()
-
 
 function loadModel(scene, path) {
     var selectedObject = scene.getObjectByName("object_model")
@@ -127,7 +127,7 @@ let colors3 //= ["#B91DC7", "#FD0E1D", "#5B18B2", "#C01FCF", "#5B18B4", "#432B4F
 let textColors3 //= ["#EDC5F1", "#FCA608", "#EDC5F1", "#EDC5F1", "#D4C3EA", "#65516E", "#FDB902", "#D4C3EA", "#EDC5F1", "#64516D", "#D4C3EA", "#EDC5F1", "#FDB902", "#65516E", "#EDC5F1", "#D4C3EA"]
 
 
-function drawWheel(ctnId, cvId, fillColor, isGradient, isShadownRound, isStroke) {
+async function drawWheel(ctnId, cvId, fillColor, isGradient, isShadownRound, isStroke) {
     const smWheelSize = {
         x: $("#" + ctnId).width(),
         y: $("#" + ctnId).height()
@@ -145,8 +145,6 @@ function drawWheel(ctnId, cvId, fillColor, isGradient, isShadownRound, isStroke)
     } else {
         ctx.fillStyle = fillColor
     }
-
-
 
     ctx.restore();
 
@@ -174,7 +172,7 @@ function deg2rad(deg) {
     return deg * Math.PI / 180;
 }
 
-function drawSlice(ctnId, cvId, color, label, deg, sliceDeg) {
+async function drawSlice(ctnId, cvId, color, label, deg, sliceDeg) {
     let canvasWidth = $("#" + cvId).width()
 
     let width = parseInt(canvasWidth)
@@ -203,21 +201,21 @@ function drawSlice(ctnId, cvId, color, label, deg, sliceDeg) {
 //ctx.restore()
 }
 
-function drawWheelSlice(ctnId, cvId, slices, colors, textColors) {
+async function drawWheelSlice(ctnId, cvId, slices, colors, textColors) {
     let sliceDeg = 360 / slices.length
     let deg = -(sliceDeg / 2)
     let plus = cvId != "large-wheel" ? 50 : 25
 
     for (let i = 0; i < slices.length; i++) {
 
-        drawSlice(ctnId, cvId, colors[i], slices[i], deg, sliceDeg)
-        drawText(ctnId, cvId, parseFloat(deg - sliceDeg / 2 + plus), slices[i], textColors[i])
+        await drawSlice(ctnId, cvId, colors[i], slices[i], deg, sliceDeg)
+        await drawText(ctnId, cvId, parseFloat(deg - sliceDeg / 2 + plus), slices[i], textColors[i])
 
         deg += sliceDeg
     }
 }
 
-function drawText(ctnId, cvId, deg, text, color) {
+async function drawText(ctnId, cvId, deg, text, color) {
     let canvasWidth = $("#" + cvId).width()
     let fontSize = 200
     let width = parseInt(canvasWidth)
@@ -301,7 +299,7 @@ function drawDot(ctnId, cvId, slices, on) {
 
 }
 
-async function spinsWheel(ctnId, cvId, stopPosition, wheelSpeed, spinningTime, resultStatus, resultMsg, slices) {
+async function spinsWheel(ctnId, cvId, stopPosition, wheelSpeed, spinningTime, slices) {
     return await new Promise(resolve => {
         let sliceDeg = 360 / slices.length
         let canvas = $('#' + cvId)
@@ -319,18 +317,7 @@ async function spinsWheel(ctnId, cvId, stopPosition, wheelSpeed, spinningTime, r
         spinning = true
         $('#rotate-bg img').attr('style', cssRotateBg)
         setTimeout(function () {
-            switch (resultStatus) {
-                case 0:
-                    console.log(resultStatus)
-                    break
-                case 1:
-                    console.log(resultStatus)
-                    break
-                case 2:
-                    console.log(resultStatus)
-                    break
-            }
-            console.log(resultMsg)
+            console.log("here")
             css = 'transform: rotate(' + stopDeg + 'deg);'
             canvas.attr('style', css);
 
@@ -343,18 +330,12 @@ async function spinsWheel(ctnId, cvId, stopPosition, wheelSpeed, spinningTime, r
 
 }
 
-
-
-// drawWheel('rotate-wheel', 'cv-rotate-wheel', 'orange', true, true, false)
-
-drawWheel('cv-sm', 'sm-wheel', '#fff', false, true, true)
-
-drawWheel('cv-md', 'md-wheel', '#07f6ff', false, true, true)
-
-drawWheel('cv-large', 'large-wheel', '#34ff07', false, false, true)
-
-$.get('/api/getSliceArrays', (response) => {
-    console.log(response)
+async function onLoad(){
+    let response = await $.get('/api/getSliceArrays', (response) => {
+        return response
+    }).fail((data) => {
+        console.log(data)
+    })
     //content
     slices1 = response.slices1
     slices2 = response.slices2
@@ -367,15 +348,46 @@ $.get('/api/getSliceArrays', (response) => {
     textColors1 = response.textColors1
     textColors2 = response.textColors2
     textColors3 = response.textColors3
-    drawWheelSlice('cv-sm', 'sm-wheel', slices1, colors1, textColors1)
-    drawWheelSlice('cv-md', 'md-wheel', slices2, colors2, textColors2)
-    drawWheelSlice('large-md', 'large-wheel', slices3, colors3, textColors3)
-})
 
-//drawDot('cv-sm', 'sm-wheel', slices1, true)
+    // drawWheel('rotate-wheel', 'cv-rotate-wheel', 'orange', true, true, false)
+    await drawWheel('cv-sm', 'sm-wheel', '#fff', false, true, true)
+    await drawWheel('cv-md', 'md-wheel', '#07f6ff', false, true, true)
+    await drawWheel('cv-large', 'large-wheel', '#34ff07', false, false, true)
 
-//drawDot('cv-md', 'md-wheel', slices2, true)
-//drawDot('cv-large', 'large-wheel', slices3, true)
+    await drawWheelSlice('cv-sm', 'sm-wheel', slices1, colors1, textColors1)
+    await drawWheelSlice('cv-md', 'md-wheel', slices2, colors2, textColors2)
+    await drawWheelSlice('large-md', 'large-wheel', slices3, colors3, textColors3)  
+    //drawDot('cv-sm', 'sm-wheel', slices1, true)
+    //drawDot('cv-md', 'md-wheel', slices2, true)
+    //drawDot('cv-large', 'large-wheel', slices3, true)
+
+    let histories = response.histories
+    if(histories != null){ 
+        $('#wheel-game-history').empty()
+        let i = 1
+        histories.forEach(element => {
+            let status = element.status == 0 ? "Lose" : (element.status == 1 ? "Win" : "Drawn")
+            let tr = `<tr>
+                        <th scope="row">${i}</th>
+                        <td>${element.results}</td>
+                        <td>${element.bet_amount}</td>
+                        <td>${status}</td>
+                        <td>${element.created_at}</td>
+                    </tr>`
+            $('#wheel-game-history').append(tr)
+            i++
+        })
+    } else {
+        let tr = `<tr>
+                    <td colspan="4" class="text-center">None</td>
+                </tr>`
+        $('#wheel-game-history').append(tr)
+    }
+
+    let balance = parseFloat(response.balance).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:4})
+    $('#wheel-balance').text(balance)
+
+}
 
 async function playAnimation(miliSeconds, target) {
     return new Promise(resolve => {
@@ -401,75 +413,78 @@ $(document).on('click', '#rotate-button', async function () {
     loadModel(scene, "/models/dancing.fbx")
 
     let rotateButton = $('#rotate-wheel')
-    let arrow = $('#arrow')
+    //let arrow = $('#arrow')
     $(rotateButton).removeClass('animate__animated animate__pulse')
-    $(arrow).removeClass('d-none')
+    //$(arrow).removeClass('d-none')
 
-
-    $.post('/api/wheels/result', {"betAmount": $('input[name="wheel_bet_amount"]').val()}, async (response) => {
-        // var response = await rsp
-        if(response.code == 200){
-            const posSM = response.sm
-            const posMD = response.md
-            const posLG = response.lg
-            console.log(posSM)
-            console.log(posMD)
-            console.log(posLG)
-            console.log(response)
-            await spinsWheel('cv-sm', 'sm-wheel', posSM, 10, 3, response.status, response.message, slices1)
-            if (posSM == 'NEXT') {
-                spinning = true
-                $('#ov-cv-md').addClass('d-none')
-                await spinsWheel('cv-md', 'md-wheel', posMD, 10, 3, response.status, response.message, slices2)
-
-                if (posMD == 'NEXT') {// next - spin 3
-                    spinning = true
-                    $('#ov-cv-large').addClass('d-none')
-                    await spinsWheel('cv-large', 'large-wheel', posLG, 10, 3, response.status, response.message, slices3)
-                }
-            }
-            let histories = response.histories
-            $('#wheel-game-history').empty()
-            let i = 1
-            histories.forEach(element => {
-                let tr = `<tr>
-                            <th scope="row">${i}</th>
-                            <td>${element.results}</td>
-                            <td>${element.status}</td>
-                            <td>${element.created_at}</td>
-                        </tr>`
-                $('#wheel-game-history').append(tr)
-                i++
-            })
-            $('#wheel-balance').text(response.balance)
-            
-            $('#ov-cv-large').addClass('d-none')
+    let response = await $.post('/api/wheels/result', {"betAmount": $('input[name="wheel_bet_amount"]').val()}, (rsp) => {
+                        // var response = await rsp
+                        return rsp
+                    }).fail((data) => {
+                        console.log(data)
+                    })
+    console.log(response)
+    if(response.code == 200){
+        const posSM = response.sm
+        const textSM = response.small ?? "" 
+        await spinsWheel('cv-sm', 'sm-wheel', posSM, 10, 3, slices1)
+        if (textSM == 'NEXT') {
+            console.log('Next '+posSM)
+            spinning = true
             $('#ov-cv-md').addClass('d-none')
-            $('#rotate-button').removeClass('d-none')
-
-            $(arrow).addClass('d-none')
-
-            loadModel(scene, "/models/happy_idle.fbx")
-
-            $('#cv-large').removeClass('animate__animated animate__pulse')
-            $('#cv-md').removeClass('animate__animated animate__pulse')
-            $('#cv-sm').removeClass('animate__animated animate__pulse')
-
-            await playAnimation(50, '#cv-large')
-            await playAnimation(500, '#cv-md')
-            await playAnimation(1000, '#cv-sm')
-            loadModel(scene, "/models/dwarf_idle.fbx")
-
-            $(rotateButton).addClass('animate__animated animate__pulse')
-
-            console.log("End of wheel")
-        } else {
-            console.log(response)
+            const posMD = response.md
+            const textMD = response.medium ?? "" 
+            await spinsWheel('cv-md', 'md-wheel', posMD, 10, 3, slices2)
+            if (textMD == 'NEXT') {// next - spin 3
+                console.log('Next '+posMD)
+                spinning = true
+                $('#ov-cv-large').addClass('d-none')
+                const posLG = response.lg
+                await spinsWheel('cv-large', 'large-wheel', posLG, 10, 3, slices3)
+            }
         }
-    }).fail((data) => {
-        console.log(data)
-    })
+        let histories = response.histories
+        $('#wheel-game-history').empty()
+        let i = 1
+        histories.forEach(element => {
+            let status = element.status == 0 ? "Lose" : (element.status == 1 ? "Win" : "Drawn")
+            let tr = `<tr>
+                        <th scope="row">${i}</th>
+                        <td>${element.results}</td>
+                        <td>${element.bet_amount}</td>
+                        <td>${status}</td>
+                        <td>${element.created_at}</td>
+                    </tr>`
+            $('#wheel-game-history').append(tr)
+            i++
+        })
+        let balance = parseFloat(response.balance).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:4})
+        $('#wheel-balance').text(balance)
+        $('input[name="wheel_bet_amount"]').val("")
+        isBet = false
+        $('#ov-cv-large').addClass('d-none')
+        $('#ov-cv-md').addClass('d-none')
+        $('#rotate-button').removeClass('d-none')
 
+        //$(arrow).addClass('d-none')
+
+        loadModel(scene, "/models/happy_idle.fbx")
+
+        $('#cv-large').removeClass('animate__animated animate__pulse')
+        $('#cv-md').removeClass('animate__animated animate__pulse')
+        $('#cv-sm').removeClass('animate__animated animate__pulse')
+
+        await playAnimation(50, '#cv-large')
+        await playAnimation(500, '#cv-md')
+        await playAnimation(1000, '#cv-sm')
+        loadModel(scene, "/models/dwarf_idle.fbx")
+
+        $(rotateButton).addClass('animate__animated animate__pulse')
+
+        console.log("End of wheel")
+    } else {
+        console.log(response)
+    }
 })
 
 //add

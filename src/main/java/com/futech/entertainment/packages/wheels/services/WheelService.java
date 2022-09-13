@@ -1,10 +1,20 @@
 package com.futech.entertainment.packages.wheels.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,16 +76,21 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
         try {
             if(betAmount == null || betAmount.toString().trim() == ""){
                 obj.put("code", 400);
-                obj.put("message", "You must bet first!");
-                
+                obj.put("message", "You must bet first!");  
             }
-            if(!betAmount.matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+            if(!betAmount.trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
                 obj.put("message", "Invalid format");
                 return obj;
             }
 
             var bet = Double.parseDouble(betAmount);
+            if(bet <= 0){
+                obj.put("code", 400);
+                obj.put("message", "Invalid amount");  
+                return obj;
+            }
+
             //check if amount <= userwallet
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "user_id", "=", String.valueOf(userId), ""));
@@ -91,24 +106,29 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
             var wheel = this.gameServiceInterface.getGameByCode(GameHelpers.WHEEL_CODE);
             var configs = this.getGameWheelConfigs(wheel);
 
-            var sm = (int)Math.floor(Math.random() * 10);
+            var smSize = Array.getLength(configs.get("slices1"));
+            var sm = (int)Math.floor(Math.random() * smSize);
             var small = Array.get(configs.get("slices1"), sm).toString();
             bet = WheelHelpers.countBettingResult(small, bet);
             String results = String.format("%s", small);
             obj.put("sm", sm);
             
             if(small.charAt(0) == 'N'){
-                var md = (int)Math.floor(Math.random() * 10);
+                var mdSize = Array.getLength(configs.get("slices2"));
+                var md = (int)Math.floor(Math.random() * mdSize);
                 var medium = Array.get(configs.get("slices2"), md).toString();
                 bet = WheelHelpers.countBettingResult(medium, bet);
                 results += String.format(",%s", medium);
                 obj.put("md", md);
+                obj.put("small", small);
                 if(medium.charAt(0) == 'N'){
-                    var lg = (int)Math.floor(Math.random() * 16);
+                    var lgSize = Array.getLength(configs.get("slices3"));
+                    var lg = (int)Math.floor(Math.random() * lgSize);
                     var large = Array.get(configs.get("slices3"), lg).toString();
                     bet = WheelHelpers.countBettingResult(large, bet);
                     results += String.format(",%s", large);
                     obj.put("lg", lg);
+                    obj.put("medium", medium);
                 }
             }
 
@@ -128,15 +148,15 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                 switch (status) {
                     case 0:
                         obj.put("status", 0);
-                        obj.put("message", "You lose");
+                        obj.put("message", "Lose");
                         break;
                     case 1:
                         obj.put("status", 1);
-                        obj.put("message", "You win");
+                        obj.put("message", "Win");
                         break;
                     case 2:
                         obj.put("status", 2);
-                        obj.put("message", "Match drawn");
+                        obj.put("message", "Drawn");
                         break;
                 }
             }
@@ -157,5 +177,39 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
             obj.put("message", e.getMessage());
         }
         return obj;
+    }
+
+    public List<Map<String, Object>> getUserGameWheelHistory(String userId){
+        try {
+            String[] selects = {"games.code, games.id,"+ 
+                                "game_histories.id, game_histories.game_id, game_histories.results, game_histories.created_at,"+
+                                "game_history_users.bet_amount, game_history_users.game_history_id, game_history_users.received_amount,"+
+                                "game_history_users.id, game_history_users.status, game_history_users.user_id"};
+            String orderBy = "created_at desc";
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "games.code", "=", GameHelpers.WHEEL_CODE, ""));
+            conditions.add(DataMapper.getInstance("and", "game_history_users.user_id", "=", userId, ""));
+            conditions.add(DataMapper.getInstance("and", "game_histories.created_at", ">=", LocalDateTime.of(LocalDate.now(), LocalTime.MIN).toString(), ""));
+            conditions.add(DataMapper.getInstance("and", "game_histories.created_at", "<=", LocalDateTime.of(LocalDate.now(), LocalTime.MAX).toString(), ""));
+            return this.gameHistoryServiceInterface.getUserGameHistoryByUser(selects, conditions, orderBy, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void playBackgroundMusic(String sound){
+        try {
+            var path = new File(System.getProperty("user.dir") + "/src/main/resources/static/sounds/"+sound);
+            if(path.exists()){
+                AudioInputStream audio = AudioSystem.getAudioInputStream(path);
+                Clip clip = AudioSystem.getClip();
+                clip.open(audio);
+                clip.start(); 
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

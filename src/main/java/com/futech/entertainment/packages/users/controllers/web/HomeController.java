@@ -3,6 +3,9 @@ package com.futech.entertainment.packages.users.controllers.web;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,12 @@ public class HomeController {
         //     secondCookie.setHttpOnly(false);
         //     response.addCookie(firstCookie);
         //     response.addCookie(secondCookie);
+        // }
+        // try {
+        //     Clip clip = AudioSystem.getClip();
+        //     clip.stop();
+        // } catch (LineUnavailableException e) {
+        //     e.printStackTrace();
         // }
         return "home";
     }

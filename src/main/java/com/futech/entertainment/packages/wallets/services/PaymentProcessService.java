@@ -69,7 +69,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             transaction.setStatus(PaymentHelpers.PENDING);
             //type - vnpay, momo, bitcoin, paypal
             if(deposit != null && method != null){
-                if(deposit.toString().matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+                if(deposit.toString().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                     var dp = Double.parseDouble(deposit);
                     var vndExchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "VND", "rate").getAsString());
                     var fromCurrency = this.configServiceInterface.getConfig(0, "VND").get("name").toString();
@@ -196,12 +196,17 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
         try {
             var method = withdrawBankMapper.getMethod();
             var user = withdrawBankMapper.getSender();
-            if(!withdrawBankMapper.getBank_amount().matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+            if(!withdrawBankMapper.getBank_amount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
                 obj.put("amount", "Invalid format");
                 return obj;
             }
             var amount = Double.parseDouble(withdrawBankMapper.getBank_amount());
+            if(amount <= 0){
+                obj.put("code", 400);
+                obj.put("message", "Invalid amount");  
+                return obj;
+            }
             //check if amount <= userwallet
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "user_id", "=", String.valueOf(user), ""));
@@ -270,13 +275,17 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
         try {
             var method = withdrawBitcoinMapper.getMethod();
             var user = withdrawBitcoinMapper.getSender();
-            if(!withdrawBitcoinMapper.getBitcoin_amount().matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+            if(!withdrawBitcoinMapper.getBitcoin_amount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
                 obj.put("bitcoin_amount", "Invalid format");
                 return obj;
             }
-
             var amount = Double.parseDouble(withdrawBitcoinMapper.getBitcoin_amount());
+            if(amount <= 0){
+                obj.put("code", 400);
+                obj.put("message", "Invalid amount"); 
+                return obj; 
+            }
             //check if amount <= userwallet
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "user_id", "=", String.valueOf(user), ""));
@@ -349,13 +358,17 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             }
             var receiverId = Integer.parseInt(receiver.get("id").toString());
 
-            if(!transferMapper.getAmount().matches("^[+ -]?[0-9]*([.][0-9]*)?$")){
+            if(!transferMapper.getAmount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
                 obj.put("amount", "Invalid format");
                 return obj;
             }
-
             var amount = Double.parseDouble(transferMapper.getAmount());
+            if(amount <= 0){
+                obj.put("code", 400);
+                obj.put("message", "Invalid amount");  
+                return obj;
+            }
             //check if amount <= userwallet
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "user_id", "=", String.valueOf(user), ""));

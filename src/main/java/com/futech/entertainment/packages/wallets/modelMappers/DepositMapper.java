@@ -11,7 +11,6 @@ public class DepositMapper {
     private String language;
     private String bankcode;
 
-    @NotNull(message = "Type is required")
     private Integer type;
     @NotNull(message = "Method is required")
     private Integer method;
