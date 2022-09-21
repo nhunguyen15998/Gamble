@@ -14,16 +14,28 @@
           <h4 class="mb-0">Settings</h4>
         </div>
         <div class="d-flex flex-column justify-content-between">
-          <div class="d-flex justify-content-between mb-3">
-            
+          <div class="mb-3">
+            <div class="custom-switch d-flex">
+              <input type="checkbox" class="custom-control-input" id="change-password-switch">
+              <label class="custom-control-label" for="change-password-switch">Require fill in current password whenever changing password?</label>
+            </div>
           </div>
-          <div class="d-flex justify-content-between mb-3">
-            
+          <div class="mb-3">
+            <div class="custom-switch d-flex">
+              <input type="checkbox" class="custom-control-input" id="withdraw-password-switch">
+              <label class="custom-control-label" for="withdraw-password-switch">Require fill in current password whenever performing withdraw action?</label>
+            </div>
           </div>
-  
+          <div class="mb-3">
+            <div class="custom-switch d-flex">
+              <input type="checkbox" class="custom-control-input" id="transfer-password-switch">
+              <label class="custom-control-label" for="transfer-password-switch">Require fill in current password whenever performing transfer action?</label>
+            </div>
+          </div>
+
           <div class="d-flex justify-content-end mb-3 mt-5">
             <div class="d-flex justify-content-between" style="width: 45%;">
-              <button type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-profile-save">Save</button>
+              <button type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-settings-save">Save</button>
               <button type="submit" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 12px;width: 47%;">Cancel</button>
             </div>
           </div>

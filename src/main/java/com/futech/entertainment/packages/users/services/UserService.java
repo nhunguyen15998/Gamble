@@ -1,8 +1,9 @@
 package com.futech.entertainment.packages.users.services;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import com.futech.entertainment.packages.core.models.EmailDetails;
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.services.interfaces.EmailServiceInterface;
@@ -22,6 +28,7 @@ import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
+import com.futech.entertainment.packages.users.services.interfaces.UserTokenServiceInterface;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
 
@@ -36,29 +43,18 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
     private UserProfileServiceInterface userProfileService;
     @Autowired
     private UserWalletServiceInterface userWalletServiceInterface;
-    
+    @Autowired
+    private UserTokenServiceInterface userTokenServiceInterface;
+
+    private final String SECRET_KEY = "UPXO0fc4DuyN2CgfR0aKbgeIT0Ntpf9sjglIc2aO";
+
     public boolean createUserSignUp(SignUpMapper signUpMapper){
         try {
             String activateCode = Helpers.randomStringWithLength(10);
-            User newUser = new User();
-            newUser.setPhone(signUpMapper.getPhone());
-            newUser.setEmail(signUpMapper.getEmail());
-            newUser.setplain_password(signUpMapper.getplain_password());
-            newUser.sethash_password(passwordEncoder.encode(signUpMapper.getplain_password()));
-            newUser.setcreated_at(LocalDateTime.now());
-            newUser.setStatus(Helpers.DEACTIVATED);
-            newUser.setactivate_code(activateCode);
-            User user = this.create(newUser);
+            User user = this.createUser(signUpMapper, activateCode);
             if(user != null){
-                UserProfile userProfile = new UserProfile();
-                userProfile.setUserId(user.getId());
-                userProfile.setFirstName(signUpMapper.getfirst_name());
-                userProfile.setLastName(signUpMapper.getlast_name());
-                userProfile.setThumbnail("/images/defaults/no-user.jpeg");
-                userProfile.setBirth(LocalDate.parse("1998-02-10"));
-                userProfile.setGender(Helpers.MALE);
-                UserProfile newUserProfile = this.userProfileService.create(userProfile);
-                if(newUserProfile != null){
+                UserProfile userProfile = this.userProfileService.createUserProfile(user, signUpMapper);
+                if(userProfile != null){
                     boolean sent = this.emailServiceInterface.sendMailWithAttachment(new EmailDetails(
                         signUpMapper.getEmail(),
                         "<p>Dear our beloved user,</p>"+
@@ -147,12 +143,103 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         }
     }
 
+    //crud
+    public User createUser(SignUpMapper signUpMapper, String activateCode){
+        try {
+            User newUser = new User();
+            newUser.setPhone(signUpMapper.getPhone());
+            newUser.setEmail(signUpMapper.getEmail());
+            newUser.setplain_password(signUpMapper.getplain_password());
+            newUser.sethash_password(passwordEncoder.encode(signUpMapper.getplain_password()));
+            newUser.setcreated_at(LocalDateTime.now());
+            newUser.setStatus(Helpers.DEACTIVATED);
+            newUser.setactivate_code(activateCode);
+            User user = this.create(newUser);
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public boolean updateUser(User user){
         try {
             return this.update(user);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+    //end crud
+
+    //authentication with token
+    public Map<String, Object> authenticate(Map<String, Object> user){
+        Map<String, Object> results = new HashMap<String, Object>();
+        try {
+            if(user == null){
+                results.put("code", 500);
+                results.put("msg", "Invalid user");
+                return results;
+            }
+            //create token
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.SECOND, 20);
+            Date expireDate = calendar.getTime();
+            
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            String token = JWT.create()
+                              .withIssuer("auth0")
+                              .withClaim("phone", user.get("phone").toString())
+                              .withExpiresAt(expireDate)
+                              .sign(algorithm);
+            //save token
+            this.userTokenServiceInterface.createToken(Integer.parseInt(user.get("id").toString()), token);
+            
+            results.put("code", 200);
+            results.put("user", user);
+            results.put("token", token);
+            results.put("msg", "user authenticated");
+        } catch (Exception e) {
+            results.put("code", 500);
+            results.put("msg", e.getMessage());
+        }
+        return results;
+    }
+
+    public String verifyToken(Map<String, String> headers){
+        try {
+            var token = headers.get("authorization");
+            if(token == null || token.trim() == ""){
+                return null;
+            }
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY); 
+            JWTVerifier verifier = JWT.require(algorithm).withIssuer("auth0").build(); 
+            DecodedJWT jwt = verifier.verify(token);
+            System.out.println("jwt: "+jwt);
+            return token;
+        } catch (JWTVerificationException e){
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Map<String, Object> getUserByToken(String[] selects, String token){
+        try {
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "user_tokens.token", "=", token, ""));
+            conditions.add(DataMapper.getInstance("and", "users.status", "=", String.valueOf(Helpers.ACTIVATED), ""));
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("join", "user_tokens", 
+                        DataMapper.getInstance("", "users.id", "=", "user_tokens.user_id", "")));
+            joins.add(JoinCondition.getInstance("join", "user_profiles", 
+                        DataMapper.getInstance("", "users.id", "=", "user_profiles.user_id", "")));
+            return this.getFirstBy(selects, conditions, joins);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

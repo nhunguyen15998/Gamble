@@ -21,7 +21,7 @@ import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.payments.services.interfaces.MomoServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.wallets.models.Transaction;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
@@ -37,10 +37,10 @@ public class MomoService implements MomoServiceInterface {
     @Autowired
     private ConfigServiceInterface configServiceInterface;
     
-    public JsonObject doPost(HttpServletRequest req) throws ServletException, IOException {
-        JsonObject job = new JsonObject();
+    public Map<String, Object> doPost(HttpServletRequest req) throws ServletException, IOException {
+        Map<String, Object> job = new HashMap<String, Object>();
         try {
-            JsonObject momo_Params = new JsonObject();
+            Map<String, Object> momo_Params = new HashMap<String, Object>();
             var endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
             var partnerCode = "MOMOBKUN20180529"; //run
             var accessKey = "klm05TvNBzhg7h7j";
@@ -68,18 +68,18 @@ public class MomoService implements MomoServiceInterface {
                                                 accessKey, amount, extraData, ipnUrl, orderId, orderInfo, partnerCode, redirectUrl, requestId, requestType);
             var signature = PaymentHelpers.hmacSHA256(secretKey, rawHash);
 
-            momo_Params.addProperty("accessKey", accessKey);
-            momo_Params.addProperty("amount", amount);
-            momo_Params.addProperty("extraData", extraData);
-            momo_Params.addProperty("ipnUrl", ipnUrl);
-            momo_Params.addProperty("lang", lang);
-            momo_Params.addProperty("orderId", orderId);
-            momo_Params.addProperty("orderInfo", orderInfo);
-            momo_Params.addProperty("partnerCode", partnerCode);
-            momo_Params.addProperty("redirectUrl", redirectUrl);
-            momo_Params.addProperty("requestId", requestId);
-            momo_Params.addProperty("requestType", requestType);
-            momo_Params.addProperty("signature", signature);
+            momo_Params.put("accessKey", accessKey);
+            momo_Params.put("amount", amount);
+            momo_Params.put("extraData", extraData);
+            momo_Params.put("ipnUrl", ipnUrl);
+            momo_Params.put("lang", lang);
+            momo_Params.put("orderId", orderId);
+            momo_Params.put("orderInfo", orderInfo);
+            momo_Params.put("partnerCode", partnerCode);
+            momo_Params.put("redirectUrl", redirectUrl);
+            momo_Params.put("requestId", requestId);
+            momo_Params.put("requestType", requestType);
+            momo_Params.put("signature", signature);
             
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -92,14 +92,14 @@ public class MomoService implements MomoServiceInterface {
 
             var rp = PaymentHelpers.jsonStringToJsonObject(response.body());
             var payurl = rp.get("payUrl");
-            job.addProperty("code", 200);
-            job.addProperty("message", "success");
-            job.addProperty("signature", signature);
-            job.addProperty("payUrl", payurl);
+            job.put("code", 200);
+            job.put("message", "success");
+            job.put("signature", signature);
+            job.put("payUrl", payurl);
         } catch (Exception e) {
-            job.addProperty("code", 500);
-            job.addProperty("message", e.getMessage());
-            job.addProperty("data", "");
+            job.put("code", 500);
+            job.put("message", e.getMessage());
+            job.put("data", "");
         }
         return job;
     }

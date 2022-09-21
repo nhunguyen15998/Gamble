@@ -331,7 +331,7 @@ async function spinsWheel(ctnId, cvId, stopPosition, wheelSpeed, spinningTime, s
 }
 
 async function onLoad(){
-    let response = await $.get('/api/getSliceArrays', (response) => {
+    let response = await $.get('/getSliceArrays', (response) => {
         return response
     }).fail((data) => {
         console.log(data)
@@ -362,7 +362,8 @@ async function onLoad(){
     //drawDot('cv-large', 'large-wheel', slices3, true)
 
     let histories = response.histories
-    if(histories != null){ 
+    console.log(histories)
+    if(histories.length != 0){ 
         $('#wheel-game-history').empty()
         let i = 1
         histories.forEach(element => {
@@ -379,11 +380,11 @@ async function onLoad(){
         })
     } else {
         let tr = `<tr>
-                    <td colspan="4" class="text-center">None</td>
+                    <td colspan="5" class="text-center">None</td>
                 </tr>`
         $('#wheel-game-history').append(tr)
     }
-
+    
     let balance = parseFloat(response.balance).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:4})
     $('#wheel-balance').text(balance)
 
@@ -399,7 +400,6 @@ async function playAnimation(miliSeconds, target) {
 }
 
 let isBet = false
-
 $(document).on('click', '#rotate-button', async function () {
     if (spinning) return
     if(!isBet){
@@ -417,7 +417,7 @@ $(document).on('click', '#rotate-button', async function () {
     $(rotateButton).removeClass('animate__animated animate__pulse')
     //$(arrow).removeClass('d-none')
 
-    let response = await $.post('/api/wheels/result', {"betAmount": $('input[name="wheel_bet_amount"]').val()}, (rsp) => {
+    let response = await $.post('/wheels/result', {"betAmount": $('input[name="wheel_bet_amount"]').val()}, (rsp) => {
                         // var response = await rsp
                         return rsp
                     }).fail((data) => {
@@ -492,7 +492,7 @@ $('#btn-wheel-bet').on('click', () => {
     $('#wheel-bet-amount-err').text("")
     let bet = $('input[name="wheel_bet_amount"]').val()
     //if(bet == null || bet.trim() == "") return
-    $.get('/api/user/wallet/check-balance', {"bet" : bet}, (response) => {
+    $.get('/user/wallet/check-balance', {"bet" : bet}, (response) => {
         console.log(response)
         if(response.code == 200){
             isBet = true
@@ -505,4 +505,31 @@ $('#btn-wheel-bet').on('click', () => {
         isBet = false
         $('#wheel-bet-amount-err').text(data.responseText.msg)
     })
+})
+
+//btn-start-wheel-game
+let isPaused = false
+$('#btn-start-wheel-game').on('click', () => {
+    console.log("clickedd")
+    $('#main-content').children(".wheel-thumbnail").remove()
+    document.querySelector("audio").play()
+})
+
+$('#wheel-pause-music').on('click', () => {
+    if(isPaused){
+        document.querySelector("audio").play()
+        $('#wheel-pause-music').empty()
+        $('#wheel-pause-music').append('<i class="fa-solid fa-volume-high"></i>')
+        isPaused = false
+    } else {
+        document.querySelector("audio").pause()
+        $('#wheel-pause-music').empty()
+        $('#wheel-pause-music').append('<i class="fa-solid fa-volume-xmark"></i>')
+        isPaused = true
+    }
+})
+
+//wheel-quit-game
+$('#wheel-quit-game').on('click', () => {
+    $('#wheel-quit-modal').modal('show')
 })

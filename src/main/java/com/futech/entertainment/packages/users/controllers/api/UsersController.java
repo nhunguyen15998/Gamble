@@ -1,5 +1,5 @@
 package com.futech.entertainment.packages.users.controllers.api;
-
+ 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -25,37 +25,44 @@ import com.futech.entertainment.packages.users.services.interfaces.UserServiceIn
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 
 @RestController
 @RequestMapping(path="/api") 
-public class UserController {
+public class UsersController {
 
     @Autowired
     private UserServiceInterface userServiceInterface;
     @Autowired
     private UserProfileServiceInterface userProfileService;
     
-    @GetMapping("/getUser")
-	public ResponseEntity<Map<String, Object>> getUser(HttpSession session) {
-        String phone = session.getAttribute("phone").toString();
+    @GetMapping("/get-user")
+	public ResponseEntity<Map<String, Object>> getUser(@RequestHeader Map<String, String> headers) {
+        Map<String, Object> user = new HashMap<String,Object>();
         try {
-            String[] selects = {"users.id as user_id, users.*, "+
+            System.out.println(headers);
+            var verifiedToken = this.userServiceInterface.verifyToken(headers);
+            if(verifiedToken == null){
+                user.put("code", 401);
+                user.put("message", "Invalid token");
+                return new ResponseEntity<Map<String, Object>>(user, HttpStatus.UNAUTHORIZED);
+            }
+            String[] selects = {"users.id as user_id, users.phone, users.email, users.status, "+
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
             "user_profiles.birth, user_profiles.gender"};
-            var user = this.userServiceInterface.getUserByPhone(selects, phone);
+            user = this.userServiceInterface.getUserByToken(selects, verifiedToken);
             if(user != null){
                 return new ResponseEntity<Map<String, Object>>(user, HttpStatus.OK);
             }
             return new ResponseEntity<Map<String, Object>>(user, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            Map<String, Object> err = new HashMap<String,Object>();
-            err.put("message", e.getMessage());
-            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+            user.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(user, HttpStatus.BAD_REQUEST);
         }
 	}
 
-    @GetMapping("/getUserByPhone")
+    @GetMapping("/get-user-by-phone")
 	public ResponseEntity<Map<String, Object>> getUserByPhone(@RequestParam String phone, HttpSession session) {
         try {
             var currentPhone = session.getAttribute("phone").toString();
@@ -77,7 +84,7 @@ public class UserController {
         }
 	}
 
-    @PostMapping("/updateUser")
+    @PostMapping("/update-user")
     public ResponseEntity<Map<String, Object>> updateUser(@Valid @RequestBody UserProfileMapper userProfileMapper, HttpSession session) {
         try {
             User user = new User();
@@ -110,7 +117,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/changeProfilePhoto")
+    @PostMapping("/change-profile-photo")
     public ResponseEntity<Map<String, Object>> changeProfilePhoto(MultipartFile photo, HttpSession session) throws IOException {
         try {
             var userProfileId = Integer.parseInt(session.getAttribute("user_profile_id").toString());

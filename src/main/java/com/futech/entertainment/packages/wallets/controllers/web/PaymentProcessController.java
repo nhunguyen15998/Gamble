@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.wallets.controllers.api;
+package com.futech.entertainment.packages.wallets.controllers.web;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,17 +10,16 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.wallets.modelMappers.DepositMapper;
 import com.futech.entertainment.packages.wallets.modelMappers.TransferMapper;
 import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBankMapper;
@@ -29,8 +28,7 @@ import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProc
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-@RestController
-@RequestMapping(path = "/api")
+@Controller
 public class PaymentProcessController {
     @Autowired
     private PaymentProcessServiceInterface paymentProcessServiceInterface;
@@ -41,19 +39,20 @@ public class PaymentProcessController {
 
     //deposit
     @PostMapping("/depositProcess")
-    public ResponseEntity<String> depositProcess(@Valid @RequestBody DepositMapper depositMapper,  
+    public ResponseEntity<Map<String, Object>> depositProcess(@Valid @RequestBody DepositMapper depositMapper,  
                                                 HttpSession session, HttpServletRequest req){
-        Gson gson = new Gson();
+        Map<String, Object> obj = new HashMap<String, Object>();
         try {
             var sender = Integer.parseInt(session.getAttribute("user_id").toString());
             session.setAttribute("depositMethod", depositMapper.getMethod());
             depositMapper.setSender(sender);
             depositMapper.setType(0);
-            var obj = this.paymentProcessServiceInterface.depositProcess(depositMapper, req);
-            return ResponseEntity.ok(gson.toJson(obj));
+            obj = this.paymentProcessServiceInterface.depositProcess(depositMapper, req);
+            return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.ACCEPTED);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.ok(gson.toJson(e.getMessage()));
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
         }
     } 
 

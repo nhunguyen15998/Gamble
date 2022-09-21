@@ -1,10 +1,11 @@
 package com.futech.entertainment.packages.wallets.modelMappers;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class DepositMapper {
 
-    @NotNull(message = "Amount is required")
+    @NotBlank(message = "Amount is required")
     private String amount;
     private String code;
 

@@ -59,6 +59,8 @@ th:replace="~{layouts/main-layout :: main-fragment( ~{::title},
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
     <th:block id="staticJS">
         <script src="/js/ajax/information.js"></script>
+        <script src="/js/about.js"></script>
+        <script src="/js/ajax/settings.js"></script>
         <script>
             $('#a-settings').on('click', () => {
                 if(!$('.settings-pills').hasClass('show')){

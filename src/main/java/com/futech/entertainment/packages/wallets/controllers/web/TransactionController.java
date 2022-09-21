@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.wallets.controllers.api;
+package com.futech.entertainment.packages.wallets.controllers.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,22 +11,18 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.futech.entertainment.packages.wallets.modelMappers.TransactionMapper;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.springframework.web.bind.annotation.RequestParam;
 
-
-@RestController
-@RequestMapping(path="/api") 
+@Controller
 public class TransactionController {
     private String title = "Transaction title";
     @Autowired

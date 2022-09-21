@@ -1,5 +1,5 @@
 let interval = setInterval(function(){
-    $.get('/api/getTransaction/'+transactionCode, (response) => {
+    $.get('/getTransaction/'+transactionCode, (response) => {
         let rsp = JSON.parse(response)
         console.log(rsp.status)
         if(rsp.status == 1){

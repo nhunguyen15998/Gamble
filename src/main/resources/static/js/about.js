@@ -38,4 +38,9 @@ function readFile(event){
     }
 }
 
-
+//information
+$('#a-settings').on('click', () => {
+    //active show
+    $('#about-tab').removeClass("active show")
+    $('#settings-tab').addClass("active show")
+})

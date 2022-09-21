@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.users.controllers.web;
+package com.futech.entertainment.packages.games.controllers.web;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;

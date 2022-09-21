@@ -7847,19 +7847,19 @@ select:focus {
   background-color: #fa009f !important;
 }
 
-#bet-modal .modal-content{
+#bet-modal .modal-content, #wheel-quit-modal .modal-content{
   background-color: #3c0651e0 !important;
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
 }
-#bet-modal .modal-header button{
+#bet-modal .modal-header button, #wheel-quit-modal .modal-header button{
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
   background: none !important;
   border: none !important;
 }
-#bet-modal .modal-footer{
+#bet-modal .modal-footer, #wheel-quit-modal .modal-footer{
   border-top: none !important;
 }
-#bet-modal .modal-footer button{
+#bet-modal .modal-footer button, #wheel-quit-modal .modal-footer button{
   background: #7a3196b5 !important; 
   color: #fff;
 }

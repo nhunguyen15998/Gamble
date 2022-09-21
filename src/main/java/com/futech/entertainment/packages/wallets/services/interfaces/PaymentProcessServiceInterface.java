@@ -11,7 +11,7 @@ import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBitcoinMap
 import com.google.gson.JsonObject;
 
 public interface PaymentProcessServiceInterface {
-    public JsonObject depositProcess(DepositMapper depositMapper, HttpServletRequest req);
+    public Map<String, Object> depositProcess(DepositMapper depositMapper, HttpServletRequest req);
     public JsonObject returnDepositResult(HttpServletRequest req, Integer depositMethod);
     public JsonObject regenerateBitcoin(String transactionCode);
 

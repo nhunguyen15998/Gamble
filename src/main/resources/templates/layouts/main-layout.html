@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.min.js"></script>
@@ -49,6 +49,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal" tabindex="-1" role="dialog" id="bet-modal" aria-modal="true" style="top: 250px;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -62,7 +63,27 @@
                     <p>Please make your bet first!</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn" data-dismiss="modal">OK</button>
+                    <button type="button" class="btn" data-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="wheel-quit-modal" aria-modal="true" style="top: 250px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Quit Game</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div>
+                    <p>Are you sure to quit game right now?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn mr-2">Yes</button>
+                    <button type="button" class="btn" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>

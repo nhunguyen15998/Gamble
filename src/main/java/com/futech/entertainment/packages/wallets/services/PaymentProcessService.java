@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.futech.entertainment.packages.payments.services.interfaces.MomoServiceInterface;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
@@ -52,8 +52,8 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
     private UserServiceInterface userServiceInterface;
 
     @Transactional
-    public JsonObject depositProcess(DepositMapper depositMapper, HttpServletRequest req){
-        JsonObject obj = new JsonObject();
+    public Map<String, Object> depositProcess(DepositMapper depositMapper, HttpServletRequest req){
+        Map<String, Object> obj = new HashMap<String, Object>();
         try {
             var method = depositMapper.getMethod();
             var deposit = depositMapper.getAmount();
@@ -76,8 +76,8 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                     switch(method){
                         case PaymentHelpers.VNPAY:
                             if(dp < 10000 || dp > 10000000){
-                                obj.addProperty("code", 400);
-                                obj.addProperty("amount", "Invalid amount");
+                                obj.put("code", 400);
+                                obj.put("amount", "Invalid amount");
                                 return obj;
                             }
                             transaction.setexchange_rate(vndExchangeRate);
@@ -89,13 +89,13 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                                 req.setAttribute("transactionCode", VNPayTransaction.getCode());
                                 req.setAttribute("amount", VNPayTransaction.getAmount());
                                 obj = this.vnpayServiceInterface.doPost(req);
-                                obj.addProperty("code", 200);
+                                obj.put("code", 200);
                             }
                             break;
                         case PaymentHelpers.MOMO:
                             if(dp < 1000 || dp > 50000000){
-                                obj.addProperty("code", 400);
-                                obj.addProperty("amount", "Invalid amount");
+                                obj.put("code", 400);
+                                obj.put("amount", "Invalid amount");
                                 return obj;
                             }
                             transaction.setexchange_rate(vndExchangeRate);
@@ -106,13 +106,13 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                                 req.setAttribute("transactionCode", transactionCode);
                                 req.setAttribute("amount", Double.parseDouble(deposit));
                                 obj = this.momoServiceInterface.doPost(req);
-                                obj.addProperty("transactionCode", transactionCode);
+                                obj.put("transactionCode", transactionCode);
                             }
                             break;
                         case PaymentHelpers.BITCOIN:
                             if(dp < 0.0001 || dp > 10){
-                                obj.addProperty("code", 400);
-                                obj.addProperty("amount", "Invalid amount");
+                                obj.put("code", 400);
+                                obj.put("amount", "Invalid amount");
                                 return obj;
                             }
                             var bitcoinExchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "BITCOIN", "rate").getAsString());
@@ -122,23 +122,23 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                             var bcaddress = "abc123";//bitcoinServiceInterface.getAddress(transactionCode);
                             transaction.setBcaddress(bcaddress);
                             var bitcoinTransaction = this.transactionServiceInterface.createTransaction(transaction);
-                            obj.addProperty("code", 200);
-                            obj.addProperty("transactionCode", bitcoinTransaction.getCode());
-                            obj.addProperty("bcaddress", bcaddress);
-                            obj.addProperty("data", "http://localhost:9090/user/my-wallet/deposit/bitcoin");
+                            obj.put("code", 200);
+                            obj.put("transactionCode", bitcoinTransaction.getCode());
+                            obj.put("bcaddress", bcaddress);
+                            obj.put("data", "http://localhost:9090/user/my-wallet/deposit/bitcoin");
                             break;
                         case PaymentHelpers.PAYPAL:
                             break;
                     }
                 } else {
-                    obj.addProperty("code", 400);
-                    obj.addProperty("amount", "Invalid format");
+                    obj.put("code", 400);
+                    obj.put("amount", "Invalid format");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            obj.addProperty("code", 500);
-            obj.addProperty("msg", e.getMessage());
+            obj.put("code", 500);
+            obj.put("msg", e.getMessage());
         }
         return obj;
     }
@@ -204,7 +204,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             var amount = Double.parseDouble(withdrawBankMapper.getBank_amount());
             if(amount <= 0){
                 obj.put("code", 400);
-                obj.put("message", "Invalid amount");  
+                obj.put("amount", "Invalid amount");  
                 return obj;
             }
             //check if amount <= userwallet
@@ -366,7 +366,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             var amount = Double.parseDouble(transferMapper.getAmount());
             if(amount <= 0){
                 obj.put("code", 400);
-                obj.put("message", "Invalid amount");  
+                obj.put("amount", "Invalid amount");  
                 return obj;
             }
             //check if amount <= userwallet

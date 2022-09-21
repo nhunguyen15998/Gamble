@@ -2,7 +2,6 @@ package com.futech.entertainment.packages.users.repositories;
 
 import com.futech.entertainment.packages.users.repositories.interfaces.UserRepositoryInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

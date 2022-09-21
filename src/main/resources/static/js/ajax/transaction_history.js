@@ -1,5 +1,5 @@
 $('#pills-transaction-tab').on('click', () => {
-    $.get('/api/users/transactions', (response) => {
+    $.get('/users/transactions', (response) => {
         console.log(response)
         let i = 1
         response.forEach(element => {

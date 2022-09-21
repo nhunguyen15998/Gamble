@@ -1,7 +1,7 @@
 //click about tab
 $('#btn-about').on('click', () => {
     $.ajax({
-        url: 'http://localhost:9090/api/getUser',
+        url: '/getUser',
         type: 'get',
         success: function(response){
             $('input[name="id"]').val(response.id)
@@ -45,7 +45,7 @@ $('#btn-profile-save').on('click', () => {
         "gender": $('input[name="gender"]:checked').val()
     }
     $.ajax({
-        url: 'http://localhost:9090/api/updateUser',
+        url: '/updateUser',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
@@ -63,11 +63,10 @@ $('#btn-profile-save').on('click', () => {
         },
         error: function(data){
             console.log(data)
-            if(data.responseJSON != null){
-                $('#first_name_err').text(data.responseJSON.first_name ?? "")
-                $('#last_name_err').text(data.responseJSON.last_name ?? "")
-                $('#email_err').text(data.responseJSON.email ?? "")
-            } else {
+            data.responseJSON.errors.forEach(err => {
+                $(`#${err.field}_err`).text(err.defaultMessage ?? "")
+            })
+            if(data.responseJSON == null){  
                 let alert = `<div class="alert alert-danger mb-5" role="alert">
                                 Whoops! Something went wrong!
                             </div>`
@@ -94,7 +93,7 @@ function uploadModal(){
     var formData = new FormData()
     formData.append('photo', file)
     $.ajax({
-        url: 'http://localhost:9090/api/changeProfilePhoto',
+        url: '/changeProfilePhoto',
         type: 'post',
         data: formData,
         enctype: 'multipart/form-data',

@@ -1,9 +1,9 @@
-package com.futech.entertainment.packages.users.services.interfaces;
+package com.futech.entertainment.packages.settings.services.interfaces;
 
 import java.util.Map;
 
 import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInterface;
-import com.futech.entertainment.packages.users.models.Config;
+import com.futech.entertainment.packages.settings.models.Config;
 import com.google.gson.JsonElement;
 
 public interface ConfigServiceInterface extends BaseServiceInterface<Config>{

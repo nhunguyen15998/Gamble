@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.users.models;
+package com.futech.entertainment.packages.settings.models;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 

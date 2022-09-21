@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.wallets.models.Transaction;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
@@ -37,8 +37,8 @@ public class VNPayService implements VNPayServiceInterface{
     @Autowired
     private ConfigServiceInterface configServiceInterface;
 
-    public JsonObject doPost(HttpServletRequest req) throws ServletException, IOException {
-        JsonObject job = new JsonObject();
+    public Map<String, Object> doPost(HttpServletRequest req) throws ServletException, IOException {
+        Map<String, Object> job = new HashMap<String, Object>();
         try {
             Map<String, String> vnp_Params = new HashMap<String, String>();
             //REQUIRED - amount, code, language, bankcode
@@ -107,13 +107,13 @@ public class VNPayService implements VNPayServiceInterface{
             String queryUrl = query.toString();
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = PaymentHelpers.vnp_PayUrl + "?" + queryUrl;
-            job.addProperty("code", "200");
-            job.addProperty("message", "success");
-            job.addProperty("data", paymentUrl);
+            job.put("code", "200");
+            job.put("message", "success");
+            job.put("data", paymentUrl);
         } catch (Exception e) {
-            job.addProperty("code", "500");
-            job.addProperty("message", e.getMessage());
-            job.addProperty("data", "");
+            job.put("code", "500");
+            job.put("message", e.getMessage());
+            job.put("data", "");
         }
         return job;
     }

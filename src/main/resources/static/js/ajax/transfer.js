@@ -1,4 +1,6 @@
+$('#btn-transfer-request').prop('disabled', false)
 $('#btn-transfer-request').on('click', () => {
+    $('#btn-transfer-request').prop('disabled', true)
     let div = document.createElement('div')
     let target = document.querySelector('#div-transfer')
     let data = {
@@ -6,16 +8,15 @@ $('#btn-transfer-request').on('click', () => {
         "amount": $('input[name="transfer_amount"]').val(),
         "notes": $('input[name="transfer_notes"]').val(),
     }
-    console.log(data)
+    $('#transfer_phone_err').text("")
+    $('#transfer_amount_err').text("")
     $.ajax({
-        url: 'http://localhost:9090/api/transferProccess',
+        url: '/transferProccess',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            $('#transfer-phone-err').text("")
-            $('#transfer-amount-err').text("")
             if(response.code == 200){
                 console.log(response.msg)
                 let alert = `<div class="alert alert-success mb-4" role="alert">
@@ -31,18 +32,25 @@ $('#btn-transfer-request').on('click', () => {
                 receiverName = 'ABC'
                 $('.btn-transfer').closest('.row').children(".div-found").remove()
             } else {
-                $('#transfer-amount-err').text(response.amount ?? "")
-                $('#transfer-phone-err').text(response.phone ?? "")
+                $('#transfer_amount_err').text(response.amount ?? "")
+                $('#transfer_amount_err').text(response.amount ?? "")
+                $('#transfer_phone_err').text(response.phone ?? "")
             }
+            $('#btn-transfer-request').prop('disabled', false)
         },
         error: function(data){
-                console.log(data)
-                if(data.responseJSON != null){
-                    $('#transfer-phone-err').text(data.responseJSON.phone ?? "")
-                    $('#transfer-amount-err').text(data.responseJSON.amount ?? "")
-                } else {
-
-                }
+            console.log(data)
+            data.responseJSON.errors.forEach(err => {
+                $(`#transfer_${err.field}_err`).text(err.defaultMessage ?? "")
+            })
+            if(data.responseJSON == null){  
+                let alert = `<div class="alert alert-danger mb-5" role="alert">
+                                Whoops! Something went wrong!
+                            </div>`
+                div.innerHTML += alert
+                target.parentNode.insertBefore(div, target)
+            }
+            $('#btn-transfer-request').prop('disabled', false)
         }
     })
 })
@@ -50,12 +58,12 @@ $('#btn-transfer-request').on('click', () => {
 //search by phone
 let receiverName = 'ABC'
 $('input[name="transfer_phone"]').on('input', () => {
-    $('#transfer-phone-err').text("")
+    $('#transfer_phone_err').text("")
     $('.btn-transfer').closest('.row').children(".div-found").remove()
     let phone = $('input[name="transfer_phone"]').val()
     if(phone == "") return
     if(phone.match("^[0][3|5|7|8|9][0-9]{8}$")){
-        $.get('/api/getUserByPhone', {"phone":phone}, (response) => {
+        $.get('/getUserByPhone', {"phone":phone}, (response) => {
             receiverName = `${response.first_name} ${response.last_name}`
             let found = `<div class="align-items-center col-6 d-flex div-found">
                             <small>Found:</small>
@@ -67,7 +75,7 @@ $('input[name="transfer_phone"]').on('input', () => {
                         </div>`
             $(found).insertBefore('.btn-transfer')
         }).fail(() => {
-            $('#transfer-phone-err').text("Not found")
+            $('#transfer_phone_err').text("Not found")
         })
     }
 })

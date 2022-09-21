@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.wallets.models.Transaction;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;

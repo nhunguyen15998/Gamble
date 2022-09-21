@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.users.services;
+package com.futech.entertainment.packages.settings.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
-import com.futech.entertainment.packages.users.models.Config;
-import com.futech.entertainment.packages.users.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.models.Config;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,4 +44,16 @@ public class ConfigService extends BaseService<Config> implements ConfigServiceI
             return null;
         }
     }
+
+    //save client configs
+    public boolean updateClientConfigs(){
+        try {
+            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

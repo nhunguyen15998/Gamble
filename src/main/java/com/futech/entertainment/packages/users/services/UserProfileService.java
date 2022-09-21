@@ -3,6 +3,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,11 +12,30 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.Helpers;
+import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
+import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 
 @Service
 public class UserProfileService extends BaseService<UserProfile> implements UserProfileServiceInterface{
+
+    //crud
+    public UserProfile createUserProfile(User user, SignUpMapper signUpMapper){
+        try {
+            UserProfile userProfile = new UserProfile();
+            userProfile.setUserId(user.getId());
+            userProfile.setFirstName(signUpMapper.getfirst_name());
+            userProfile.setLastName(signUpMapper.getlast_name());
+            userProfile.setThumbnail("/images/defaults/no-user.jpeg");
+            userProfile.setBirth(LocalDate.parse("1998-02-10"));
+            userProfile.setGender(Helpers.MALE);
+            return this.create(userProfile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public boolean updateUserProfile(UserProfile userProfile){
         try {
@@ -25,6 +45,7 @@ public class UserProfileService extends BaseService<UserProfile> implements User
             return false;
         }
     }
+    //end crud
 
     public Map<String, Object> updateProfilePhoto(MultipartFile photo, int userProfileId, String userId){
         Map<String, Object> obj = new HashMap<String,Object>();

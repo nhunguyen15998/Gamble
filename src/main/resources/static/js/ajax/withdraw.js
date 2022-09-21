@@ -1,4 +1,6 @@
+$('#btn-bank-request').prop('disabled', false)
 $('#btn-bank-request').on('click', () => {
+    $('#btn-bank-request').prop('disabled', true)
     let div = document.createElement('div')
     let target = document.querySelector('#withdraw-bank div')
     let data = {
@@ -8,19 +10,18 @@ $('#btn-bank-request').on('click', () => {
         "bank_amount": $('input[name="bank_amount"]').val(),
         "notes": $('input[name="notes"]').val()
     }
-    console.log(data)
+    $('#withdraw_account_name_err').text("")
+    $('#withdraw_account_number_err').text("")
+    $('#withdraw_bank_err').text("")
+    $('#withdraw_bank_amount_err').text("")
     $.ajax({
-        url: 'http://localhost:9090/api/withdrawBankProccess',
+        url: '/withdrawBankProccess',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             console.log(response)
-            $('#withdraw-account-name-err').text("")
-            $('#withdraw-account-number-err').text("")
-            $('#withdraw-bank-err').text("")
-            $('#withdraw-bank-amount-err').text("")
             if(response.code == 200){
                 console.log(response.msg)
                 let alert = `<div class="alert alert-success mb-4" role="alert">
@@ -36,19 +37,23 @@ $('#btn-bank-request').on('click', () => {
                 $('input[name="bank_amount"]').val("")
                 $('input[name="notes"]').val("")
             } else {
-                $('#withdraw-bank-amount-err').text(response.amount ?? "")
+                $('#withdraw_bank_amount_err').text(response.amount ?? "")
             }
+            $('#btn-bank-request').prop('disabled', false)
         }, 
         error: function(data){
             console.log(data)
-            if(data.responseJSON != null){
-                $('#withdraw-account-name-err').text(data.responseJSON.account_name ?? "")
-                $('#withdraw-account-number-err').text(data.responseJSON.account_number ?? "")
-                $('#withdraw-bank-err').text(data.responseJSON.bank ?? "")
-                $('#withdraw-bank-amount-err').text(data.responseJSON.bank_amount ?? "")
-            } else {
-
+            data.responseJSON.errors.forEach(err => {
+                $(`#withdraw_${err.field}_err`).text(err.defaultMessage ?? "")
+            })
+            if(data.responseJSON == null){  
+                let alert = `<div class="alert alert-danger mb-5" role="alert">
+                                Whoops! Something went wrong!
+                            </div>`
+                div.innerHTML += alert
+                target.parentNode.insertBefore(div, target)
             }
+            $('#btn-bank-request').prop('disabled', false)
         }
     })
 })
@@ -89,14 +94,16 @@ $('#withdraw-bitcoin-tab').on('click', () => {
 let transactionCode = ""
 let bcaddress = ""
 $('#btn-bitcoin-address').on('click', () => {
-    $.get('/api/generateBCAddress', (response) => {
+    $.get('/generateBCAddress', (response) => {
         let rsp = JSON.parse(response)
         transactionCode = rsp.transactionCode
         bcaddress = rsp.bcaddress
         $('input[name="bitcoin_address"]').val(rsp.bcaddress)
     })
 })
+$('#btn-bitcoin-request').prop('disabled', false)
 $('#btn-bitcoin-request').on('click', () => {
+    $('#btn-bitcoin-request').prop('disabled', true)
     let div = document.createElement('div')
     let target = document.querySelector('#withdraw-bitcoin div')
     let data = {
@@ -104,15 +111,15 @@ $('#btn-bitcoin-request').on('click', () => {
         "transaction_code": transactionCode,
         "bcaddress": bcaddress
     }
+    $('#withdraw_bcaddress_err').text("")
+    $('#withdraw_bitcoin_amount_err').text("")
     $.ajax({
-        url: 'http://localhost:9090/api/withdrawBitcoinProccess',
+        url: '/withdrawBitcoinProccess',
         type: 'post',
         data: JSON.stringify(data),
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            $('#withdraw-bitcoin-address-err').text("")
-            $('#withdraw-bitcoin-amount-err').text("")
             if(response.code == 200){
                 let alert = `<div class="alert alert-success mb-4" role="alert">
                             ${response.msg}
@@ -125,17 +132,23 @@ $('#btn-bitcoin-request').on('click', () => {
                 $('input[name="bitcoin_address"]').val("")
                 $('input[name="bitcoin_amount"]').val("")
             } else {
-                $('#withdraw-bitcoin-amount-err').text(response.bitcoin_amount ?? "")
+                $('#withdraw_bitcoin_amount_err').text(response.bitcoin_amount ?? "")
             }
+            $('#btn-bitcoin-request').prop('disabled', false)
         }, 
         error: function(data){
             console.log(data)
-            if(data.responseJSON != null){
-                $('#withdraw-bitcoin-address-err').text(data.responseJSON.bcaddress ?? "")
-                $('#withdraw-bitcoin-amount-err').text(data.responseJSON.bitcoin_amount ?? "")
-            } else {
-
+            data.responseJSON.errors.forEach(err => {
+                $(`#withdraw_${err.field}_err`).text(err.defaultMessage ?? "")
+            })
+            if(data.responseJSON == null){  
+                let alert = `<div class="alert alert-danger mb-5" role="alert">
+                                Whoops! Something went wrong!
+                            </div>`
+                div.innerHTML += alert
+                target.parentNode.insertBefore(div, target)
             }
+            $('#btn-bitcoin-request').prop('disabled', false)
         }
     })
 })
