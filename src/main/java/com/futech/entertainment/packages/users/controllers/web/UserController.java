@@ -1,7 +1,6 @@
 package com.futech.entertainment.packages.users.controllers.web;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
-import com.futech.entertainment.packages.users.models.User;
-import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 
@@ -81,34 +78,25 @@ public class UserController {
 
     @PostMapping("/updateUser")
     public ResponseEntity<Map<String, Object>> updateUser(@Valid @RequestBody UserProfileMapper userProfileMapper, HttpSession session) {
+        Map<String, Object> items = new HashMap<String,Object>();
         try {
-            User user = new User();
-            user.setId(userProfileMapper.getId());
-            user.setEmail(userProfileMapper.getEmail());
-            var updatedUser = this.userServiceInterface.updateUser(user);
+            var dbUserId = Integer.parseInt(session.getAttribute("user_id").toString());
+            var dbUserProfileId = Integer.parseInt(session.getAttribute("user_profile_id").toString());
+            userProfileMapper.setId(dbUserProfileId);
+            userProfileMapper.setuser_id(dbUserId);
+            var updated = this.userServiceInterface.updateUserUserProfile(userProfileMapper);
 
-            UserProfile userProfile = new UserProfile();
-            userProfile.setId(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
-            userProfile.setUserId(Integer.parseInt(session.getAttribute("user_id").toString()));
-            userProfile.setFirstName(userProfileMapper.getfirst_name());
-            userProfile.setLastName(userProfileMapper.getlast_name());
-            userProfile.setBirth(LocalDate.parse(userProfileMapper.getBirth()));
-            userProfile.setGender(userProfileMapper.getGender());
-            var updatedUserProfile = this.userProfileService.updateUserProfile(userProfile);
-
-            Map<String, Object> item = new HashMap<String,Object>();
-            if(updatedUser && updatedUserProfile){
+            if(updated){
                 //reset session
                 session.setAttribute("firstName", userProfileMapper.getfirst_name());
                 session.setAttribute("lastName", userProfileMapper.getlast_name());
-                item.put("name", userProfileMapper.getfirst_name()+" "+userProfileMapper.getlast_name());
-                return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+                items.put("name", userProfileMapper.getfirst_name()+" "+userProfileMapper.getlast_name());
+                return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
             }
-            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.NOT_MODIFIED);
+            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.NOT_MODIFIED);
         } catch (Exception e) {
-            Map<String, Object> err = new HashMap<String,Object>();
-            err.put("message", e.getMessage());
-            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+            items.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.BAD_REQUEST);
         }
     }
 

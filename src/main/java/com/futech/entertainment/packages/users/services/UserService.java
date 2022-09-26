@@ -1,5 +1,6 @@
 package com.futech.entertainment.packages.users.services;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -23,7 +24,11 @@ import com.futech.entertainment.packages.core.services.interfaces.EmailServiceIn
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
+import com.futech.entertainment.packages.settings.models.UserConfig;
+import com.futech.entertainment.packages.settings.services.interfaces.UserConfigServiceInterface;
+import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
@@ -40,11 +45,13 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserProfileServiceInterface userProfileService;
+    private UserProfileServiceInterface userProfileServiceInterface;
     @Autowired
     private UserWalletServiceInterface userWalletServiceInterface;
     @Autowired
     private UserTokenServiceInterface userTokenServiceInterface;
+    @Autowired
+    private UserConfigServiceInterface userConfigServiceInterface;
 
     private final String SECRET_KEY = "UPXO0fc4DuyN2CgfR0aKbgeIT0Ntpf9sjglIc2aO";
 
@@ -53,7 +60,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             String activateCode = Helpers.randomStringWithLength(10);
             User user = this.createUser(signUpMapper, activateCode);
             if(user != null){
-                UserProfile userProfile = this.userProfileService.createUserProfile(user, signUpMapper);
+                UserProfile userProfile = this.userProfileServiceInterface.createUserProfile(user, signUpMapper);
                 if(userProfile != null){
                     boolean sent = this.emailServiceInterface.sendMailWithAttachment(new EmailDetails(
                         signUpMapper.getEmail(),
@@ -82,21 +89,30 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             var user = this.getFirstBy(null, conditions, null);
             if(user != null){
                 if(Integer.parseInt(user.get("status").toString()) == Helpers.DEACTIVATED){
-                    
+                    var userId = Integer.parseInt(user.get("id").toString());
+
                     User updatedUser = new User();
-                    updatedUser.setId(Integer.parseInt(user.get("id").toString()));
+                    updatedUser.setId(userId);
                     updatedUser.setStatus(Helpers.ACTIVATED);
                     updatedUser.setactivate_code("");
                     this.update(updatedUser);
 
                     //create user wallet
                     UserWallet userWallet = new UserWallet();
-                    userWallet.setuser_id(Integer.parseInt(user.get("id").toString()));
+                    userWallet.setuser_id(userId);
                     userWallet.setcur_amount(0.0);
                     userWallet.setpre_amount(0.0);
                     userWallet.setcreated_at(LocalDateTime.now());
                     userWallet.setStatus(0);
                     this.userWalletServiceInterface.create(userWallet);
+
+                    //create user default configs
+                    UserConfig userConfig = new UserConfig();
+                    userConfig.setuser_id(userId);
+                    userConfig.setconfig_string(ConfigHelpers.USER_DEFAULT_GENERAL_CONFIGS);
+                    userConfig.setType(ConfigHelpers.TYPE_USER_GENERAL_SETTINGS);
+                    this.userConfigServiceInterface.createClientConfigs(userConfig);
+
                     obj.put("code", 200);
                 } else {
                     obj.put("code", 400);
@@ -118,6 +134,8 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             List<JoinCondition> joins = new ArrayList<JoinCondition>();
             joins.add(JoinCondition.getInstance("join", "user_profiles", 
                         DataMapper.getInstance("", "users.id", "=", "user_profiles.user_id", "")));
+            joins.add(JoinCondition.getInstance("join", "user_configs", 
+                        DataMapper.getInstance("", "users.id", "=", "user_configs.user_id", "")));
             return this.getFirstBy(selects, conditions, joins);
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,14 +188,70 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             return false;
         }
     }
+
+    public boolean updateUserUserProfile(UserProfileMapper userProfileMapper){
+        try {
+            User user = new User();
+            user.setId(userProfileMapper.getuser_id());
+            user.setEmail(userProfileMapper.getEmail());
+            var updatedUser = this.update(user);
+
+            UserProfile userProfile = new UserProfile();
+            userProfile.setId(userProfileMapper.getId());
+            userProfile.setUserId(userProfileMapper.getuser_id());
+            userProfile.setFirstName(userProfileMapper.getfirst_name());
+            userProfile.setLastName(userProfileMapper.getlast_name());
+            userProfile.setBirth(LocalDate.parse(userProfileMapper.getBirth()));
+            userProfile.setGender(userProfileMapper.getGender());
+            var updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
+
+            if(updatedUser && updatedUserProfile){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //end crud
+
+    //verify password
+    public Map<String, Object> verifyPassword(String password, String phone){
+        Map<String, Object> obj = new HashMap<String, Object>();
+        try {
+            String[] selects = {"users.hash_password"};
+            var user = this.getUserByPhone(selects, phone);
+            if(user == null){
+                obj.put("code", 404);
+                obj.put("message", "Not found");
+                return obj;
+            }
+            System.out.println(password);
+            if(password.isBlank()){
+                obj.put("code", 400);
+                obj.put("message", "Password is required");
+                return obj;
+            }
+            if(!passwordEncoder.matches(password, user.get("hash_password").toString())){
+                obj.put("code", 400);
+                obj.put("message", "Invalid password");
+                return obj;
+            }
+            obj.put("code", 200);
+            obj.put("message", "OK");
+        } catch (Exception e) {
+            obj.put("code", 500);
+            obj.put("message", e.getMessage());
+        }
+        return obj;
+    }
 
     //authentication with token
     public Map<String, Object> authenticate(Map<String, Object> user){
         Map<String, Object> results = new HashMap<String, Object>();
         try {
             if(user == null){
-                results.put("code", 500);
+                results.put("code", 400);
                 results.put("msg", "Invalid user");
                 return results;
             }
@@ -208,7 +282,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
 
     public String verifyToken(Map<String, String> headers){
         try {
-            var token = headers.get("authorization");
+            var token = headers.get("auth");
             if(token == null || token.trim() == ""){
                 return null;
             }

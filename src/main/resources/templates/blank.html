@@ -7,7 +7,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
                                           ~{:: #slider},
                                           ~{:: #main-content},  
                                           ~{::footer},
-                                          ~{::staticJS}
+                                          ~{::#staticJS}
                                          )}">
 <head>
     <meta charset="UTF-8">
@@ -31,7 +31,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
     </div>
     
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
-    <th:block id="static-js">
+    <th:block id="staticJs">
 
     </th:block>
 </body>

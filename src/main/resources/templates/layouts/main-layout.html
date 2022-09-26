@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="wheel-quit-modal" aria-modal="true" style="top: 250px;">
+    <div class="modal" tabindex="-1" role="dialog" id="quit-game-modal" aria-modal="true" style="top: 250px;">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -88,6 +88,33 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="require-password-modal" aria-modal="true" style="top: 250px;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Password Verification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div>
+                    <p>Please fill in your password first</p>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <input type="password" class="input-field" name="require_password" placeholder="Password">
+                        <small class="text-danger" style="margin-left: 30px;" id="require-password-error"></small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" style="background-color: #fa009f;" class="btn mr-2 text-white" id="btn-require-password">Submit</button>
+                    <button type="button" style="background-color: #54068f;" class="btn text-white" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- end modal -->
     <header th:replace="${header} ?: ~{}">
         <h2>Default header</h2>

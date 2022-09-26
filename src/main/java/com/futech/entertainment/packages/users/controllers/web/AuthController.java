@@ -2,6 +2,7 @@ package com.futech.entertainment.packages.users.controllers.web;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,7 +110,7 @@ public class AuthController {
                               RedirectAttributes redirAttrs, Model model, HttpSession session){
         try {
             var phone = signInMapper.getPhone();
-            String[] selects = {"users.id as user_id, users.*, "+
+            String[] selects = {"users.id as user_id, users.*, "+"user_configs.id as user_config_id, user_configs.user_id, user_configs.type, user_configs.config_string,"+
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
             "user_profiles.birth, user_profiles.gender"};
             var user = this.userServiceInterface.getUserByPhone(selects, phone);
@@ -127,6 +129,8 @@ public class AuthController {
                         session.setAttribute("user_profile_id", user.get("user_profile_id"));
                         var date = user.get("created_at").toString().substring(0, 10);
                         session.setAttribute("createdAt", date);
+                        session.setAttribute("user_config_id", user.get("user_config_id"));
+                        session.setAttribute("user_config_string", user.get("config_string"));
                         return "redirect:/";
                     }
                 }

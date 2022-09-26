@@ -10,10 +10,10 @@
   <body>
     <main class="tab-pane fade" id="settings-tab" role="tabpanel">
       <div class="main-box">
-        <div class="d-flex header-area justify-content-between mb-5">
+        <div class="d-flex header-area justify-content-between mb-4">
           <h4 class="mb-0">Settings</h4>
         </div>
-        <div class="d-flex flex-column justify-content-between">
+        <div class="d-flex flex-column justify-content-between" id="setting-area">
           <div class="mb-3">
             <div class="custom-switch d-flex">
               <input type="checkbox" class="custom-control-input" id="change-password-switch">
@@ -30,6 +30,12 @@
             <div class="custom-switch d-flex">
               <input type="checkbox" class="custom-control-input" id="transfer-password-switch">
               <label class="custom-control-label" for="transfer-password-switch">Require fill in current password whenever performing transfer action?</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <div class="custom-switch d-flex">
+              <input type="checkbox" class="custom-control-input" id="setting-password-switch">
+              <label class="custom-control-label" for="setting-password-switch">Require fill in current password whenever updating setting?</label>
             </div>
           </div>
 

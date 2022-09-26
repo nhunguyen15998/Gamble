@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.core.validations;
+package com.futech.entertainment.packages.core.middlewares.validations;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +10,9 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.NotExisted;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
-import com.futech.entertainment.packages.core.validations.interfaces.NotExisted;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 
 public class IsNotExistedUser implements ConstraintValidator<NotExisted, String>  {

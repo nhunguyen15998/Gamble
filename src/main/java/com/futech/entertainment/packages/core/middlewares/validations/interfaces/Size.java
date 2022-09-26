@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.core.validations.interfaces;
+package com.futech.entertainment.packages.core.middlewares.validations.interfaces;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.futech.entertainment.packages.core.validations.FormatSize;
+import com.futech.entertainment.packages.core.middlewares.validations.FormatSize;
 
 @Documented
 @Constraint(validatedBy = { FormatSize.class })

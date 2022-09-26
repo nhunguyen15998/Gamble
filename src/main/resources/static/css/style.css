@@ -7842,24 +7842,41 @@ select:focus {
   background: transparent;
 }
 
+/* game page */
+.breadcrumb-area.games {
+  background: url(../images/defaults/games.png);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  height: 590px;
+  padding: 0px;
+}
+.game-play-section.game-play-section2 {
+  background: url(../images/defaults/game-play-bg-2.jpeg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* end game page */
+
 /* pills - information.html */
 #settings-menu .nav-link.active, .nav-pills .show>.nav-link {
   background-color: #fa009f !important;
 }
 
-#bet-modal .modal-content, #wheel-quit-modal .modal-content{
+#bet-modal .modal-content, #quit-game-modal .modal-content{
   background-color: #3c0651e0 !important;
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
 }
-#bet-modal .modal-header button, #wheel-quit-modal .modal-header button{
+#bet-modal .modal-header button, #quit-game-modal .modal-header button{
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
   background: none !important;
   border: none !important;
 }
-#bet-modal .modal-footer, #wheel-quit-modal .modal-footer{
+#bet-modal .modal-footer, #quit-game-modal .modal-footer{
   border-top: none !important;
 }
-#bet-modal .modal-footer button, #wheel-quit-modal .modal-footer button{
+#bet-modal .modal-footer button, #quit-game-modal .modal-footer button{
   background: #7a3196b5 !important; 
   color: #fff;
 }

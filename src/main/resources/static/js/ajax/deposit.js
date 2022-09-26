@@ -53,7 +53,7 @@ $('#btn-proceed-payment').on('click', () => {
 $('#btn-regenerate-code').on('click', () => {
     var transactionCode = window.location.href.split("/")[7]
     $.ajax({
-        url: 'http://localhost:9090/regenerateBitcoin',
+        url: '/regenerateBitcoin',
         type: 'post',
         data: JSON.stringify({
             transactionCode: transactionCode

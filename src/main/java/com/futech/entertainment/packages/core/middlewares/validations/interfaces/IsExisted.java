@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.core.validations.interfaces;
+package com.futech.entertainment.packages.core.middlewares.validations.interfaces;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
@@ -15,15 +15,16 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.futech.entertainment.packages.core.validations.IsMoney;
+import com.futech.entertainment.packages.core.middlewares.validations.IsNotExistedUser;
+import com.futech.entertainment.packages.core.middlewares.validations.IsUserExisted;
 
 @Documented
-@Constraint(validatedBy = { IsMoney.class })
+@Constraint(validatedBy = { IsUserExisted.class })
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-public @interface Money {
+public @interface IsExisted {
 
-	String message() default "Invalid";
+	String message() default "Existed";
 
   	Class<?>[] groups() default { };
 
@@ -33,6 +34,6 @@ public @interface Money {
 	@Retention(RUNTIME)
 	@Documented
 	public @interface List {
-		Money[] value();
+		IsExisted[] value();
 	}
-} 
+}

@@ -45,15 +45,4 @@ public class ConfigService extends BaseService<Config> implements ConfigServiceI
         }
     }
 
-    //save client configs
-    public boolean updateClientConfigs(){
-        try {
-            
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
 }

@@ -40,7 +40,36 @@ function readFile(event){
 
 //information
 $('#a-settings').on('click', () => {
+    if(!$('.settings-pills').hasClass('show')){
+        $('.nav-link').removeClass('active')
+        $('#a-settings').addClass('active')
+        $('#settings-menu').children('a:first-child').addClass('active')
+    } else {
+        $('#a-settings').css('background-color', 'transparent')
+        $('#settings-menu').children('a:first-child').removeClass('active')
+    }
     //active show
     $('#about-tab').removeClass("active show")
     $('#settings-tab').addClass("active show")
+    getClientConfig()
+    //require password
+    SECTION = 1
+    PATH = '/user/configs/updateWithPassword'
+    AREA_ID = '#setting-area'
 })
+
+function getClientConfig(){
+    $.get('/user/configs', (response) => {
+        if(response.code == 200){
+            let config = JSON.parse(response.configs)
+            $('#change-password-switch').prop('checked', config.change_password == 1 ? true : false)
+            $('#withdraw-password-switch').prop('checked', config.withdraw_password == 1 ? true : false)
+            $('#transfer-password-switch').prop('checked', config.transfer_password == 1 ? true : false)
+            $('#setting-password-switch').prop('checked', config.setting_password == 1 ? true : false)
+        } else {
+            console.log(response.message)
+        }
+    }).fail((data) => {
+        console.log(data)
+    })
+}

@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.core.validations;
+package com.futech.entertainment.packages.core.middlewares.validations;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.futech.entertainment.packages.core.validations.interfaces.Money;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Money;
 
 public class IsMoney implements ConstraintValidator<Money, String>  {
 

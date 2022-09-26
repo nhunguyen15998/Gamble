@@ -3,7 +3,7 @@ package com.futech.entertainment.packages.wallets.modelMappers;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.futech.entertainment.packages.core.validations.interfaces.Phone;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Phone;
 
 public class TransferMapper {
     

@@ -39,7 +39,7 @@ th:replace="~{layouts/main-layout :: main-fragment( ~{::title},
                                     <a class="nav-link nav-parent active" id="btn-about" data-toggle="pill" type="button" href="#about-tab" role="tab">About</a>
                                     <a class="nav-link nav-parent" id="a-settings" data-toggle="collapse" href=".settings-pills" role="button">Settings</a>
                                     <div class="nav flex-column nav-pills" id="settings-menu" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link collapse settings-pills" data-toggle="pill" href="#settings-tab" role="tab" style="padding-left: 30px;">General</a>
+                                        <a class="nav-link collapse settings-pills" id="btn-general" data-toggle="pill" href="#settings-tab" role="tab" style="padding-left: 30px;">General</a>
                                         <a class="nav-link collapse settings-pills" data-toggle="pill" href="#privacy-tab" role="tab" style="padding-left: 30px;">Privacy</a>
                                     </div>
                                 </div>
@@ -48,30 +48,21 @@ th:replace="~{layouts/main-layout :: main-fragment( ~{::title},
                     </div>
                     <div class="col-xl-9 col-lg-8 tab-content" id="v-pills-tabContent">
                         <main th:replace="~{/fragments/profile/about :: main}"></main>
-                        <main th:replace="~{/fragments/profile/settings :: main}"></main>
+                        <main th:replace="~{/fragments/profile/user_settings :: main}"></main>
                         <main th:replace="~{/fragments/profile/privacy :: main}"></main>
                     </div>
                 </div>
             </div>
         </section>
-        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/profile/subscribe_area :: section}"></div>
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
     </div>
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
     <th:block id="staticJS">
         <script src="/js/ajax/information.js"></script>
         <script src="/js/about.js"></script>
-        <script src="/js/ajax/settings.js"></script>
+        <script src="/js/ajax/user_settings.js"></script>
+        <script src="/js/require_password.js"></script>
         <script>
-            $('#a-settings').on('click', () => {
-                if(!$('.settings-pills').hasClass('show')){
-                    $('.nav-link').removeClass('active')
-                    $('#a-settings').addClass('active')
-                    $('#settings-menu').children('a:first-child').addClass('active')
-                } else {
-                    $('#a-settings').css('background-color', 'transparent')
-                    $('#settings-menu').children('a:first-child').removeClass('active')
-                }
-            })
             $('.nav-parent').on('click', () => {
                 if(!$('#a-settings').hasClass('active')){
                     $('#a-settings').addClass('collapsed')

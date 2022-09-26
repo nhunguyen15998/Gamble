@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.core.validations.interfaces;
+package com.futech.entertainment.packages.core.middlewares.validations.interfaces;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
@@ -15,14 +15,13 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.futech.entertainment.packages.core.validations.IsNotExistedUser;
-import com.futech.entertainment.packages.core.validations.IsUserExisted;
+import com.futech.entertainment.packages.core.middlewares.validations.IsEmail;
 
 @Documented
-@Constraint(validatedBy = { IsUserExisted.class })
+@Constraint(validatedBy = { IsEmail.class })
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-public @interface IsExisted {
+public @interface Email {
 
 	String message() default "Existed";
 
@@ -34,6 +33,6 @@ public @interface IsExisted {
 	@Retention(RUNTIME)
 	@Documented
 	public @interface List {
-		IsExisted[] value();
+		Email[] value();
 	}
-}
+} 

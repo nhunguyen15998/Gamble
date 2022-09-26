@@ -271,3 +271,26 @@ $(function ($) {
     });
 
 });
+
+/* alert */
+const alertSuccess = 'success'
+const alertDanger = 'danger'
+
+let alertMsg = (msg, type, target, area) => {
+    let settingAlertDiv = document.createElement('div')
+    settingAlertDiv.classList.add(area)
+    let settingTarget = document.querySelector(target)
+    let alert = `<div class="alert alert-${type}" role="alert">
+                    ${msg}
+                </div>`
+    settingAlertDiv.innerHTML += alert
+    settingTarget.parentNode.insertBefore(settingAlertDiv, settingTarget)
+}
+/* end alert */
+/* require password modal */
+let DATA 
+let PATH 
+let AREA_ID 
+let SECTION
+const ALERT_AREA = 'alert-area'
+/* end require password modal */

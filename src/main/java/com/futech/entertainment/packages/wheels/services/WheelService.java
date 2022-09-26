@@ -1,8 +1,6 @@
 package com.futech.entertainment.packages.wheels.services;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -71,7 +69,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
         return obj;
     }
 
-    public Map<String, Object> createGameWheelUserHistory(String betAmount, int userId){
+    public Map<String, Object> createGameWheelUserHistory(String betAmount, int userId, boolean isPartialBet){
         Map<String, Object> obj = new HashMap<String,Object>();
         try {
             if(betAmount == null || betAmount.toString().trim() == ""){
@@ -100,6 +98,12 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                 obj.put("code", 400);
                 obj.put("message", "Bet amount exceeds available amount");
                 return obj;
+            }
+
+            var betamount = Double.parseDouble(betAmount);
+            if(!isPartialBet){
+                bet = userAmount;
+                betamount = userAmount;
             }
 
             //get configs
@@ -133,7 +137,6 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
             }
 
             //create game history
-            var betamount = Double.parseDouble(betAmount);
             var gameHistory = this.gameHistoryServiceInterface.createGameWheelHistory(results);
             if(gameHistory != null){
                 var gameHistoryId = gameHistory.getId();

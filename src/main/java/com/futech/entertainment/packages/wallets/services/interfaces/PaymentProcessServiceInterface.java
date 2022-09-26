@@ -15,7 +15,7 @@ public interface PaymentProcessServiceInterface {
     public JsonObject returnDepositResult(HttpServletRequest req, Integer depositMethod);
     public JsonObject regenerateBitcoin(String transactionCode);
 
-    public Map<String, Object> withdrawBankProccess(WithdrawBankMapper withdrawBankMapper);
-    public Map<String, Object> withdrawBitcoinProccess(WithdrawBitcoinMapper withdrawBitcoinMapper);
-    public Map<String, Object> transferProccess(TransferMapper transferMapper, String phone);
+    public Map<String, Object> withdrawBankProccess(WithdrawBankMapper withdrawBankMapper, int withdrawPassword);
+    public Map<String, Object> withdrawBitcoinProccess(WithdrawBitcoinMapper withdrawBitcoinMapper, int withdrawPassword);
+    public Map<String, Object> transferProccess(TransferMapper transferMapper, String phone, int withdrawPassword);
 }

@@ -1,9 +1,9 @@
-package com.futech.entertainment.packages.core.validations;
+package com.futech.entertainment.packages.core.middlewares.validations;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.futech.entertainment.packages.core.validations.interfaces.Size;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Size;
 
 public class FormatSize implements ConstraintValidator<Size, String>  {
 

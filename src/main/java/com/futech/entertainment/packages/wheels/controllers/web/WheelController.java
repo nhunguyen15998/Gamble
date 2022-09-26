@@ -18,6 +18,8 @@ import com.futech.entertainment.packages.games.services.interfaces.GameServiceIn
 import com.futech.entertainment.packages.games.utils.GameHelpers;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
 import com.futech.entertainment.packages.wheels.services.interfaces.WheelServiceInterface;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Controller
 public class WheelController {
@@ -59,20 +61,23 @@ public class WheelController {
     }
 
     @PostMapping("/wheels/result")
-    public ResponseEntity<Map<String, Object>> returnWheelResults(@RequestParam String betAmount, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> returnWheelResults(@RequestParam String bet, HttpSession session) {
+        Map<String, Object> nums = new HashMap<String,Object>();
         try {
-            Map<String, Object> nums = new HashMap<String,Object>();
             var userId = session.getAttribute("user_id").toString();
-            nums = this.wheelServiceInterface.createGameWheelUserHistory(betAmount, Integer.parseInt(userId));
+            JsonObject jo = JsonParser.parseString(bet).getAsJsonObject();
+            var betAmount = jo.get("betAmount").getAsString();
+            var isPartialBet = jo.get("isPartialBet").getAsBoolean();
+            
+            nums = this.wheelServiceInterface.createGameWheelUserHistory(betAmount, Integer.parseInt(userId), isPartialBet);
             if(Integer.parseInt(nums.get("code").toString()) == 200){
                 var histories = this.wheelServiceInterface.getUserGameWheelHistory(userId);
                 nums.put("histories", histories);
             }
             return new ResponseEntity<Map<String, Object>>(nums, HttpStatus.OK);
         } catch (Exception e) {
-            Map<String, Object> err = new HashMap<String,Object>();
-            err.put("message", e.getMessage());
-            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+            nums.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(nums, HttpStatus.BAD_REQUEST);
         }
     }
 }

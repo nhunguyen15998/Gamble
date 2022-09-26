@@ -387,7 +387,6 @@ async function onLoad(){
     
     let balance = parseFloat(response.balance).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:4})
     $('#wheel-balance').text(balance)
-
 }
 
 async function playAnimation(miliSeconds, target) {
@@ -400,31 +399,38 @@ async function playAnimation(miliSeconds, target) {
 }
 
 let isBet = false
+let isPartialBet = false
 $(document).on('click', '#rotate-button', async function () {
     if (spinning) return
     if(!isBet){
+        document.querySelector('#bet-modal p').innerHTML = 'Please make your bet first!'
         $('#bet-modal').modal('show')
         return
     }
-    $('#rotate-button').addClass('d-none')
-    $('#ov-cv-large').removeClass('d-none')
-    $('#ov-cv-md').removeClass('d-none')
 
-    loadModel(scene, "/models/dancing.fbx")
+    let bet = {
+        "betAmount" : $('input[name="wheel_bet_amount"]').val(),
+        "isPartialBet" : isPartialBet
+    }
 
-    let rotateButton = $('#rotate-wheel')
-    //let arrow = $('#arrow')
-    $(rotateButton).removeClass('animate__animated animate__pulse')
-    //$(arrow).removeClass('d-none')
-
-    let response = await $.post('/wheels/result', {"betAmount": $('input[name="wheel_bet_amount"]').val()}, (rsp) => {
+    let response = await $.post('/wheels/result', {"bet": JSON.stringify(bet)}, (rsp) => {
                         // var response = await rsp
                         return rsp
                     }).fail((data) => {
                         console.log(data)
                     })
-    console.log(response)
     if(response.code == 200){
+        $('#rotate-button').addClass('d-none')
+        $('#ov-cv-large').removeClass('d-none')
+        $('#ov-cv-md').removeClass('d-none')
+
+        loadModel(scene, "/models/dancing.fbx")
+
+        let rotateButton = $('#rotate-wheel')
+        //let arrow = $('#arrow')
+        $(rotateButton).removeClass('animate__animated animate__pulse')
+        //$(arrow).removeClass('d-none')
+        
         const posSM = response.sm
         const textSM = response.small ?? "" 
         await spinsWheel('cv-sm', 'sm-wheel', posSM, 10, 3, slices1)
@@ -460,15 +466,21 @@ $(document).on('click', '#rotate-button', async function () {
         })
         let balance = parseFloat(response.balance).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:4})
         $('#wheel-balance').text(balance)
-        $('input[name="wheel_bet_amount"]').val("")
-        isBet = false
+        //$('input[name="wheel_bet_amount"]').val("")
+        // isBet = false
         $('#ov-cv-large').addClass('d-none')
         $('#ov-cv-md').addClass('d-none')
         $('#rotate-button').removeClass('d-none')
 
         //$(arrow).addClass('d-none')
-
-        loadModel(scene, "/models/happy_idle.fbx")
+        if(response.status == 0){
+            loadModel(scene, "/models/losing.fbx")
+        } else if(response.status == 1){
+            loadModel(scene, "/models/happy_idle.fbx")
+        } else {
+            loadModel(scene, "/models/happy_idle.fbx")
+        }
+        
 
         $('#cv-large').removeClass('animate__animated animate__pulse')
         $('#cv-md').removeClass('animate__animated animate__pulse')
@@ -483,7 +495,10 @@ $(document).on('click', '#rotate-button', async function () {
 
         console.log("End of wheel")
     } else {
-        console.log(response)
+        if(response.code == 400){
+            $('#wheel-bet-amount-err').text("Invalid amount")
+            return
+        }
     }
 })
 
@@ -491,26 +506,48 @@ $(document).on('click', '#rotate-button', async function () {
 $('#btn-wheel-bet').on('click', () => {
     $('#wheel-bet-amount-err').text("")
     let bet = $('input[name="wheel_bet_amount"]').val()
-    //if(bet == null || bet.trim() == "") return
-    $.get('/user/wallet/check-balance', {"bet" : bet}, (response) => {
-        console.log(response)
-        if(response.code == 200){
-            isBet = true
-        } else { 
+    let balance = $('#wheel-balance').text()
+    balance = balance.substring(1, balance.length)
+    if(balance <= 0){
+        document.querySelector('#bet-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
+        $('#bet-modal').modal('show')
+    } else {
+        $.get('/user/wallet/check-balance', {"bet" : bet}, (response) => {
+            console.log(response)
+            if(response.code == 200){
+                isBet = true
+            } else { 
+                isBet = false
+                $('#wheel-bet-amount-err').text(response.amount)
+            }
+        }).fail((data) => {
+            console.log(data)
             isBet = false
-            $('#wheel-bet-amount-err').text(response.amount)
-        }
-    }).fail((data) => {
-        console.log(data)
-        isBet = false
-        $('#wheel-bet-amount-err').text(data.responseText.msg)
-    })
+            $('#wheel-bet-amount-err').text(data.responseText.msg)
+        })
+        isPartialBet = true
+    }
+})
+$('input[name="wheel_bet_amount"]').on('input', () => {
+    isBet = false
+})
+$('#btn-wheel-bet-all').on('click', () => {
+    $('#wheel-bet-amount-err').text("")
+    let balance = $('#wheel-balance').text()
+    balance = balance.substring(1, balance.length)
+    if(balance <= 0){
+        document.querySelector('#bet-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
+        $('#bet-modal').modal('show')
+    } else {
+        $('input[name="wheel_bet_amount"]').val(balance.substring(1, balance.length))
+        isBet = true
+        isPartialBet = false
+    }
 })
 
 //btn-start-wheel-game
 let isPaused = false
 $('#btn-start-wheel-game').on('click', () => {
-    console.log("clickedd")
     $('#main-content').children(".wheel-thumbnail").remove()
     document.querySelector("audio").play()
 })
@@ -531,5 +568,5 @@ $('#wheel-pause-music').on('click', () => {
 
 //wheel-quit-game
 $('#wheel-quit-game').on('click', () => {
-    $('#wheel-quit-modal').modal('show')
+    $('#quit-game-modal').modal('show')
 })

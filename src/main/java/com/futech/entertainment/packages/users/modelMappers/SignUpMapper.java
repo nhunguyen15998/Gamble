@@ -2,10 +2,10 @@ package com.futech.entertainment.packages.users.modelMappers;
 
 import javax.validation.constraints.NotBlank;
 
-import com.futech.entertainment.packages.core.validations.interfaces.Email;
-import com.futech.entertainment.packages.core.validations.interfaces.IsExisted;
-import com.futech.entertainment.packages.core.validations.interfaces.Phone;
-import com.futech.entertainment.packages.core.validations.interfaces.Size;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Email;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.IsExisted;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Phone;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Size;
 
 public class SignUpMapper {
     @NotBlank(message = "First name is required")

@@ -13,7 +13,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE | Home Page</title>
+    <title>Fortune Wheel</title>
 
 
     <th:block id="static-css">
@@ -74,7 +74,7 @@
     </div>
     <div id="main-content" style="position: relative;">
         <div style="position: absolute;z-index: 10;width: 100%;">
-            <audio controls="" hidden="">
+            <audio controls="" hidden="" loop>
                 <source src="/sounds/minigame.mp3" type="audio/mpeg">
             </audio>
             <div class="d-flex justify-content-end position-absolute w-100" style="padding: 40px 50px 0 0;">
@@ -145,8 +145,9 @@
                             <small style="margin-left: 30px;" class="text-danger" id="wheel-bet-amount-err"></small>
                         </div>
                     </div>
-                    <div class="d-flex">
-                        <button id="btn-wheel-bet" type="button" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 6px;width: 100%;">Bet</button>
+                    <div class="d-flex justify-content-between">
+                        <button id="btn-wheel-bet" type="button" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 9px 15px;font-size: 14px;">Partial bet</button>
+                        <button id="btn-wheel-bet-all" type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 9px 15px;font-size: 14px;">Insane bet</button>
                     </div>
                 </div>
             </div>

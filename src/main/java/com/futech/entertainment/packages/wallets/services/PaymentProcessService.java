@@ -17,6 +17,7 @@ import com.futech.entertainment.packages.payments.services.interfaces.MomoServic
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
@@ -191,7 +192,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
 
     //withdraw
     @Transactional
-    public Map<String, Object> withdrawBankProccess(WithdrawBankMapper withdrawBankMapper){
+    public Map<String, Object> withdrawBankProccess(WithdrawBankMapper withdrawBankMapper, int withdrawPassword){
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
             var method = withdrawBankMapper.getMethod();
@@ -237,6 +238,11 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                 obj.put("amount", "Amount exceeds available amount");
                 return obj;
             }
+            if(withdrawPassword == ConfigHelpers.IS_ON){
+                obj.put("code", 406);
+                obj.put("message", "Please fill in your password first");
+                return obj;
+            }
             transaction.setexchange_rate(exchangeRate);
             transaction.setAmount(amount*exchangeRate);
             transaction.setfrom_currency(fromCurrency);
@@ -260,30 +266,30 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             if(updated){
                 obj.put("code", 200);
                 obj.put("wallet", currentAmount);
-                obj.put("msg", "Withdraw successfully! We 'll transfer to you in 24 hours");
+                obj.put("message", "Withdraw successfully! We 'll transfer to you in 24 hours");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            obj.put("msg", e.getMessage());
+            obj.put("message", e.getMessage());
         }
         return obj;
     }
 
     @Transactional
-    public Map<String, Object> withdrawBitcoinProccess(WithdrawBitcoinMapper withdrawBitcoinMapper){
+    public Map<String, Object> withdrawBitcoinProccess(WithdrawBitcoinMapper withdrawBitcoinMapper, int withdrawPassword){
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
             var method = withdrawBitcoinMapper.getMethod();
             var user = withdrawBitcoinMapper.getSender();
             if(!withdrawBitcoinMapper.getBitcoin_amount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
-                obj.put("bitcoin_amount", "Invalid format");
+                obj.put("amount", "Invalid format");
                 return obj;
             }
             var amount = Double.parseDouble(withdrawBitcoinMapper.getBitcoin_amount());
             if(amount <= 0){
                 obj.put("code", 400);
-                obj.put("message", "Invalid amount"); 
+                obj.put("amount", "Invalid amount"); 
                 return obj; 
             }
             //check if amount <= userwallet
@@ -312,7 +318,12 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             var withdrawAmount = amount*exchangeRate;
             if(withdrawAmount > userAmount){
                 obj.put("code", 400);
-                obj.put("bitcoin_amount", "Amount exceeds available amount");
+                obj.put("amount", "Amount exceeds available amount");
+                return obj;
+            }
+            if(withdrawPassword == ConfigHelpers.IS_ON){
+                obj.put("code", 406);
+                obj.put("message", "Please fill in your password first");
                 return obj;
             }
             transaction.setexchange_rate(exchangeRate);
@@ -327,17 +338,17 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             if(updated){
                 obj.put("code", 200);
                 obj.put("wallet", currentAmount);
-                obj.put("msg", "Withdraw successfully! We 'll transfer to you in 24 hours");
+                obj.put("message", "Withdraw successfully! We 'll transfer to you in 24 hours");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            obj.put("msg", e.getMessage());
+            obj.put("message", e.getMessage());
         }
         return obj;
     }
 
     @Transactional
-    public Map<String, Object> transferProccess(TransferMapper transferMapper, String phone){
+    public Map<String, Object> transferProccess(TransferMapper transferMapper, String phone, int withdrawPassword){
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
             var user = transferMapper.getSender();
@@ -380,6 +391,11 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                 obj.put("amount", "Amount exceeds available amount");
                 return obj;
             }
+            if(withdrawPassword == ConfigHelpers.IS_ON){
+                obj.put("code", 406);
+                obj.put("message", "Please fill in your password first");
+                return obj;
+            }
 
             //create transaction
             var transactionCode = Helpers.randomStringWithLength(15);
@@ -419,11 +435,11 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             if(updated && receiverWalletUpdated){
                 obj.put("code", 200);
                 obj.put("wallet", currentAmount);
-                obj.put("msg", "You've successfully transferred your money to ");
+                obj.put("message", "You've successfully transferred your money to ");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            obj.put("msg", e.getMessage());
+            obj.put("message", e.getMessage());
         }
         return obj;
     }

@@ -14,29 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
     @GetMapping("/")
-    public String home(Model model, HttpSession session, HttpServletResponse response){
-        // if(session.getAttribute("phone") != null){
-        //     Cookie firstCookie = new Cookie("ID1", session.getAttribute("phone").toString());
-        //     firstCookie.setMaxAge(7*24*60*60);
-        //     firstCookie.setSecure(true);
-        //     firstCookie.setPath("/");
-        //     firstCookie.setHttpOnly(false);
-        //     Cookie secondCookie = new Cookie("ID2", session.getAttribute("user_id").toString());
-        //     secondCookie.setMaxAge(7*24*60*60);
-        //     secondCookie.setSecure(true);
-        //     secondCookie.setPath("/");
-        //     secondCookie.setHttpOnly(false);
-        //     response.addCookie(firstCookie);
-        //     response.addCookie(secondCookie);
-        // }
-        // try {
-        //     Clip clip = AudioSystem.getClip();
-        //     clip.stop();
-        // } catch (LineUnavailableException e) {
-        //     e.printStackTrace();
-        // }
+    public String homePage(){
         return "home";
     }
+
+    @GetMapping("/games")
+    public String gamePage(){
+        return "games";
+    }
+
+    // @GetMapping("/games")
+    // public String gamePage(){
+    //     return "games";
+    // }
 
     //get success
     @GetMapping("/results/success")

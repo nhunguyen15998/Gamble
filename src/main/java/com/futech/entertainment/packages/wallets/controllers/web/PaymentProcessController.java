@@ -20,6 +20,8 @@ import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
+import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
+import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.wallets.modelMappers.DepositMapper;
 import com.futech.entertainment.packages.wallets.modelMappers.TransferMapper;
 import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBankMapper;
@@ -27,6 +29,7 @@ import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBitcoinMap
 import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProcessServiceInterface;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Controller
 public class PaymentProcessController {
@@ -36,6 +39,8 @@ public class PaymentProcessController {
     private ConfigServiceInterface configServiceInterface;
     @Autowired
     private BitcoinServiceInterface bitcoinServiceInterface;
+    @Autowired
+    private UserServiceInterface userServiceInterface;
 
     //deposit
     @PostMapping("/depositProcess")
@@ -98,25 +103,6 @@ public class PaymentProcessController {
         }
     }   
 
-    //withdraw
-    @PostMapping("/withdrawBankProccess")
-    public ResponseEntity<Map<String, Object>> withdrawBankProccess(@Valid @RequestBody WithdrawBankMapper withdrawBankMapper,  
-                                                        HttpSession session) {
-        Map<String, Object> item = new HashMap<String,Object>();
-        try {
-            var sender = Integer.parseInt(session.getAttribute("user_id").toString());
-            withdrawBankMapper.setSender(sender);
-            withdrawBankMapper.setType(PaymentHelpers.WITHDRAW);
-            withdrawBankMapper.setMethod(PaymentHelpers.BANK);
-            item = this.paymentProcessServiceInterface.withdrawBankProccess(withdrawBankMapper);
-            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
-        } catch (Exception e) {
-            Map<String, Object> err = new HashMap<String,Object>();
-            err.put("message", e.getMessage());
-            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @GetMapping("/generateBCAddress")
     public ResponseEntity<String> generateBCAddress(){
         Gson gson = new Gson();
@@ -133,16 +119,111 @@ public class PaymentProcessController {
         }
     }
 
+    //withdraw
+    @PostMapping("/withdrawBankProccess")
+    public ResponseEntity<Map<String, Object>> withdrawBankProccess(@Valid @RequestBody WithdrawBankMapper withdrawBankMapper,  
+                                                        HttpSession session) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            //check setting
+            var userConfigString = session.getAttribute("user_config_string").toString();
+            var withdrawPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "withdraw_password");
+
+            var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+            withdrawBankMapper.setSender(sender);
+            withdrawBankMapper.setType(PaymentHelpers.WITHDRAW);
+            withdrawBankMapper.setMethod(PaymentHelpers.BANK);
+            item = this.paymentProcessServiceInterface.withdrawBankProccess(withdrawBankMapper, withdrawPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/withdrawBankProccessWithPassword")
+    public ResponseEntity<Map<String, Object>> withdrawBankProccessWithPassword(@RequestParam String data, HttpSession session) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+            var password = jo.get("require_password").getAsString();
+            var withdraw = jo.get("withdrawBank").getAsJsonObject();
+
+            //verify pass
+            var phone = session.getAttribute("phone").toString();
+            item = this.userServiceInterface.verifyPassword(password, phone);
+            if(Integer.parseInt(item.get("code").toString()) != 200){
+                return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+            }
+            item.clear();
+
+            var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+            WithdrawBankMapper withdrawBankMapper = new WithdrawBankMapper();
+            withdrawBankMapper.setAccount_name(withdraw.get("account_name").getAsString());
+            withdrawBankMapper.setAccount_number(withdraw.get("account_number").getAsString());
+            withdrawBankMapper.setBank(withdraw.get("bank").getAsString());
+            withdrawBankMapper.setBank_amount(withdraw.get("bank_amount").getAsString());
+            withdrawBankMapper.setNotes(withdraw.get("notes").getAsString());
+            withdrawBankMapper.setSender(sender);
+            withdrawBankMapper.setType(PaymentHelpers.WITHDRAW);
+            withdrawBankMapper.setMethod(PaymentHelpers.BANK);
+            item = this.paymentProcessServiceInterface.withdrawBankProccess(withdrawBankMapper, ConfigHelpers.IS_OFF);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PostMapping("/withdrawBitcoinProccess")
     public ResponseEntity<Map<String, Object>> withdrawBitcoinProccess(@Valid @RequestBody WithdrawBitcoinMapper withdrawBitcoinMapper,  
                                                     HttpSession session) {
         Map<String, Object> item = new HashMap<String,Object>();
         try {
+            //check setting
+            var userConfigString = session.getAttribute("user_config_string").toString();
+            var withdrawPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "withdraw_password");
+
             var sender = Integer.parseInt(session.getAttribute("user_id").toString());
             withdrawBitcoinMapper.setSender(sender);
             withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
             withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
-            item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper);
+            item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, withdrawPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/withdrawBitcoinProccessWithPassword")
+    public ResponseEntity<Map<String, Object>> withdrawBitcoinProccessWithPassword(@RequestParam String data, HttpSession session) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+            var password = jo.get("require_password").getAsString();
+            var withdraw = jo.get("withdrawBitcoin").getAsJsonObject();
+
+            //verify pass
+            var phone = session.getAttribute("phone").toString();
+            item = this.userServiceInterface.verifyPassword(password, phone);
+            if(Integer.parseInt(item.get("code").toString()) != 200){
+                return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+            }
+            item.clear();
+
+            var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+            WithdrawBitcoinMapper withdrawBitcoinMapper = new WithdrawBitcoinMapper();
+            withdrawBitcoinMapper.setBitcoin_amount(withdraw.get("bitcoin_amount").getAsString());
+            withdrawBitcoinMapper.setBcaddress(withdraw.get("bcaddress").getAsString());
+            withdrawBitcoinMapper.setTransaction_code(withdraw.get("transaction_code").getAsString());
+            withdrawBitcoinMapper.setSender(sender);
+            withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
+            withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
+            item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, ConfigHelpers.IS_OFF);
             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
         } catch (Exception e) {
             Map<String, Object> err = new HashMap<String,Object>();
@@ -157,11 +238,47 @@ public class PaymentProcessController {
                                                     HttpSession session) {
         Map<String, Object> item = new HashMap<String,Object>();
         try {
+            //check setting
+            var userConfigString = session.getAttribute("user_config_string").toString();
+            var transferPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "transfer_password");
+
             var sender = Integer.parseInt(session.getAttribute("user_id").toString());
             transferMapper.setSender(sender);
             transferMapper.setType(PaymentHelpers.TRANSFER);
             var phone = session.getAttribute("phone").toString();
-            item = this.paymentProcessServiceInterface.transferProccess(transferMapper, phone);
+            item = this.paymentProcessServiceInterface.transferProccess(transferMapper, phone, transferPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/transferProccessWithPassword")
+    public ResponseEntity<Map<String, Object>> transferProccessWithPassword(@RequestParam String data, HttpSession session) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+            var password = jo.get("require_password").getAsString();
+            var transfer = jo.get("transfer").getAsJsonObject();
+
+            //verify pass
+            var phone = session.getAttribute("phone").toString();
+            item = this.userServiceInterface.verifyPassword(password, phone);
+            if(Integer.parseInt(item.get("code").toString()) != 200){
+                return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+            }
+            item.clear();
+
+            var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+            TransferMapper transferMapper = new TransferMapper();
+            transferMapper.setAmount(transfer.get("amount").getAsString());
+            transferMapper.setPhone(transfer.get("phone").getAsString());
+            transferMapper.setNotes(transfer.get("notes").getAsString());
+            transferMapper.setSender(sender);
+            transferMapper.setType(PaymentHelpers.TRANSFER);
+            item = this.paymentProcessServiceInterface.transferProccess(transferMapper, phone, ConfigHelpers.IS_OFF);
             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
         } catch (Exception e) {
             Map<String, Object> err = new HashMap<String,Object>();

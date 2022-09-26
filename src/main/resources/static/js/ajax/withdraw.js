@@ -1,8 +1,27 @@
+$('#pills-withdraw-tab').on('click', () => {
+    SECTION = 2
+    PATH = '/withdrawBankProccessWithPassword'
+    AREA_ID = '#withdraw-bank div'
+})
+$('#withdraw-bank-tab').on('click', () => {
+    SECTION = 2
+    PATH = '/withdrawBankProccessWithPassword'
+    AREA_ID = '#withdraw-bank div'
+})
+
 $('#btn-bank-request').prop('disabled', false)
+
 $('#btn-bank-request').on('click', () => {
     $('#btn-bank-request').prop('disabled', true)
-    let div = document.createElement('div')
-    let target = document.querySelector('#withdraw-bank div')
+    $('#require-password-error').text("")
+    $('input[name="require_password"]').val("")
+    $(`.${ALERT_AREA}`).remove()
+
+    $('#withdraw_account_name_err').text("")
+    $('#withdraw_account_number_err').text("")
+    $('#withdraw_bank_err').text("")
+    $('#withdraw_bank_amount_err').text("")
+
     let data = {
         "account_name": $('input[name="account_name"]').val(),
         "account_number": $('input[name="account_number"]').val(),
@@ -10,10 +29,7 @@ $('#btn-bank-request').on('click', () => {
         "bank_amount": $('input[name="bank_amount"]').val(),
         "notes": $('input[name="notes"]').val()
     }
-    $('#withdraw_account_name_err').text("")
-    $('#withdraw_account_number_err').text("")
-    $('#withdraw_bank_err').text("")
-    $('#withdraw_bank_amount_err').text("")
+
     $.ajax({
         url: '/withdrawBankProccess',
         type: 'post',
@@ -22,22 +38,22 @@ $('#btn-bank-request').on('click', () => {
         contentType: 'application/json; charset=utf-8',
         success: function(response){
             console.log(response)
-            if(response.code == 200){
-                console.log(response.msg)
-                let alert = `<div class="alert alert-success mb-4" role="alert">
-                            ${response.msg}
-                        </div>`
-                div.innerHTML += alert
-                target.parentNode.insertBefore(div, target)
-                $('#span-balance').text("$"+response.wallet)
-
-                $('input[name="account_name"]').val("")
-                $('input[name="account_number"]').val("")
-                $('input[name="bank"]').val("")
-                $('input[name="bank_amount"]').val("")
-                $('input[name="notes"]').val("")
-            } else {
-                $('#withdraw_bank_amount_err').text(response.amount ?? "")
+            switch (response.code) {
+                case 200:
+                    alertMsg(response.message, alertSuccess, AREA_ID, ALERT_AREA)
+                    $('#span-balance').text("$"+response.wallet)
+                    $('input[name="account_name"]').val("")
+                    $('input[name="account_number"]').val("")
+                    $('input[name="bank"]').val("")
+                    $('input[name="bank_amount"]').val("")
+                    $('input[name="notes"]').val("")
+                    break
+                case 406:
+                    $('#require-password-modal').modal('show')
+                    break
+                case 400:
+                    $('#withdraw_bank_amount_err').text(response.amount ?? "")
+                    break
             }
             $('#btn-bank-request').prop('disabled', false)
         }, 
@@ -47,12 +63,9 @@ $('#btn-bank-request').on('click', () => {
                 $(`#withdraw_${err.field}_err`).text(err.defaultMessage ?? "")
             })
             if(data.responseJSON == null){  
-                let alert = `<div class="alert alert-danger mb-5" role="alert">
-                                Whoops! Something went wrong!
-                            </div>`
-                div.innerHTML += alert
-                target.parentNode.insertBefore(div, target)
+                alertMsg('Whoops! Something went wrong!', alertDanger, AREA_ID, ALERT_AREA)
             }
+            
             $('#btn-bank-request').prop('disabled', false)
         }
     })
@@ -89,6 +102,9 @@ $('input[name="bitcoin_amount"]').on('input', () => {
 
 //bitcoin
 $('#withdraw-bitcoin-tab').on('click', () => {
+    SECTION = 3
+    PATH = '/withdrawBitcoinProccessWithPassword'
+    AREA_ID = '#withdraw-bitcoin div'
     paymentWithBTCExRate()
 })
 let transactionCode = ""
@@ -104,15 +120,17 @@ $('#btn-bitcoin-address').on('click', () => {
 $('#btn-bitcoin-request').prop('disabled', false)
 $('#btn-bitcoin-request').on('click', () => {
     $('#btn-bitcoin-request').prop('disabled', true)
-    let div = document.createElement('div')
-    let target = document.querySelector('#withdraw-bitcoin div')
+    $('#require-password-error').text("")
+    $('input[name="require_password"]').val("")
+    $(`.${ALERT_AREA}`).remove()
+    $('#withdraw_bcaddress_err').text("")
+    $('#withdraw_bitcoin_amount_err').text("")
+    
     let data = {
         "bitcoin_amount": $('input[name="bitcoin_amount"]').val(),
         "transaction_code": transactionCode,
         "bcaddress": bcaddress
     }
-    $('#withdraw_bcaddress_err').text("")
-    $('#withdraw_bitcoin_amount_err').text("")
     $.ajax({
         url: '/withdrawBitcoinProccess',
         type: 'post',
@@ -120,19 +138,21 @@ $('#btn-bitcoin-request').on('click', () => {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function(response){
-            if(response.code == 200){
-                let alert = `<div class="alert alert-success mb-4" role="alert">
-                            ${response.msg}
-                        </div>`
-                div.innerHTML += alert
-                target.parentNode.insertBefore(div, target)
-                $('#span-balance').text("$"+response.wallet)
-                transactionCode = ""
-                bcaddress = ""
-                $('input[name="bitcoin_address"]').val("")
-                $('input[name="bitcoin_amount"]').val("")
-            } else {
-                $('#withdraw_bitcoin_amount_err').text(response.bitcoin_amount ?? "")
+            switch (response.code) {
+                case 200:
+                    alertMsg(response.message, alertSuccess, AREA_ID, ALERT_AREA)
+                    $('#span-balance').text("$"+response.wallet)
+                    transactionCode = ""
+                    bcaddress = ""
+                    $('input[name="bitcoin_address"]').val("")
+                    $('input[name="bitcoin_amount"]').val("")
+                    break
+                case 406:
+                    $('#require-password-modal').modal('show')
+                    break
+                case 400:
+                    $('#withdraw_bitcoin_amount_err').text(response.amount ?? "")
+                    break
             }
             $('#btn-bitcoin-request').prop('disabled', false)
         }, 
@@ -142,11 +162,7 @@ $('#btn-bitcoin-request').on('click', () => {
                 $(`#withdraw_${err.field}_err`).text(err.defaultMessage ?? "")
             })
             if(data.responseJSON == null){  
-                let alert = `<div class="alert alert-danger mb-5" role="alert">
-                                Whoops! Something went wrong!
-                            </div>`
-                div.innerHTML += alert
-                target.parentNode.insertBefore(div, target)
+                alertMsg('Whoops! Something went wrong!', alertDanger, AREA_ID, ALERT_AREA)
             }
             $('#btn-bitcoin-request').prop('disabled', false)
         }

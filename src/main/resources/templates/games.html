@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #static-css},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::#staticJS}
+                                         )}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <th:block id="static-css">
+
+    </th:block>
+</head>
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <!-- Breadcrumb Area Start -->
+        <section class="breadcrumb-area games">
+            <div class="content">
+                <img th:src="@{/images/defaults/top-icon.png}" alt="">
+                <h4>Super Fast Withdrawals!</h4>
+                <a href="#" class="mybtn1">Join Now!</a>
+            </div>
+        </section>
+        <!-- Breadcrumb Area End -->
+
+        <!-- Games Filter Area Start -->
+        <section class="games-filter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="filter-wrapp">
+                            <div class="left-area">
+                                <a href="#" class="mybtn2"><i class="far fa-sun"></i>Select For you</a>
+                                <a href="#" class="mybtn2"><i class="fas fa-dice-five"></i>New Games</a>
+                                <a href="#" class="mybtn2"><i class="far fa-heart"></i>Most Popular</a>
+                            </div>
+                            <div class="right-area">
+                                <form action="#">
+                                    <input type="text" placeholder="Search Games">
+                                    <button type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Games Filter Area End -->
+
+
+        <!-- Game play area start -->
+        <section class="game-play-section game-play-section2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="single-play">
+                            <div class="image">
+                                <img th:src="@{/images/defaults/3.png}" alt="">
+                            </div>
+                            <div class="contant">
+                                <a th:href="@{/games/wheels}" class="mybtn1">Play</a>
+                                <h4>37 People Playing</h4>
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            32+
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="single-play">
+                            <div class="image">
+                                <img th:src="@{/images/defaults/2.png}" alt="">
+                            </div>
+                            <div class="contant">
+                                <a href="games_details.html" class="mybtn1">Play</a>
+                                <h4>37 People Playing</h4>
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span>
+                                            32+
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <a href="#" class="mybtn2">Browser All</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Game play area end -->
+
+        <!-- Latest arcive area start -->
+        <section class="latest-arcive2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-heading">
+                            <h5 class="subtitle">
+                                True Wins closer than they seem
+                            </h5>
+                            <h2 class="title ">
+                                Latest Activities
+                            </h2>
+                            <h6 class="text">
+                                Where skill is rewarded.Join millions of players worldwide!
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav  mb-3" role="tablist">
+                            <li class="nav-item">
+                            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Leaderboard</a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">changellenge</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content l-a-nav" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="left-content">
+                                            <div class="heading-area">
+                                                <img src="assets/images/arcive/i2.png" alt="">
+                                                <h6>Latest Changellenge</h6>
+                                                <h3>Top Players</h3>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i3.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Levels &amp; Rewards</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i4.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Fast</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i5.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Fair</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="l-arcive-box2-wrapper">
+                                            <div class="l-arcive-box2">
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa4.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Lee Miller</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>- 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa5.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m2.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>John Ray</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>+ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa6.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m3.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Gilbert Ruiz</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa7.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m4.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Lee Miller</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>_ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa8.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m5.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Erik Adams</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa9.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m6.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Gina Mills</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>+ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                <div class="row">
+                                    <div class="col-lg-5">
+                                        <div class="left-content">
+                                            <div class="heading-area">
+                                                <img src="assets/images/arcive/i2.png" alt="">
+                                                <h6>Latest Changellenge</h6>
+                                                <h3>Top Players</h3>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i3.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Levels &amp; Rewards</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i4.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Fast</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="info-box">
+                                                        <img src="assets/images/arcive/i5.png" alt="">
+                                                        <div class="content">
+                                                            <h4>Fair</h4>
+                                                            <p>Join a grand adventure of 7 levels and unlimited milestone rewards
+
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <div class="l-arcive-box2-wrapper">
+                                            <div class="l-arcive-box2">
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa4.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Lee Miller</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>_ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa5.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m2.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>John Ray</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>+ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa6.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m3.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Gilbert Ruiz</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa7.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m4.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Lee Miller</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>_ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa8.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m5.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Erik Adams</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="s-a-b">
+                                                    <div class="left">
+                                                        <img src="assets/images/arcive/sa9.png" alt="">
+                                                        <div class="content">
+                                                            <div class="left2">
+                                                                <img src="assets/images/arcive/m6.png" alt="">
+                                                            </div>
+                                                            <div class="right2">
+                                                                <h4>Gina Mills</h4>
+                                                                <div class="stars">
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star"></i>
+                                                                    <i class="fas fa-star-half-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="assets/images/arcive/mony.png" alt="">
+                                                        <h6>+ 25.8772200 BTC</h6>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Latest arcive area End -->
+
+        <!-- Daily Contest area start -->
+        <section class="daily-contest">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-xl-5 col-lg-6">
+                        <div class="left-content">
+                            <div class="images">
+                                <img th:src="@{/images/defaults/trophy.png}" alt="">
+                            </div>
+                            <div class="content">
+                                <img th:src="@{/images/defaults/icon.png}" alt="">
+                                <h4>CONTEST PRIZE POOL</h4>
+                                <p class="coin">0.00051 <span>BTC</span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="middle-content">
+                            <p>Let's see what a badass you can be!</p>
+                            <a href="#" class="mybtn2">Participate Now</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="right-content">
+                            <img class="winner" th:src="@{/images/defaults/winner.png}" alt="">
+                            <p class="title"><i class="fas fa-crown"></i>LAST CHAMPION</p>
+                            <div class="rc-bottom">
+                                <div class="img">
+                                    <img class="crown" th:src="@{/images/defaults/crown.png}" alt="">
+                                    <img th:src="@{/images/defaults/no-user.jpeg}" alt="">
+                                </div>
+                                <div class="content">
+                                    <h6>John Ray</h6>
+                                    <p>0.00051 <span>BTC</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Daily Contest area End -->
+
+        <!-- Contact Section start -->
+        <section class="contact_section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="left-image">
+                            <img th:src="@{/images/defaults/cs-image.png}" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="section-heading content-left">
+                            <h2 class="title ">
+                                If you have any questions
+                            </h2>
+                            <h6 class="text">
+                                Our top priorities are to protect your privacy, provide secure transactions, and safeguard your data. When you're ready to play, registering an account is required so we know you're of legal age and so no one else can use your account.We answer the most commonly asked lotto questions..
+                            </h6>
+                            <a href="#" class="mybtn1">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact Section end -->
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
+        
+    </div>
+    
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="staticJs">
+
+    </th:block>
+</body>
+</html>

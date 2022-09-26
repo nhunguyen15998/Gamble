@@ -2,7 +2,7 @@ package com.futech.entertainment.packages.users.modelMappers;
 
 import javax.validation.constraints.NotBlank;
 
-import com.futech.entertainment.packages.core.validations.interfaces.Size;
+import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Size;
 
 public class ForgotResetMapper {
     @NotBlank(message = "Password is required")
