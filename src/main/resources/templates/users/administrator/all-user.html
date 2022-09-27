@@ -1,0 +1,578 @@
+<htmllang="en" xmlns:th="http://www.thymeleaf.org"  >
+<head th:replace="layouts/admin :: importLibs">
+</head>
+<body class="app sidebar-mini ltr transparent-mode bg-img1" data-new-gr-c-s-check-loaded="14.1071.0" data-gr-ext-installed="">
+  <div class="horizontalMenucontainer">
+    
+    <div th:replace="layouts/admin :: switcher-wrapper"></div>
+    <div th:replace="layouts/admin :: global-loader"></div>
+    
+    <div class="page">
+        <div class="page-main is-expanded">
+             <div th:replace="layouts/admin :: app-header"></div>
+             <div th:replace="layouts/admin :: sticky"></div>
+              <!--app-content open-->
+              <div class="main-content app-content mt-0">
+
+                <div class="side-app">
+                    <!-- CONTAINER -->
+                    <div class="main-container container-fluid">
+                        <!-- PAGE-HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">
+                    Users</h1>
+                    <div>
+                        <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                    <a href="javascript:void(0)">
+                    Home</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                    Users</li>
+                    </ol>
+                    </div>
+                    </div>
+                 
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                        <div class="card">
+                        <div class="card-header">
+                        <h3 class="card-title mb-0">Information
+                       </h3>
+                      </div>
+                       <div class="card-body pt-4">
+                        <div class="grid-margin">
+                        <div class="">
+                        <div class="panel panel-primary">
+                        <div class="tab-menu-heading border-0 p-0">
+                        <div class="tabs-menu1">
+                        <!-- Tabs -->
+                        <ul class="nav panel-tabs product-sale">
+                        <li>
+                       <a href="/admin/users/all?page=1&&type=0" class="active user-type user-type-1">
+                       Players</a>
+                     </li>
+                        <li>
+                       <a href="/admin/users/all?page=1&&type=1" class="text-dark user-type user-type-2">
+                       Adminstrator</a>
+                     </li>
+                      
+                      </ul>
+                      </div>
+                      </div>
+                       <div class="panel-body tabs-menu-body border-0 pt-0">
+                        <div class="tab-content">
+                        <div class="tab-pane active">
+                        <div class="table-responsive">
+                        <div id="data-table_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                       <div class="row">
+                       <div class="col-sm-12 col-md-6">
+                       <div class="dataTables_length" id="data-table_length">
+                       <label>
+                       Show <select name="data-table_length" aria-controls="data-table" class="form-select form-select-sm select2 select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                       <option value="10">
+                       10</option>
+                       <option value="25">
+                       25</option>
+                       <option value="50">
+                       50</option>
+                       <option value="100">
+                       100</option>
+                     </select>
+                       <span class="select2 select2-container select2-container--default" dir="ltr" style="width: 61.2px;">
+                       <span class="selection">
+                       <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-data-table_length-3j-container">
+                       <span class="select2-selection__rendered" id="select2-data-table_length-3j-container" title="10">
+                       10</span>
+                       <span class="select2-selection__arrow" role="presentation">
+                       <b role="presentation">
+       
+                      </b>
+                     </span>
+                     </span>
+                     </span>
+                       <span class="dropdown-wrapper" aria-hidden="true">
+       
+                      </span>
+                     </span>
+                        entries</label>
+                     </div>
+                     </div>
+                      <div class="col-sm-12 col-md-6">
+                       <div id="data-table_filter" class="dataTables_filter">
+                       <label>
+                       <input type="search" class="form-control form-control" placeholder="Search..." aria-controls="data-table">
+                     </label>
+                     </div>
+                     </div>
+                     </div>
+                      <div class="row">
+                       <div class="col-sm-12">
+                       <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
+                        <thead class="border-top">
+                       <tr role="row">
+                       <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 88.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
+                        #</th>
+                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
+                        Full Name</th>
+                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                        Phone</th>
+                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Date: activate to sort column ascending" style="width: 89.2px;">
+                        Email</th>
+                       <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
+                        Created time</th>
+                       <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Payment Mode" style="width: 139.038px;">
+                        Ranking</th>
+                       <th class="bg-transparent border-bottom-0 sorting" style="width: 67.7375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
+                       Status</th>
+                       <th class="bg-transparent border-bottom-0 sorting" style="width: 51.6375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">
+                       Action</th>
+                     </tr>
+                      </thead>
+                        <tbody>
+                        <tr th:each="u, row : ${users}" class="border-bottom odd">
+                          <td class="text-center">
+                            <div class="mt-0 mt-sm-2 d-block">
+                            <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
+                            </h6>
+                          </div>
+                      </td>
+                       <td>
+                        <div class="d-flex">
+                      </span>
+                        <div class="ms-3 mt-0 mt-sm-2 d-block">
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.first_name+' '+u.last_name}"></h6>
+                      </div>
+                      </div>
+                      </td>
+                       <td>
+                        <div class="d-flex">
+                        <div class="mt-0 mt-sm-3 d-block">
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.phone}"></h6>
+                      </div>
+                      </div>
+                      </td>
+                       <td>
+                       <span class="mt-sm-2 d-block" th:text="${u.email}">1</span>
+                     </td>
+                       <td>
+                       <span class="fw-semibold mt-sm-2 d-block" th:text="${u.created_at}"></span>
+                      </td>
+                       <td>
+                        <div class="d-flex">
+                        <div class="mt-0 mt-sm-3 d-block">
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.ranking==null?'Normal':'Super'}"></h6>
+                      </div>
+                      </div>
+                      </td>
+                       <td>
+                        <div class="mt-sm-1 d-block">
+                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${u.status==1?'text-success':''}" th:text="${u.status==1?'Activated':'Deactivated'}">
+                       </span>
+                      </div>
+                      </td>
+                       <td>
+                        <div class="g-2">
+                        <a class="btn text-primary btn-sm"  data-bs-original-title="Edit">
+                       <span class="fe fe-edit fs-14">
+       
+                      </span>
+                     </a>
+                        <a class="btn text-danger btn-sm"data-bs-original-title="Delete">
+                       <span class="fe fe-trash-2 fs-14">
+       
+                      </span>
+                     </a>
+                      </div>
+                      </td>
+                     </tr>
+                        </tbody>
+                       </table>
+                        </div>
+                        </div>
+                      
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div><!-- ROW-4 END -->
+                        </div>
+                 <!-- CONTAINER END -->
+                </div>
+              </div>
+            <!--app-content close-->
+            
+        </div>
+            <div th:replace="layouts/admin :: sidebar-right"></div>
+            <div th:replace="layouts/admin :: country-selector"></div>
+            <footer th:replace="layouts/admin :: footer" ></footer>
+    </div>
+    
+
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+      <defs id="SvgjsDefs1002"></defs>
+      <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+      <path id="SvgjsPath1004" d="M0 0 "></path>
+    </svg>
+    
+
+ <!-- JQUERY JS -->
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  
+  <script src="/assets/js/jquery.min.js">
+  </script>
+  <script type="text/javascript">
+  </script>
+  
+  <!-- BOOTSTRAP JS -->
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  <script src="/assets/plugins/bootstrap/js/popper.min.js">
+  </script>
+  
+  <script type="text/javascript">
+  
+  
+  </script>
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  
+  <script src="/assets/plugins/bootstrap/js/bootstrap.min.js">
+  </script>
+  
+  <script type="text/javascript">
+  
+  </script>
+  
+  <!-- SPARKLINE JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/js/jquery.sparkline.min.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- Sticky js -->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/js/sticky.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- CHART-CIRCLE JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/js/circle-progress.min.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- PIETY CHART JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/peitychart/jquery.peity.min.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/peitychart/peitychart.init.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- SIDEBAR JS -->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/sidebar/sidebar.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- Perfect SCROLLBAR JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/perfect-scrollbar.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/pscroll.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/pscroll-1.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- INTERNAL CHARTJS CHART JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/chart/Chart.bundle.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/chart/rounded-barchart.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/chart/utils.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL SELECT2 JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/select2/select2.full.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Data tables js-->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/js/jquery.dataTables.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/js/dataTables.bootstrap5.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/dataTables.responsive.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL APEXCHART JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/apexcharts.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/apexchart/irregular-data-series.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Flot JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/flot/jquery.flot.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/flot/jquery.flot.fillbetween.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/flot/chart.flot.sampledata.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/flot/dashboard.sampledata.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Vector js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js">
+    </script>
+  <script type="text/javascript">
+   
+  </script>
+   <!-- SIDE-MENU JS-->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/sidemenu/sidemenu.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- TypeHead js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/bootstrap5-typehead/autocomplete.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/typehead.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL INDEX JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/index1.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- Color Theme js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/themeColors.js">
+    </script>
+  <script type="text/javascript">
+    
+  </script>
+   <!-- CUSTOM JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/custom.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- Switcher js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/switcher/js/switcher.js">
+    </script>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+      <defs id="SvgjsDefs1002">
+      </defs>
+      <polyline id="SvgjsPolyline1003" points="0,0">
+      </polyline>
+      <path id="SvgjsPath1004" d="M0 0 ">
+      </path>
+      </svg>
+   
+  </div>
+          <div class="jvectormap-tip">
+            </div>
+    
+        </body>
+        <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+        <script src="/js/admin-main.js"></script>
+</body>

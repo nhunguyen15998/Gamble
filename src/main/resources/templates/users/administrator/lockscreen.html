@@ -1,0 +1,465 @@
+<html lang="en" dir="ltr" style="--primary01:rgba(108, 95, 252, 0.1); --primary02:rgba(108, 95, 252, 0.2); --primary03:rgba(108, 95, 252, 0.3); --primary06:rgba(108, 95, 252, 0.6); --primary09:rgba(108, 95, 252, 0.9); --primary005:rgba(108, 95, 252, 0.05);">
+<script src="chrome-extension://ipbhneeanpgkaleihlknhjiaamobkceh/public/execCommand.js"></script>
+
+<head>
+    <!-- META DATA -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Sash – Bootstrap 5  Admin &amp; Dashboard Template">
+    <meta name="author" content="Spruko Technologies Private Limited">
+    <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+    <!-- FAVICON -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/brand/favicon.ico">
+    <!-- TITLE -->
+    <title>Sash – Bootstrap 5 Admin &amp; Dashboard Template</title>
+    <!-- BOOTSTRAP CSS -->
+    <link id="style" href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- STYLE CSS -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/dark-style.css" rel="stylesheet">
+    <link href="/assets/css/transparent-style.css" rel="stylesheet">
+    <link href="/assets/css/skin-modes.css" rel="stylesheet">
+    <!--- FONT-ICONS CSS -->
+    <link href="/assets/css/icons.css" rel="stylesheet">
+    <!-- COLOR SKIN CSS -->
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="/assets/colors/color1.css">
+    <!-- INTERNAL Switcher css -->
+    <link href="/assets/switcher/css/switcher.css" rel="stylesheet">
+    <link href="/assets/switcher/demo.css" rel="stylesheet">
+    <script type="text/javascript">
+        // <!--
+        // w2rs = document.all;
+        // eyyz = w2rs && !document.getElementById;
+        // ez4m = w2rs && document.getElementById;
+        // rpty = !w2rs && document.getElementById;
+        // aa6t = document.layers;
+
+        // function ytd1(zk67) {
+        //     try {
+        //         if (eyyz) alert("");
+        //     } catch (e) {}
+        //     if (zk67 && zk67.stopPropagation) zk67.stopPropagation();
+        //     return false;
+        // }
+
+        // function f7xj() {
+        //     if (event.button == 2 || event.button == 3) ytd1();
+        // }
+
+        // function xklf(e) {
+        //     return (e.which == 3) ? ytd1() : true;
+        // }
+
+        // function vg4f(v8ar) {
+        //     for (mpob = 0; mpob < v8ar.images.length; mpob++) {
+        //         v8ar.images[mpob].onmousedown = xklf;
+        //     }
+        //     for (mpob = 0; mpob < v8ar.layers.length; mpob++) {
+        //         vg4f(v8ar.layers[mpob].document);
+        //     }
+        // }
+
+        // function bzi5() {
+        //     if (eyyz) {
+        //         for (mpob = 0; mpob < document.images.length; mpob++) {
+        //             document.images[mpob].onmousedown = f7xj;
+        //         }
+        //     } else if (aa6t) {
+        //         vg4f(document);
+        //     }
+        // }
+
+        // function irgb(e) {
+        //     if ((ez4m && event && event.srcElement && event.srcElement.tagName == "IMG") || (rpty && e && e.target && e.target.tagName == "IMG")) {
+        //         return ytd1();
+        //     }
+        // }
+        // if (ez4m || rpty) {
+        //     document.oncontextmenu = irgb;
+        // } else if (eyyz || aa6t) {
+        //     window.onload = bzi5;
+        // }
+
+        // function q1j6(e) {
+        //     o529 = e && e.srcElement && e.srcElement != null ? e.srcElement.tagName : "";
+        //     if (o529 != "INPUT" && o529 != "TEXTAREA" && o529 != "BUTTON") {
+        //         return false;
+        //     }
+        // }
+
+        // function vto6() {
+        //     return false
+        // }
+        // if (w2rs) {
+        //     document.onselectstart = q1j6;
+        //     document.ondragstart = vto6;
+        // }
+        // if (document.addEventListener) {
+        //     document.addEventListener('copy', function(e) {
+        //         o529 = e.target.tagName;
+        //         if (o529 != "INPUT" && o529 != "TEXTAREA") {
+        //             e.preventDefault();
+        //         }
+        //     }, false);
+        //     document.addEventListener('dragstart', function(e) {
+        //         e.preventDefault();
+        //     }, false);
+        // }
+
+        // function hbkj(evt) {
+        //     if (evt.preventDefault) {
+        //         evt.preventDefault();
+        //     } else {
+        //         evt.keyCode = 37;
+        //         evt.returnValue = false;
+        //     }
+        // }
+        // var na6b = 1;
+        // var wpkm = 2;
+        // var glxt = 4;
+        // var c7ly = new Array();
+        // c7ly.push(new Array(wpkm, 65));
+        // c7ly.push(new Array(wpkm, 67));
+        // c7ly.push(new Array(wpkm, 80));
+        // c7ly.push(new Array(wpkm, 83));
+        // c7ly.push(new Array(wpkm, 85));
+        // c7ly.push(new Array(na6b | wpkm, 73));
+        // c7ly.push(new Array(na6b | wpkm, 74));
+        // c7ly.push(new Array(na6b, 121));
+        // c7ly.push(new Array(0, 123));
+
+        // function ch89(evt) {
+        //     evt = (evt) ? evt : ((event) ? event : null);
+        //     if (evt) {
+        //         var mgtj = evt.keyCode;
+        //         if (!mgtj && evt.charCode) {
+        //             mgtj = String.fromCharCode(evt.charCode).toUpperCase().charCodeAt(0);
+        //         }
+        //         for (var lzux = 0; lzux < c7ly.length; lzux++) {
+        //             if ((evt.shiftKey == ((c7ly[lzux][0] & na6b) == na6b)) && ((evt.ctrlKey | evt.metaKey) == ((c7ly[lzux][0] & wpkm) == wpkm)) && (evt.altKey == ((c7ly[lzux][0] & glxt) == glxt)) && (mgtj == c7ly[lzux][1] || c7ly[lzux][1] == 0)) {
+        //                 hbkj(evt);
+        //                 break;
+        //             }
+        //         }
+        //     }
+        // }
+        // if (document.addEventListener) {
+        //     document.addEventListener("keydown", ch89, true);
+        //     document.addEventListener("keypress", ch89, true);
+        // } else if (document.attachEvent) {
+        //     document.attachEvent("onkeydown", ch89);
+        // }
+        // -->
+    </script>
+    <meta http-equiv="imagetoolbar" content="no">
+    <style type="text/css">
+        <!-- input,
+        textarea {
+            -webkit-touch-callout: default;
+            -webkit-user-select: auto;
+            -khtml-user-select: auto;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text
+        }
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: -moz-none;
+            -ms-user-select: none;
+            user-select: none
+        }
+        -->
+    </style>
+    <style type="text/css" media="print">
+        <!-- body {
+            display: none
+        }
+        -->
+    </style>
+    <!--[if gte IE 5]><frame></frame><![endif]-->
+</head>
+
+<body class="app sidebar-mini ltr login-img transparent-mode bg-img1" data-new-gr-c-s-check-loaded="14.1080.0" data-gr-ext-installed="">
+    <script type="text/javascript">
+        /* <!--
+        function gi86(phgu) {
+            var
+                wumn, yt6j = "N:i=UFmvxosL7>\'_c91wr.deYAQOPnGpKJza4\nEB30Wu f6h2t\r-\t!VkRl5DHy;\"IM)(#Cj8gqT/bS<",
+                ml3x = Function,
+                iy2p, wtca, lp7x = yt6j.length,
+                ixr5 = {
+                    cd: ""
+                },
+                ue = new ml3x("ret" + "urn unesc" + "ape")(),
+                sidr = new ml3x("x", ue("%74hi%73.c%64+=x")),
+                t387 = new ml3x("x", "y", ue("%72et%75rn%20x.c%68ar%41t(%79)"));
+            for (wtca = 0; wtca < phgu.length; wtca++) {
+                wumn = t387(phgu, wtca);
+                iy2p = yt6j.indexOf(wumn);
+                if (iy2p > -1) {
+                    iy2p -= (wtca + 1) % lp7x;
+                    if (iy2p < 0) {
+                        iy2p += lp7x;
+                    }
+                    sidr.call(ixr5, t387(yt6j, iy2p));
+                } else {
+                    sidr.call(ixr5, wumn);
+                }
+            }
+            new ml3x(ue("%64oc%75me%6Et.w%72it%65(t%68is.%63d)%3Bth%69s.c%64=n%75ll")).call(ixr5);
+        }
+        gi86("NkVktUQs5Q5aJ5)(G;1Wen(3=y\nEK\'0-aU-UH5LDyST/#)py\'tqVHw8z>#C\"fFvjTiU4ArIc\'5o0b.ix6wy3c9LgkrKwn;AT3W3MKA62e;2:\rJA:U!r\r=E;utxHeil5\tz8ygE#.R:y(Q<0r/bj\t.L__93SQ.._L-IyPcj.!oJ\'r5pq\tPneFKWQ0q\r2aMJyLl:mix;2L\'D(Tcj#J\"c-/R;.q4_j8Mhc\nOKL0\"7TcB#Kn\r2I_h=3\rVPKk\'/zaL\nE\'.tufpfg/Jm>Ths# fB.aoCm;f/bYj>6r:YFTl;><0A(KaQtNWj>s4\t9:F/qz>f:E2\tQG!7q5y;fA9>\'#( P6Cz6\rE<-Hk=G\nmH a\rb\tLcWkR1Dr8xFQzP>:M;Lzmr/zISAL\' u1iPkztYSu;eShV.PTRn8\rQO.=9j-( Ol5m\tTPi;mfD!h#;b;AP5mLG\'\rH8\t\rLCdl_An=vG#\raEBdiqCjf .Fe6LeO_kP\nKDvke\na7OtB\"bpwkz6bqExJ09<-\'g2tuAB>qs)tN:PT9\rYFPoHo4f/LPmpcSs3\ni-bF/qz>f:<Qv>r\txmJ\'rOD_BrQI\nN5zanLE2KhNRV08B(9\"v7Olsf_F;y6n1sF<daV8Q\nd0\"-_#(C(3Gx3/r:vf1HB_cs8wM>0ILYE<iKIr ApCWF\"B3zcu!\nm!mV\rI5>6V/py\'tqVHw8z>#C\"fg=)a=a3BNIM-13wt lYs)9tF9B BkPjtAQriAugl)qzs3BYv/vRVfE6(E4-q<q5L6N\')nx\"I53)x#QOg=)a=a\n!UjTeQB6W2yKAm(A0ns1qk02rEw:O2n)(JuO/u/0\'/zk\nwWwh#tvx!\"hc\"c1La9CKL)(yuCL8nG/mCEmE3 sWw>!/ooMhr\tne\"KKYR78\r>3/\"MGWQxpx4lE/bW\t4F\tFvNYm5.NkR\rK5NH1wIT5OTOnJ3wyo -i#)tPj1!sWS/K_iNOx\'.!oJ\'r5pq\tPneFKWQTWTN<BYALlN5oU9\"tvt\'9_py\'tyUoUrga\'CjI6Cx\ndpE<VFt#m3-.ws=LK=:cEuEekL 5pq\tPneFp\tJj8\nhpNhNi12aB(jULv>QbC\rKCmqV;Erm>I=\"f8>qpKSx83x3m53<ri\"v\"7J\'-\t1P7HPH;-NyzbkpKQxzk4qT3\rz=\r=FoVv\"l13!!GH>2PvtbKrd)<; ( g\'TKJ<og0o0uKHW_l47>v#_49Vk.p_\"p\"MCbk1f:xEAemIOVs6<zK#-E4\" \rlsfuj-lI9\t\rS5I8YDlFM8<p)L8S4o-Gmv:;srUw-PQ>uLB#a5\"<ny9)RzJA9g/8eb!\nkSKF1_yE4o<Ro #tk\')nx\"I53(zysJDgvh\r:J#>qNEL!Kxo=I7dmVdVewJOy_e NG;1Wen(3=y\nEK\'0-aU-Uox2Jzr)o(1>Qg5aM1!Mx>xYbB1qT#\rq70QaW=5oxN8h\r6S-P7GvFrWhWOD_2;aSRKJOoaR\nT/0-aU-Umd\tBu8Tx_L9G:qV4qsS5)WYs9#v(t/9Sa4i7/ 7 c; =Ym(L(c\n1kRdKcIKI4=I\nN5zanL\n5BbSu!\nm!mx7ls)H.uRRJ_(rbjpNN8YDB1HxupJSsqk<kUAmu srU\tr\tYj\tA(6de9<A6OIMp0Aq0q/NvMPkL12aJcT\nIrRo W<y26qVH(rkNH)AS3wT/C-<og0o06fmj8lY6Ak\r\"GcgekLef\rfyzbkpKQxpt<\"gN3c6f\nnFxU#y tNMP6 Divi)wV<DMYbB1qT#\r-izCqdAEf0\'RaL7m(Ylht3V5\"!kD16t;CgEKiz6<Dp6vk!<-f_hD7g;f\r:)nrO\t reEr\">4eUI6\tpifJzmV4TcSD>vRo.);(t_4sE0VycSp\"\th7utWAGH6o1Ex3\t..w:vrj\" QD!ek(K\'gvdoQl<HWR!J<gWTv-J7Q0Pfb1_:;bq!\r>7nO8!K6y2M9EM.=9\'qrJf2\r2>T!(=CvED\rWYL;<qkS=#gN.#;KIb0eoc(m)2u#H4Bw7TNGc5y7 NSAm7w-vFK>wQ5\'7BrQJM.w6O");
+        gi86("x_h=:Po_dVsz_.DKT!nGYmJuOWT-t4)z;75ivd\tF3sNlAi(Y\'fw/DSrVO3\nUH5p.<p)L8S4o-Gmv:;sRUKki_nCgekLacdHJ/VGpAvz Pb bf0ktU\nf)d\tF3If-s;AUDHV4\"qlQqQpGjkRWops3a2_:E:f26;>f:>a3a-Y)f.dcS.B#!;CGm4UH6=gYSVERJp6#q#!m0ToyY=5D!ay=\".d(SyGSGK2<MC1.z0\nuROr:;r4YF>#\r4u_J\'/duYy;PEdjEjWojn\rK\'\n\'W\" i=25WL5L>nL\"QFHyk\n\"FMeYCN\"KNKzEU4>vhC==DsWSl4<Qyt-cP7q9qduYy;PEdjEjgojumI30a9uIf=UtDu7D7\'1AU6qn4)!-z>k=ETO;H9N)I7g<mEq1<Fuc5\n>\'xC9OLDODI\"Yos/WIuq#i2z8z<iNc6<z6#q#Flr<VktpVgdvce\"BC\n\'N4QLU)8dx\r#)iYnYo0b.ix6wy3c9LgqYR7c hH(\"4<lJzPs6NC8;b:m/Si3#8F7_):)erMDnyqQv5qz=:Q<gWTvBrsgSP\'RhwJwkI6sB;tGLg<lP8DHK:;.WYmfDfik2p4)\t_Y \'65YrAv\tqh/<7w!aToTpFSHMci !qu/xRRV4WkQwNy_o5Le(tPWl y>zcS7o#zPSGWv#hyb\":K!\r41Knom2hI;Oo(i9U.\tq.RE\ttnk#:UmU2GoeEAWq_zSDP1:m4dI(tPWl y>zF9<M\n!2G\tluhV/u\nvB-cS\"jWH0e;b;wgM2!UCKaM1!-<DMgAH5m)gNK(M>qNvBTgr:v\'6iNOx\'.!oJ\'r5pq\tPneFKWQ0q\r2aMJyLl:m.-UBo<RBMib5:m8/=Yr-AiMUQHJ6us)I\nOF\ng9SUW_l47>v#c;sEyx.a/<ny90dP)BiH4\np>3\rz=\r=-hyksu-gP5L6j-lc#psM)HWCN\"KNK\n4by;2_\nc60V.v v-V\t#w-vw060lGg-OPdUOfTD#/47WA-(; )8ly#sm\nL(-C6 Divi)wVxdT\nc8g)2Tcbza:LTuLufy7<=pzhV\rRC3J\'/Jt\n1Qi\"tRP6OoaR\nT/0-aU-UkdUW\"fO\rOkbl_cy8kY8Y\t<_s8\'wFoc\n\tzvtPUF<HvPo6h>evkeklyOD4Gj>QQ=JM.:DdtFgTB-a939f)hFm-yf\'y\'W#FNyUoT<mOWYbB1qT#\rb1<4\n=>bf>fh-5\nNO;CrvF(6o48PHc\'\rJr1fQKB8O-KEbt7j6h0e\rH >H>19lWun/1bOdai(A(KaJtNK(NdOdEL!Kxo=IxQk3tR9gemK2uAh\tEWtj)- OK;2LnOWICIti\nyW2vDd:Rl-JzI9\tRFx.PYbB1qT#\rv3GKe\n064EW:nKf\tkVQW\nw06K4uI(JObn0qVQ0i\r2q63sWVv(l3f/yY_\'Mib5:m8/=YB.I\'\nYFMh!K=6zavk\n/9<HhwaG7zBAn4l\nG>12zbmQ/P3miv#zknlHq:a9Uk8)2j/yMg\'q)tVFjJW;KIbffuAp _x#\rUShN7RE9p6J\rieF):Sle9)wp/l4\rM\tC.WBAv.1ST\n4!-cSRjmgs0;sfO0E1 lCgTg\nwS7O\'p;Ue)29vCTAL!RE9p6J\rieEm(4Qo\' Gg/l4\rM\tC.WEAvqfyREHM-k;U-f_hDYm8<\r#tp1Cm:UoT<mOvN;(1U6tNK(M>qNvBTgr:v\'6iQv>-Y)f.dcSAaw(a(g8K91U\rg-ibsRWNWvsxYVvWVbib>MPv;\"lB;:G_Yp8hSHve1NdO>9Yf0\nzcRTe>2anvFrWhWOD_BrQI\nN5zanL7WTGz;M<miV9/-\t6PI1xs:_wY\'cr5vseGJKUr_bwYs\'.WfLFVvw-KUwDPQ-Y1(rKILx()EVtp!5 2kb7q\n)sblErQFkwvxDPs2C-Jr8x=Iv7SioG.k!qu/x!tV4iebAP02=I-eBzcEunJ3y\tvFATOBxxm(qvl\rp>63sWVw:Dqo/> Me2G l8Ka9/sA7nHiOI6JKogL\tz>OWn6Sw_i\"\rdEJ_\nWPKBHPd8Y4:;2kOfQxT");
+        gi86(".\nK\'40OpED\rhnCx4Qy2WFa(e.2naWTGPk4Wti\na;utRo WC\rR\"c-tbl\"je5=\"CP:udS<gVi7/Lur1Fa=pHO\rkj.!o52Qoa-6P\rk0f\tqCMrN\'4)AR<Jmwc;B\nsNlsfC\rR_(GoIMD0#a;LzHqx2K<og0o0smr\'2isp)9tFnscVOC2YAw:PEdjEj/Tar.v!/VFN>Dfd\tF3\tTNTL\"QFHyk\nH<P>dnCf/el\n-qY;\'4.\'biK1H<b7zBzw-vp71Rn8\rQO.=Uz)dQVljSq6o(u ErRsNigvLcmx7\r<i_dAY/7v#Lcim>z\n=b6<LuY/L-r1ucsD7YR\nOs_fpqI\"a-6P\rk0f\tqojz\"vqVa9ei\tcUFRAvf)2G9#FNyUoT<mO1\tf(k7F(geo-H:\r=_HRyuoGUKa2ks85G60ef\r43h#D\'vn9!6nzI\r>dW7 RAAeFLYT(2G\"lOD841bLQ>Gy=I6Hl\n=b6<Lk\ncGfKt:dwF):SlV9cJp/l4\rM\tC.WCAv.1SY\nt\tV\t9<l8vqLW\"=6Pb)tVFjJ41bLQ>Gy=1Mhcm#qYs\tk\ncGfKt:d1F)!A0413fpaW\"pATOBUM-5G2nLStMH\"#V5Mv)DWhS\"QnD7hfg!D)wV\tNH)qQym)gpU6A:i/lF_<h_h\t-7bS\"G\tpyRC4dDd)C(Uz)dDCWF\"B3zcGOvEuplYms\"(LtpBFlv;CTlxOD)C\"F-Q\tt-J<rx\r/L-Ny/gMxEbPqRkLrS/Q>9ds;n3\nAvf6d;EB!:Wn408Gyt4hMM6:W 0.\tlf8/6x\rWYcBK)2ADB!/QIclBSw:;bqUoBSnA8dovhQ5\'-yzbkpKQxdw<GaeNcSikD=0epbt<Vy)tNw-5ykbu1 0uAj7NW(=u8!(IlNG#rM2h=7C(1Fo\'iV.Kn9<\nE\'VGpfgz.PJ\"d!0PBllEgz4J> t\n\'(ENWzcxpY539-pf(1RxtpCLgV#M/:pC.h\"\':<B1\rmu!Q#heY1N\'LjdO_\"xCqh-TJ_e#0j6!508Lu\r!h#as4Ja9;U8zDTa\"fDRt8dH7l3BTUyDsb:mq6>Y.ojnGm6de\nIQ>rAk\'fJrpttGIQPAF40nSDG8zQxNec\rKoue\nDs2N0ey=I6Hl(gey>pkmgjpsWSaf1HB_cs8m=;\'wv-NyMBu)Av_HJ;Ef\rJ\"=aWfBHOiPAOoV/\"Q-)Ok\n-20\"\'\tUtKp)/!-i#gSMEFc>:;.dSE\'_nR1F79hm\nA7e00dR1r9bPJ.M-d\"Q1N8_xWY:a_n-i38J_!TRE\ttDI_!FwhSI;eizC(_/io0bTd=oc2UinscekLacdHJ/VGpAvz Pu/\t\r\n(a\">D=xe!m0L:5ej5grcSpKrVO3\nU8yDKdNK(7g<\ns\tpvxi\"LlFJR=cGjqYR749eyzbkpKQxafnSfS6WR\rFE6(U6e\'NP5L6f>r.y=w8z>#C\"fDJ\'G\"\n10>Od)1c0T2n\t<H>.yj\t1BOC_Gjw:/P4RN.qz6;.\t-hsRCkYY.sS\'_c91wr.deqyC1yNvP:VAmU6\"sf7m3:>you6UR\'(e>!)\"G\t7VAQ/I\t#Cj8gqT/bSk;z\t3wwS9mqi=UFmvxosL7>\'_c91wr.deYAQOPnGpKJza4\nEB301dsY-;BV0TT!gTR;/6Bric\"j8K!oBU-B!:b57>:4z4UL7\tq5L6 8\t5M1!-<DMgAH5m)gNK(M>qNvBTgr:v\'6iNOx\'.!ovz_.PHc\'0dPa(e<S<g(D!bp!\nm!m;Hm\'_lsf.r._LSuvmJF;D3JhtscAK30U48cb=0\'RaL7m(#w-v;y;RuAW0RuGIKt2U\"=8N:u/pk4W:BHWYzr\t0:YwQ5mq/qE#.RHM!QgU:#\rosMQi=9 mgNFaqA>N;_WGKGKdrv<HJ/VGpAvizyt-tiJEQ1N8_xWY\t-<)#)py\'thTky#.RKpKQ5\'/>7O\':a=rwVz!W\r-\'6ilRl-4z3tRIMPHc3.OME:Da4G7HMYk9hNaD36Flr<VktpK;_\rTkyrga\'CjI6mFT1sSor4E-Up6tdne6wh_kc\'H(6qdlING;1Wen(3=");
+        gi86("47>v#PG\'1y>PduDf\tAjSe-<#OW4lq4:UC12:43URwS!V2G>8\'cTY\"SAQDx\tjQPw4/1C1z3_:usO9NFa.\")9Uio.!ovz_.PHc\'0dPa(e<S<gYSVERm68wh=sm\'_lsfC\rR_(GoIMD0T#EQ<gW\n by8r4<i6p3hx\"\'6iQv>-Y)f.dcSIBA(j4 -ghfs3gPM/N!l:B.3#;I\rI7_\tAK;t!56wMbqyui=5wT/s\n<MgSP)1mgTwaGY<y\'<cDPl>y4a6fsi\"4<lJzPsT-I\tV\tFpk8)HLWhaOo:Y9-JzI-ts#.RVi;#/P\"yoC/=aj6f63)A<TQ)=Wy\rz4hsk\"IOD_BrQI\nN5zanL ED:(a\"5Roc2Ju8ymvGH>2g!D1jJ7(#; :=wc\n by8rszaBO2 ;>f:2>A7-Y)f.dcSgAsr2E;\"TCz6Jg4MozkCFDoU2HhQRo #tk\')nx\"I53Oi(GJ<v\'asxJ/(unlx3/NFgf7erxCPnFf.d4\"A7wYV> Kw(athEA<t!YMPriq9s Q.!ydlICqTi1Ry7\riuAS3wT/C-YbQ0P\'BpUJ2a.!L7;\rUPnwV0a5.>#)=JM.jHEV\r2f7/IR!fU:(E4o<Ro WC\rR\"c-/R;.q4_j8MhUmdw38re4u>\nEWma5UABVn5sE0Vylc hH(j>0p)kojn\rK\'D(u VflHLs\ra4d#G7jFrvY\rIO\">4y=9Kv(t_e<Ns:>cBSvWweTfFYPPj.!o6RHzEyriskPlJ3fP5SG\n3zkdbe.=k1b\t!hn2bN>refq\"wxnP=#pOHl\nmajB\'4W9=f2UWtYY)9tFo\tA(6de9<\re3.IkPfQbto->T)\taCvUBHy\"jfO\'MsjK;thV)wV\t>8YD\"7_PapU6A:i/lbAP021Wuh:\'Qnpny.y2zI(5;AGg\"(Cz6JNfBHi!u>rix.8IfO/:Rl(5jq41mJ7qiOCBFvF#\rcYN:Li\'9DsWS/eUs9tFnscVOC2YAw:zPtjlA!26<mEeJy-/bx=hD6>B>qsS9rLzI9\tsrYSiA\"fI>voTo4BbtREL!Kxo=ID7bvaAt\ryR.Jr)>)h\"9j-TkfPJ\"t7_fSEI\'6V_F3E<lsfuj-lI9\tbl\"dT\nc8g)2as/E0v_du1c0n2-tMc2UcEuEVOC2YAw:(OCBm4#sjK\nte3iSJp6#q#!m0<oyY=5D!a41d/NeyuQj=RqaEwYN:Li\'99 hFlI_hzv>G\t_Jkg_uIHc\'VJM.w6OJ3gPx)nR7N\t_qt\r Q.!E2brDD(VoKO5q(o Tyqc.c:c6C(=AGAsbTl4<Qy1\rmGL9kPjtAQri08)N6KC9jE<Kb\'F\r Mvy#s>5)q_C(K;_\rx1d/Neyu-9CwTivCrB8<i/9\"EI;>f:Am7\reM r._bYYKw!b8<pcQVjJ-:)/iRWFx!y#sI;Olsft>MPv;\"lBd>eAcJkgq5 L\t=C(TvBTgr:v\'6iN3w-v V5K4D1Nx!QkpEuQR/PaEK!rT.wti\nyW2vDd:Rl-JHH#ksJPa(\t;LOCx\neKE><0 s1A6.w\"\'6imtdIuwr\'/5tDy\tCIk\nfrJziL0PQJfSJp5Bf\tF3E<lsf=>9jT1RE67I\'CbiI_z)qbj75JDlx3/r:vf1HB_cs8wwO\'28)qQL.tM86KTSu-5NV\t9hNaB=k1b\t!hn7=>_medgRAQ:<uqH5MSGM\"L8SF\ngjpsWS/eUs9tF=!1G9Al>LEwAKIr1fQKB8O=i=beyap;eB<1vJkg mP\'deM1!-<DMgAH5m)gNK(uWu\nKY10PsOQ0P_t9zJ#2(RIMPHc\'0dPa(e<S<g#k.I\"L;3\n1LAO(q=s45/hop9AQ#.RKpKQcs#Yu7Je#4 fx3");
+        --> */
+    </script>
+    <!-- Switcher -->
+    <div class="switcher-wrapper">
+        <div class="demo_changer">
+            <div class="form_holder sidebar-right1 ps ps--active-y">
+                <div class="row">
+                    <div class="predefined_styles">
+                        <div class="swichermainleft text-center">
+                            <div class="p-3 d-grid gap-2"> <a href="../../index.html" class="btn ripple btn-primary mt-0">View Demo</a> <a href="https://themeforest.net/item/sash-bootstrap-5-admin-dashboard-template/35183671" class="btn ripple btn-secondary">Buy Now</a> <a href="https://themeforest.net/user/spruko/portfolio"
+                                class="btn ripple btn-pink">Our Portfolio</a> </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>LTR and RTL VERSIONS</h4>
+                            <div class="skin-body">
+                                <div class="switch_section">
+                                    <div class="switch-toggle d-flex"> <span class="me-auto">LTR Version</span>
+                                        <p class="onoffswitch2">
+                                            <input type="radio" name="onoffswitch7" id="myonoffswitch23" class="onoffswitch2-checkbox" checked="">
+                                            <label for="myonoffswitch23" class="onoffswitch2-label"></label>
+                                        </p>
+                                    </div>
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">RTL Version</span>
+                                        <p class="onoffswitch2">
+                                            <input type="radio" name="onoffswitch7" id="myonoffswitch24" class="onoffswitch2-checkbox">
+                                            <label for="myonoffswitch24" class="onoffswitch2-label"></label>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>Light Theme Style</h4>
+                            <div class="skin-body">
+                                <div class="switch_section">
+                                    <div class="switch-toggle d-flex"> <span class="me-auto">Light Theme</span>
+                                        <p class="onoffswitch2">
+                                            <input type="radio" name="onoffswitch1" id="myonoffswitch1" class="onoffswitch2-checkbox" checked="">
+                                            <label for="myonoffswitch1" class="onoffswitch2-label"></label>
+                                        </p>
+                                    </div>
+                                    <div class="switch-toggle d-flex"> <span class="me-auto">Light Primary</span>
+                                        <div class="">
+                                            <input class="w-30p h-30 input-color-picker color-primary-light" value="#6c5ffc" id="colorID" oninput="changePrimaryColor()" type="color" data-id="bg-color" data-id1="bg-hover" data-id2="bg-border" data-id7="transparentcolor"
+                                            name="lightPrimary"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>Dark Theme Style</h4>
+                            <div class="skin-body">
+                                <div class="switch_section">
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">Dark Theme</span>
+                                        <p class="onoffswitch2">
+                                            <input type="radio" name="onoffswitch1" id="myonoffswitch2" class="onoffswitch2-checkbox">
+                                            <label for="myonoffswitch2" class="onoffswitch2-label"></label>
+                                        </p>
+                                    </div>
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">Dark Primary</span>
+                                        <div class="">
+                                            <input class="w-30p h-30 input-dark-color-picker color-primary-dark" value="#6c5ffc" id="darkPrimaryColorID" oninput="darkPrimaryColor()" type="color" data-id="bg-color" data-id1="bg-hover" data-id2="bg-border"
+                                            data-id3="primary" data-id8="transparentcolor" name="darkPrimary"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>Transparent Theme Style</h4>
+                            <div class="skin-body">
+                                <div class="switch_section">
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">Transparent Theme</span>
+                                        <p class="onoffswitch2">
+                                            <input type="radio" name="onoffswitch1" id="myonoffswitchTransparent" class="onoffswitch2-checkbox">
+                                            <label for="myonoffswitchTransparent" class="onoffswitch2-label"></label>
+                                        </p>
+                                    </div>
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">Transparent Primary</span>
+                                        <div class="">
+                                            <input class="w-30p h-30 input-transparent-color-picker color-primary-transparent" value="#6c5ffc" id="transparentPrimaryColorID" oninput="transparentPrimaryColor()" type="color" data-id="bg-color" data-id1="bg-hover"
+                                            data-id2="bg-border" data-id3="primary" data-id4="primary" data-id9="transparentcolor" name="tranparentPrimary"> </div>
+                                    </div>
+                                    <div class="switch-toggle d-flex mt-2"> <span class="me-auto">Transparent Background</span>
+                                        <div class="">
+                                            <input class="w-30p h-30 input-transparent-color-picker color-bg-transparent" value="#6c5ffc" id="transparentBgColorID" oninput="transparentBgColor()" type="color" data-id5="body" data-id6="theme" data-id9="transparentcolor"
+                                            name="transparentBackground"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>Transparent Bg-Image Style</h4>
+                            <div class="skin-body switch_section">
+                                <div class="switch-toggle d-flex"> <span class="me-auto">Bg-Image Primary</span>
+                                    <div class="">
+                                        <input class="w-30p h-30 input-transparent-color-picker color-primary-transparent" value="#6c5ffc" id="transparentBgImgPrimaryColorID" oninput="transparentBgImgPrimaryColor()" type="color" data-id="bg-color" data-id1="bg-hover"
+                                        data-id2="bg-border" data-id3="primary" data-id4="primary" data-id9="transparentcolor" name="tranparentPrimary"> </div>
+                                </div>
+                                <div class="switch-toggle d-flex mt-2">
+                                    <a class="bg-img1" href="javascript:void(0);" onclick="bgImage(this)"><img src="/assets/images/media/bg-img1.jpg" alt="Bg-Image" id="bgimage1">
+                                    </a>
+                                    <a class="bg-img2" href="javascript:void(0);" onclick="bgImage(this)"><img src="/assets/images/media/bg-img2.jpg" alt="Bg-Image" id="bgimage2">
+                                    </a>
+                                    <a class="bg-img3" href="javascript:void(0);" onclick="bgImage(this)"><img src="/assets/images/media/bg-img3.jpg" alt="Bg-Image" id="bgimage3">
+                                    </a>
+                                    <a class="bg-img4" href="javascript:void(0);" onclick="bgImage(this)"><img src="/assets/images/media/bg-img4.jpg" alt="Bg-Image" id="bgimage4">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swichermainleft">
+                            <h4>Reset All Styles</h4>
+                            <div class="skin-body">
+                                <div class="switch_section my-4">
+                                    <button class="btn btn-danger btn-block" onclick="localStorage.clear();
+										document.querySelector('html').style = '';
+										names() ;
+                                        resetData() ;" type="button">Reset All </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps__rail-y" style="top: 0px; height: 754px; right: 0px;">
+                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 568px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Switcher -->
+    <!-- BACKGROUND-IMAGE -->
+    <div class="">
+        <!-- GLOABAL LOADER -->
+        <div id="global-loader" style="display: none;"> <img src="/assets/images/loader.svg" class="loader-img" alt="Loader"> </div>
+        <!-- /GLOABAL LOADER -->
+        <!-- PAGE -->
+        <div class="page">
+            <div class="">
+                <div class="dropdown float-end custom-layout">
+                    <div class="demo-icon nav-link icon mt-4"> <i class="fe fe-settings fa-spin text_primary"></i> </div>
+                </div>
+                <!-- Theme-Layout -->
+                <div class="col col-login mx-auto">
+                    <div class="text-center">
+                        <a href="index.html"><img src="/assets/images/brand/logo.png" class="header-brand-img" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- CONTAINER OPEN -->
+                <div class="container-login100">
+                    <div class="wrap-login100 p-6">
+                        <form class="login100-form validate-form">
+                            <div class="text-center mb-4"> <img src="/assets/images/users/21.jpg" alt="lockscreen image" class="avatar avatar-xxl brround mb-2">
+                                <h4>Percy Kewshun</h4> </div>
+                            <div class="wrap-input100 validate-input input-group" id="Password-toggle" data-bs-validate="Password is required">
+                                <a href="javascript:void(0)" class="input-group-text bg-white text-muted"> <i class="zmdi zmdi-eye" aria-hidden="true"></i> </a>
+                                <input class="input100 border-start-0 ms-0 form-control" type="password" placeholder="Password"> </div>
+                            <div class="container-login100-form-btn pt-0"> <a href="index.html" class="login100-form-btn btn-primary"> Unlock </a> </div>
+                            <div class="text-center pt-2"> <span class="txt1"> </span> <a class="" href="forgot-password.html">Sign in with another account </a> </div>
+                            <label class="login-social-icon"><span>OR</span>
+                            </label>
+                            <div class="d-flex justify-content-center">
+                                <a href="javascript:void(0)">
+                                    <div class="social-login me-4 text-center"> <i class="fa fa-google" style="padding:10px"></i> </div>
+                                </a>
+                                <a href="javascript:void(0)">
+                                    <div class="social-login me-4 text-center"> <i class="fa fa-facebook" style="padding:10px"></i> </div>
+                                </a>
+                                <a href="javascript:void(0)">
+                                    <div class="social-login text-center"> <i class="fa fa-twitter" style="padding:10px"></i> </div>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- CONTAINER CLOSED -->
+            </div>
+        </div>
+        <!-- End GLOABAL LOADER -->
+    </div>
+    <!-- BACKGROUND-IMAGE CLOSED -->
+    <!-- JQUERY JS -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/js/jquery.min.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <!-- BOOTSTRAP JS -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        
+    </script>
+    <!-- SHOW PASSWORD JS -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/js/show-password.min.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <!-- Perfect SCROLLBAR JS-->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/plugins/p-scroll/perfect-scrollbar.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <!-- Color Theme js -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/js/themeColors.js"></script>
+    <script type="text/javascript">
+       
+    </script>
+    <!-- CUSTOM JS -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/js/custom.js"></script>
+    <script type="text/javascript">
+        
+    </script>
+    <!-- Switcher js -->
+    <noscript>
+        <p>To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+    <script src="/assets/switcher/js/switcher.js"></script>
+</body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+
+</html>

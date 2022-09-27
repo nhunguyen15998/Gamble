@@ -121,3 +121,10 @@ $('input[name="amount"]').on('input', () => {
         $('#deposit-amount-err').text("Invalid format")   
     }
 })
+$('.deposit-type').click(function(){
+        $('.deposit-type').each(function(index, item) {
+            $(item).removeClass('type-active');
+        });
+         $(this).addClass('type-active');
+     
+})

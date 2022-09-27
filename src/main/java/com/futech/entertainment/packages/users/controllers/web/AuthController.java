@@ -124,6 +124,7 @@ public class AuthController {
                         }
                         session.setAttribute("phone", user.get("phone"));
                         session.setAttribute("user_id", user.get("user_id"));
+                        session.setAttribute("is_admin", user.get("is_admin"));
                         session.setAttribute("user_profile_id", user.get("user_profile_id"));
                         var date = user.get("created_at").toString().substring(0, 10);
                         session.setAttribute("createdAt", date);
