@@ -7858,6 +7858,30 @@ select:focus {
   background-repeat: no-repeat;
 }
 /* end game page */
+/* article page */
+.breadcrumb-area.bonus {
+  background: url(../images/defaults/bonus.jpeg);
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  height: 550px;
+  padding: 0px;
+}
+.bonuse-section .header-area {
+  background-color: #1f0644;
+  padding-top: 76px;
+  margin-top: -280px;
+  border-radius: 6px;
+  padding-bottom: 70px;
+  background-image: url(../images/defaults/bg-s3.png);
+  background-repeat: repeat;
+}
+.bonuse-section {
+  background-image: url(../images/defaults/bg-s3.png);
+  background-repeat: repeat;
+  padding-bottom: 90px;
+}
+/* end article page */
 
 /* pills - information.html */
 #settings-menu .nav-link.active, .nav-pills .show>.nav-link {

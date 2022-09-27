@@ -23,10 +23,10 @@ public class HomeController {
         return "games";
     }
 
-    // @GetMapping("/games")
-    // public String gamePage(){
-    //     return "games";
-    // }
+    @GetMapping("/articles")
+    public String blog(){
+        return "blogs";
+    }
 
     //get success
     @GetMapping("/results/success")

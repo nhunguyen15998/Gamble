@@ -61,7 +61,6 @@ th:replace="~{layouts/main-layout :: main-fragment(
         </section>
         <!-- Games Filter Area End -->
 
-
         <!-- Game play area start -->
         <section class="game-play-section game-play-section2">
             <div class="container">
@@ -630,28 +629,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
         <!-- Daily Contest area End -->
 
         <!-- Contact Section start -->
-        <section class="contact_section">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6">
-                        <div class="left-image">
-                            <img th:src="@{/images/defaults/cs-image.png}" alt="">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="section-heading content-left">
-                            <h2 class="title ">
-                                If you have any questions
-                            </h2>
-                            <h6 class="text">
-                                Our top priorities are to protect your privacy, provide secure transactions, and safeguard your data. When you're ready to play, registering an account is required so we know you're of legal age and so no one else can use your account.We answer the most commonly asked lotto questions..
-                            </h6>
-                            <a href="#" class="mybtn1">Contact Us</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <section class="contact_section" th:replace="~{/fragments/contact_area :: section}"></section>
         <!-- Contact Section end -->
         <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
         
