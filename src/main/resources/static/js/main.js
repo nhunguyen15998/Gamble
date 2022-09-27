@@ -294,3 +294,19 @@ let AREA_ID
 let SECTION
 const ALERT_AREA = 'alert-area'
 /* end require password modal */
+
+/* profile nav */
+$('.left-area-item').click(function(){
+    localStorage.setItem('active-item', $(this).attr('class').split(' ')[1]);
+})
+$(window).on('load', function () {
+    var ele = localStorage.getItem('active-item');
+    if(ele==null)
+        $('.left-area-item').first().addClass('active'); 
+    else 
+        $('.'+ele).addClass("active");
+       
+    localStorage.removeItem('active-item');
+  
+})
+/* end profile nav */

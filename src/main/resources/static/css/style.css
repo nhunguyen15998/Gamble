@@ -7904,3 +7904,11 @@ select:focus {
   background: #7a3196b5 !important; 
   color: #fff;
 }
+/* custom */
+.type-active{
+  border:1.5px solid #00a2ff;
+  padding:3px;
+}
+.deposit-type:hover{
+  cursor: pointer;
+}
