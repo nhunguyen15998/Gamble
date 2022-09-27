@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.users.AdministratorController;
+package com.futech.entertainment.packages.users.controllers.admin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import com.futech.entertainment.packages.users.services.interfaces.UserServiceIn
 import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
-public class UsersController {
+public class UserManaController {
     @Autowired
     private UserServiceInterface userServiceiInterface;
     @GetMapping("/admin/users/all")

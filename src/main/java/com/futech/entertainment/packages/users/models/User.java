@@ -14,7 +14,7 @@ public class User extends BaseModel {
     private String table = "users";
 
     private String[] columns = { "id", "phone", "email", "plain_password", "hash_password", "created_at", "status", 
-                                 "activate_code", "forgot_password_code", "code_lifespan" };
+                                 "activate_code", "forgot_password_code", "code_lifespan", "is_admin" };
 
     public String getTable() {
         return this.table;
