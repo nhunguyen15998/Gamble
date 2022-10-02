@@ -1,0 +1,662 @@
+<htmllang="en" xmlns:th="http://www.thymeleaf.org"  >
+<head th:replace="layouts/admin :: importLibs">
+</head>
+<body class="app sidebar-mini ltr transparent-mode bg-img1" data-new-gr-c-s-check-loaded="14.1071.0" data-gr-ext-installed="">
+  <div class="horizontalMenucontainer">
+    
+    <div th:replace="layouts/admin :: switcher-wrapper"></div>
+    <div th:replace="layouts/admin :: global-loader"></div>
+    
+    <div class="page">
+        <div class="page-main is-expanded">
+             <div th:replace="layouts/admin :: app-header"></div>
+             <div th:replace="layouts/admin :: sticky"></div>
+              <!--app-content open-->
+              <div class="main-content app-content mt-0">
+
+                <div class="side-app">
+                    <!-- CONTAINER -->
+                    <div class="main-container container-fluid">
+                        <!-- PAGE-HEADER -->
+                        <div class="page-header">
+                            <h1 class="page-title" th:text="${formType==1?'Update':'Create'}"></h1>
+                            <div>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Users</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page" th:text="${formType==1?'Update':'Create'}"></li>
+                                </ol>
+                            </div>
+                        </div>
+                        <!-- PAGE-HEADER END -->
+                        <!-- ROW OPEN -->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Infomation</h3> </div>
+                                    <div class="card-body">
+                                        <form class="needs-validation" novalidate="">
+                                            <div style="position: relative;width: 25%;float:left ;margin-right: 1vw;">
+                                                <div style="position: relative;display:table-row; height: auto; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
+                                                    <div id="viewer" style="border: 2px dashed rgba(255, 255, 255, 0.2) ;border-radius: 6px; min-height: 280px;height:inherit;padding-top:10px; text-align:center">
+                                                        <!-- <div style="margin-bottom:10px" id="content" class="text-danger" th:if="${#fields.hasErrors('path_img')}" th:errors="*{path_img}"></div> -->
+                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:20px;" />
+                                                    </div>
+                                                    <input type="file" id="ip-thumbnail" name="pathImg"  class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
+                                                    position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">
+                                                </div>
+                                                <div  style="width:100%;text-align:center;height: auto;float: left;margin-top:-12px;display:table-row;cursor: pointer;position: relative;">
+                                                    <span id="trashimg" style="padding: 11px 13px; background: #e12c2c; border-radius: 50%; border: 0; font-size: 17px; display: none"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
+                                                </div>
+                                        </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationCustom01">First name</label>
+                                                    <input type="text" class="form-control" id="validationCustom01">
+                                                   
+                                                </div>
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationCustom02">Last name</label>
+                                                    <input type="text" class="form-control" id="validationCustom02" >
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationCustom03">Phone</label>
+                                                    <input type="text" class="form-control" id="validationCustom03">
+                                                </div>
+                                                <div class="col-xl-6 mb-3"> 
+                                                    <label for="validationCustom05">Email</label>
+                                                    <!-- is-invalid -->
+                                                    <input type="text" class="form-control"> 
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationCustom05">Password</label>
+                                                    <input type="password" class="form-control" id="validationCustom05">
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationCustom05">Confirm password</label>
+                                                    <input type="password" class="form-control" id="validationCustom06">
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationCustom04">Status</label>
+                                                    <select class="form-control select2" id="validationCustom04">
+                                                     <option value="1" style="background-color:#8677d3;">Activated</option>
+                                                     <option value="0" style="background-color:#8677d3;">Deactivated</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <button class="btn btn-primary" type="submit">Save</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Default Validation</h3> </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationDefault01">First name</label>
+                                                    <input type="text" class="form-control" id="validationDefault01" value="Mark" required=""> </div>
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationDefault02">Last name</label>
+                                                    <input type="text" class="form-control" id="validationDefault02" value="Otto" required=""> </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationDefault03">City</label>
+                                                    <input type="text" class="form-control" id="validationDefault03" required=""> </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationDefault04">State</label>
+                                                    <select class="form-select form-control" id="validationDefault04" required="">
+                                                        <option selected="" disabled="" value="">Choose...</option>
+                                                        <option>...</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationDefault05">Zip</label>
+                                                    <input type="text" class="form-control" id="validationDefault05" required=""> </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required="">
+                                                    <label class="form-check-label" for="invalidCheck2">Agree to terms and conditions</label>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Server Side Validation</h3> </div>
+                                    <div class="card-body">
+                                        <form>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationServer01">First name</label>
+                                                    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required="">
+                                                    <div class="valid-feedback">Looks good!</div>
+                                                </div>
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationServer02">Last name</label>
+                                                    <input type="text" class="form-control is-valid" id="validationServer02" value="Otto" required="">
+                                                    <div class="valid-feedback">Looks good!</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationServer03">City</label>
+                                                    <input type="text" class="form-control is-invalid" id="validationServer03" aria-describedby="validationServer03Feedback" required="">
+                                                    <div id="validationServer03Feedback" class="invalid-feedback">Please provide a valid city.</div>
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationServer04">State</label>
+                                                    <select class="form-select form-control is-invalid" id="validationServer04" aria-describedby="validationServer04Feedback" required="">
+                                                        <option selected="" disabled="" value="">Choose...</option>
+                                                        <option>...</option>
+                                                    </select>
+                                                    <div id="validationServer04Feedback" class="invalid-feedback">Please select a valid state.</div>
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationServer05">Zip</label>
+                                                    <input type="text" class="form-control is-invalid" id="validationServer05" aria-describedby="validationServer05Feedback" required="">
+                                                    <div id="validationServer05Feedback" class="invalid-feedback">Please provide a valid zip.</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-check">
+                                                    <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required="">
+                                                    <label class="form-check-label" for="invalidCheck3">Agree to terms and conditions</label>
+                                                    <div id="invalidCheck3Feedback" class="invalid-feedback">You must agree before submitting.</div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Supported Elements</h3> </div>
+                                    <div class="card-body">
+                                        <form class="was-validated">
+                                            <div class="mb-3">
+                                                <label for="validationTextarea">Textarea</label>
+                                                <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea" required=""></textarea>
+                                                <div class="invalid-feedback">Please enter a message in the textarea.</div>
+                                            </div>
+                                            <div class="custom-control custom-checkbox mb-3">
+                                                <input type="checkbox" class="custom-control-input" id="customControlValidation1" required="">
+                                                <label class="custom-control-label" for="customControlValidation1">Check this custom checkbox</label>
+                                                <div class="invalid-feedback">Example invalid feedback text</div>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required="">
+                                                <label class="custom-control-label" for="customControlValidation2">Toggle this custom radio</label>
+                                            </div>
+                                            <div class="custom-control custom-radio mb-3">
+                                                <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" required="">
+                                                <label class="custom-control-label" for="customControlValidation3">Or toggle this other custom radio</label>
+                                                <div class="invalid-feedback">More example invalid feedback text</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="input-group is-invalid"> <span class="input-group-text" id="validatedInputGroupPrepend">@</span>
+                                                    <input type="text" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required=""> </div>
+                                                <div class="invalid-feedback">Example invalid input group feedback</div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="input-group is-invalid">
+                                                    <label class="input-group-text" for="validatedInputGroupSelect">Options</label>
+                                                    <select class="form-select form-control" id="validatedInputGroupSelect" required="">
+                                                        <option value="">Choose...</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                                <div class="invalid-feedback">Example invalid input group feedback</div>
+                                            </div>
+                                            <div class="input-group is-invalid">
+                                                <div class="form-file">
+                                                    <input type="file" class="form-control" id="validatedInputGroupCustomFile" required="">
+                                                    <label for="validatedInputGroupCustomFile"></label>
+                                                </div>
+                                            </div>
+                                            <div class="invalid-feedback">Example invalid input group feedback</div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Tooltips</h3> </div>
+                                    <div class="card-body">
+                                        <form class="needs-validation" novalidate="">
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationTooltip01">First name</label>
+                                                    <input type="text" class="form-control" id="validationTooltip01" value="Mark" required="">
+                                                    <div class="valid-tooltip">Looks good!</div>
+                                                </div>
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationTooltip02">Last name</label>
+                                                    <input type="text" class="form-control" id="validationTooltip02" value="Otto" required="">
+                                                    <div class="valid-tooltip">Looks good!</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-xl-6 mb-3">
+                                                    <label for="validationTooltip03">City</label>
+                                                    <input type="text" class="form-control" id="validationTooltip03" required="">
+                                                    <div class="invalid-tooltip">Please provide a valid city.</div>
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationTooltip04">State</label>
+                                                    <select class="select2 form-control select2-hidden-accessible" id="validationTooltip04" required="" tabindex="-1" aria-hidden="true">
+                                                        <option selected="" disabled="" value="">Choose...</option>
+                                                        <option>...</option>
+                                                    </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 276.3px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-validationTooltip04-container"><span class="select2-selection__rendered" id="select2-validationTooltip04-container" title="Choose...">Choose...</span>
+                                                    <span
+                                                    class="select2-selection__arrow" role="presentation"><b role="presentation"></b>
+                                                        </span>
+                                                        </span>
+                                                        </span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                                                        <div class="invalid-tooltip">Please select a valid state.</div>
+                                                </div>
+                                                <div class="col-xl-3 mb-3">
+                                                    <label for="validationTooltip05">Zip</label>
+                                                    <input type="text" class="form-control" id="validationTooltip05" required="">
+                                                    <div class="invalid-tooltip">Please provide a valid zip.</div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ROW CLOSED -->
+                    </div>
+        
+                 <!-- CONTAINER END -->
+                 </div>
+              </div>
+            <!--app-content close-->
+            
+        </div>
+            <div th:replace="layouts/admin :: sidebar-right"></div>
+            <div th:replace="layouts/admin :: country-selector"></div>
+            <footer th:replace="layouts/admin :: footer" ></footer>
+    </div>
+    
+
+    <a href="#top" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+      <defs id="SvgjsDefs1002"></defs>
+      <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+      <path id="SvgjsPath1004" d="M0 0 "></path>
+    </svg>
+    
+
+ <!-- JQUERY JS -->
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  
+  <script src="/assets/js/jquery.min.js">
+  </script>
+  <script type="text/javascript">
+  </script>
+  
+  <!-- BOOTSTRAP JS -->
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  <script src="/assets/plugins/bootstrap/js/popper.min.js">
+  </script>
+  
+  <script type="text/javascript">
+  
+  
+  </script>
+  
+  <noscript>
+  
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  
+  </noscript>
+  
+  <script src="/assets/plugins/bootstrap/js/bootstrap.min.js">
+  </script>
+  
+  <script type="text/javascript">
+  
+  </script>
+  
+  <!-- SPARKLINE JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/js/jquery.sparkline.min.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- Sticky js -->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/js/sticky.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- CHART-CIRCLE JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- PIETY CHART JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/peitychart/jquery.peity.min.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/peitychart/peitychart.init.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- SIDEBAR JS -->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/sidebar/sidebar.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- Perfect SCROLLBAR JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/perfect-scrollbar.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/pscroll.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script src="/assets/plugins/p-scroll/pscroll-1.js">
+  </script>
+  <script type="text/javascript">
+  
+  </script>
+  <!-- INTERNAL CHARTJS CHART JS-->
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  <script type="text/javascript">
+  
+  </script>
+  <noscript>
+  <p>
+  To display this page you need a browser that supports JavaScript.</p>
+  </noscript>
+  
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/chart/utils.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL SELECT2 JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/select2/select2.full.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Data tables js-->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/js/jquery.dataTables.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/js/dataTables.bootstrap5.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/datatable/dataTables.responsive.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL APEXCHART JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/apexcharts.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/apexchart/irregular-data-series.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Flot JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/flot/dashboard.sampledata.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL Vector js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js">
+    </script>
+  <script type="text/javascript">
+   
+  </script>
+   <!-- SIDE-MENU JS-->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/sidemenu/sidemenu.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- TypeHead js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/plugins/bootstrap5-typehead/autocomplete.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/typehead.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- INTERNAL INDEX JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+ 
+  <script type="text/javascript">
+  
+  </script>
+   <!-- Color Theme js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/themeColors.js">
+    </script>
+  <script type="text/javascript">
+    
+  </script>
+   <!-- CUSTOM JS -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/js/custom.js">
+    </script>
+  <script type="text/javascript">
+  
+  </script>
+   <!-- Switcher js -->
+   <noscript>
+    <p>
+    To display this page you need a browser that supports JavaScript.</p>
+    </noscript>
+  <script src="/assets/switcher/js/switcher.js">
+    </script>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+      <defs id="SvgjsDefs1002">
+      </defs>
+      <polyline id="SvgjsPolyline1003" points="0,0">
+      </polyline>
+      <path id="SvgjsPath1004" d="M0 0 ">
+      </path>
+      </svg>
+   
+  </div>
+          <div class="jvectormap-tip">
+            </div>
+    
+        </body>
+        <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+</body>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
+
+<script>
+</script>
