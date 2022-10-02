@@ -42,7 +42,7 @@ public class BlogController {
     }
 
     @GetMapping("/articles/detail/{cate}/{url}-{id}")
-    public String blogDetail(@PathVariable String cate, @PathVariable String url, @PathVariable String id, Model model){
+    public String blogDetail(@PathVariable String cate, @PathVariable String url, @PathVariable String id, Model model, HttpServletRequest request){
         try {
             System.out.println("cate: "+cate);
             System.out.println("url: "+url);
@@ -51,6 +51,7 @@ public class BlogController {
             conditions.add(DataMapper.getInstance("", "blogs.id", "=", id, "and"));
             var blog = this.blogServiceInterface.getBlog(conditions);
             model.addAttribute("blog", blog);
+            model.addAttribute("articleURL", request.getRequestURL());
         } catch (Exception e) {
             e.printStackTrace();
         }
