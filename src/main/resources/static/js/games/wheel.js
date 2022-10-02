@@ -403,8 +403,8 @@ let isPartialBet = false
 $(document).on('click', '#rotate-button', async function () {
     if (spinning) return
     if(!isBet){
-        document.querySelector('#bet-modal p').innerHTML = 'Please make your bet first!'
-        $('#bet-modal').modal('show')
+        document.querySelector('#warning-modal p').innerHTML = 'Please make your bet first!'
+        $('#warning-modal').modal('show')
         return
     }
 
@@ -509,8 +509,8 @@ $('#btn-wheel-bet').on('click', () => {
     let balance = $('#wheel-balance').text()
     balance = balance.substring(1, balance.length)
     if(balance <= 0){
-        document.querySelector('#bet-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
-        $('#bet-modal').modal('show')
+        document.querySelector('#warning-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
+        $('#warning-modal').modal('show')
     } else {
         $.get('/user/wallet/check-balance', {"bet" : bet}, (response) => {
             console.log(response)
@@ -536,8 +536,8 @@ $('#btn-wheel-bet-all').on('click', () => {
     let balance = $('#wheel-balance').text()
     balance = balance.substring(1, balance.length)
     if(balance <= 0){
-        document.querySelector('#bet-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
-        $('#bet-modal').modal('show')
+        document.querySelector('#warning-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
+        $('#warning-modal').modal('show')
     } else {
         $('input[name="wheel_bet_amount"]').val(balance.substring(1, balance.length))
         isBet = true

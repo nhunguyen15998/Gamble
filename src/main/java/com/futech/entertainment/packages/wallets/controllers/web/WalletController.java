@@ -44,6 +44,8 @@ public class WalletController {
         String userId = session.getAttribute("user_id").toString();
         var balance = this.userWalletServiceInterface.getUserBalance(userId);
         model.addAttribute("balance", balance);
+        model.addAttribute("profileURL", req.getRequestURL());
+        model.addAttribute("walletSection", req.getRequestURI());
         return "wallets/my_wallets";
     }
 

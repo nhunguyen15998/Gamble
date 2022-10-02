@@ -443,7 +443,7 @@ select:focus {
   background-size: cover;
 }
 .breadcrumb-area.contact {
-  background: url(../images/defaults/bc/contact.png);
+  background: url(../images/defaults/contact.png);
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -4853,9 +4853,9 @@ select:focus {
 .bonuse-section .header-area {
   background-color: #1f0644;
   padding-top: 76px;
-  margin-top: -280px;
+  margin-top: -189px;
   border-radius: 6px;
-  padding-bottom: 70px;
+  padding-bottom: 40px;
   background-image: url(../images/defaults/bg-s3.png);
   background-repeat: repeat;
 }
@@ -4874,13 +4874,14 @@ select:focus {
 .single-bonus {
   border: 1px solid #483669;
   border-radius: 10px;
-  padding: 20px 30px 30px;
+  padding: 30px 30px;
   text-align: center;
   margin-bottom: 30px;
+  background-color: transparent !important;
 }
-.single-bonus img {
+/* .single-bonus img {
   height: 150px;
-}
+} */
 .single-bonus h4 {
   font-size: 18px;
   line-height: 28px;
@@ -4900,6 +4901,9 @@ select:focus {
 .single-bonus a i {
   font-size: 14px;
   margin-right: 3px;
+}
+.single-bonus .card-text{
+  font-size: 13px;
 }
 
 /* Bonuse Section  End */
@@ -7867,20 +7871,7 @@ select:focus {
   height: 550px;
   padding: 0px;
 }
-.bonuse-section .header-area {
-  background-color: #1f0644;
-  padding-top: 76px;
-  margin-top: -280px;
-  border-radius: 6px;
-  padding-bottom: 70px;
-  background-image: url(../images/defaults/bg-s3.png);
-  background-repeat: repeat;
-}
-.bonuse-section {
-  background-image: url(../images/defaults/bg-s3.png);
-  background-repeat: repeat;
-  padding-bottom: 90px;
-}
+
 /* end article page */
 
 /* pills - information.html */
@@ -7888,19 +7879,19 @@ select:focus {
   background-color: #fa009f !important;
 }
 
-#bet-modal .modal-content, #quit-game-modal .modal-content{
+#warning-modal .modal-content, #quit-game-modal .modal-content{
   background-color: #3c0651e0 !important;
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
 }
-#bet-modal .modal-header button, #quit-game-modal .modal-header button{
+#warning-modal .modal-header button, #quit-game-modal .modal-header button{
   box-shadow: inset 0px 0px 12px 8px #7a3196b5 !important;
   background: none !important;
   border: none !important;
 }
-#bet-modal .modal-footer, #quit-game-modal .modal-footer{
+#warning-modal .modal-footer, #quit-game-modal .modal-footer{
   border-top: none !important;
 }
-#bet-modal .modal-footer button, #quit-game-modal .modal-footer button{
+#warning-modal .modal-footer button, #quit-game-modal .modal-footer button{
   background: #7a3196b5 !important; 
   color: #fff;
 }

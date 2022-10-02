@@ -48,6 +48,8 @@ public class MyAccountController {
             genders.put(1, "female");
             genders.put(2, "other");
             model.addAttribute("genders", genders);
+            model.addAttribute("profileURL", request.getRequestURL());
+            model.addAttribute("overviewSection", request.getRequestURI());
         } catch (IllegalStateException e){
             e.printStackTrace();
         } catch (Exception e) {
@@ -57,38 +59,46 @@ public class MyAccountController {
     }
 
     @GetMapping("user/my-account/friend")
-    public String getMyAccountFriends(Model model, HttpSession session, RedirectAttributes redirAttrs){
+    public String getMyAccountFriends(Model model, HttpSession session, RedirectAttributes redirAttrs, HttpServletRequest request){
         if(session.getAttribute("phone") == null){
             redirAttrs.addFlashAttribute("errorMsg", "Sign in first");
             return "redirect:/user/sign-in";
         }
+        model.addAttribute("profileURL", request.getRequestURL());
+        model.addAttribute("friendSection", request.getRequestURI());
         return "users/profile/friends";
     }
 
     @GetMapping("user/my-account/statistic")
-    public String getMyAccountStatistics(Model model, HttpSession session, RedirectAttributes redirAttrs){
+    public String getMyAccountStatistics(Model model, HttpSession session, RedirectAttributes redirAttrs, HttpServletRequest request){
         if(session.getAttribute("phone") == null){
             redirAttrs.addFlashAttribute("errorMsg", "Sign in first");
             return "redirect:/user/sign-in";
         }
+        model.addAttribute("profileURL", request.getRequestURL());
+        model.addAttribute("statisticSection", request.getRequestURI());
         return "users/profile/statistics";
     }
 
     @GetMapping("user/my-account/play-history")
-    public String getMyAccountPlayHistory(Model model, HttpSession session, RedirectAttributes redirAttrs){
+    public String getMyAccountPlayHistory(Model model, HttpSession session, RedirectAttributes redirAttrs, HttpServletRequest request){
         if(session.getAttribute("phone") == null){
             redirAttrs.addFlashAttribute("errorMsg", "Sign in first");
             return "redirect:/user/sign-in";
         }
+        model.addAttribute("profileURL", request.getRequestURL());
+        model.addAttribute("historySection", request.getRequestURI());
         return "users/profile/play_history";
     }
 
     @GetMapping("user/my-account/achievement")
-    public String getMyAccountAchievement(Model model, HttpSession session, RedirectAttributes redirAttrs){
+    public String getMyAccountAchievement(Model model, HttpSession session, RedirectAttributes redirAttrs, HttpServletRequest request){
         if(session.getAttribute("phone") == null){
             redirAttrs.addFlashAttribute("errorMsg", "Sign in first");
             return "redirect:/user/sign-in";
         }
+        model.addAttribute("profileURL", request.getRequestURL());
+        model.addAttribute("achievementSection", request.getRequestURI());
         return "users/profile/achievements";
     }
 

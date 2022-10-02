@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
 th:replace="~{layouts/main-layout :: main-fragment(  
                                           ~{::title},
-                                          ~{:: #static-css},
+                                          ~{:: #staticCSS},
                                           ~{::header},
                                           ~{:: #slider},
                                           ~{:: #main-content},  
@@ -71,7 +71,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
                                 <img th:src="@{/images/defaults/3.png}" alt="">
                             </div>
                             <div class="contant">
-                                <a th:href="@{/games/wheels}" class="mybtn1">Play</a>
+                                <a id="wheel-play" type="button" class="mybtn1">Play</a>
                                 <h4>37 People Playing</h4>
                                 <ul>
                                     <li>
@@ -632,12 +632,12 @@ th:replace="~{layouts/main-layout :: main-fragment(
         <section class="contact_section" th:replace="~{/fragments/contact_area :: section}"></section>
         <!-- Contact Section end -->
         <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
-        
     </div>
     
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
-    <th:block id="staticJs">
-
+    
+    <th:block id="staticJS">
+        <script src="/js/games/games.js"></script>
     </th:block>
 </body>
 </html>

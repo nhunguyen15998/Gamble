@@ -294,19 +294,40 @@ let AREA_ID
 let SECTION
 const ALERT_AREA = 'alert-area'
 /* end require password modal */
+/* pagination */
+//create pagination
+function createPagination(ulClass, size){
+    let targetLi = document.querySelector(ulClass)
+    for(let i = size; i >= 1; i--){
+        let li = document.createElement('li')
+        li.classList.add('page-item')
+        let a = document.createElement('a')
+        a.classList.add('page-link')
+        $('.page-link').on('click', (e) => {
+            onPageBtnClick(e)
+        })
+        if(i == 1){
+            a.classList.add('active')
+        }
+        a.innerText = i
+        li.appendChild(a)
+        targetLi.parentNode.insertBefore(li, targetLi.nextSibling)
+    }
+}
+/* end pagination */
 
 /* profile nav */
-$('.left-area-item').click(function(){
-    localStorage.setItem('active-item', $(this).attr('class').split(' ')[1]);
-})
-$(window).on('load', function () {
-    var ele = localStorage.getItem('active-item');
-    if(ele==null)
-        $('.left-area-item').first().addClass('active'); 
-    else 
-        $('.'+ele).addClass("active");
+// $('.left-area-item').click(function(){
+//     localStorage.setItem('active-item', $(this).attr('class').split(' ')[1]);
+// })
+// $(window).on('load', function () {
+//     var ele = localStorage.getItem('active-item');
+//     if(ele==null)
+//         $('.left-area-item').first().addClass('active'); 
+//     else 
+//         $('.'+ele).addClass("active");
        
-    localStorage.removeItem('active-item');
+//     localStorage.removeItem('active-item');
   
-})
+// })
 /* end profile nav */

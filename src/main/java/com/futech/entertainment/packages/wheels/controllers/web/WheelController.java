@@ -31,13 +31,23 @@ public class WheelController {
     @Autowired
     private UserWalletServiceInterface userWalletServiceInterface;
     
-    @GetMapping("/games/wheels")
-    public String wheelIndex(Model model, HttpSession session){
+    @PostMapping("/games/wheels/authentication")
+    public ResponseEntity<Map<String, Object>> wheelGame(Model model, HttpSession session){
+        Map<String, Object> obj = new HashMap<String,Object>();
         var userId = session.getAttribute("user_id");
         if(userId == null){
-            return "redirect:/";
+            obj.put("code", 401);
+            obj.put("message", "Please sign in to play game");
+            return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
         }
-        return "wheels/index";
+        obj.put("code", 200);
+        obj.put("message", "/games/wheels");
+        return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
+    }
+
+    @GetMapping("/games/wheels")
+    public String wheel(){
+        return "games/wheels/index";
     }
 
     @GetMapping("/getSliceArrays")

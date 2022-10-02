@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #staticCSS},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::#staticJS}
+                                         )}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE | Home Page</title>
+    <th:block id="staticCSS">
+        <style>
+            .article-list strong:hover, .single-play:hover {
+                color: #fea036;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+        <section class="breadcrumb-area bonus"></section>
+        <!-- Bonuse Section Start -->
+        <section class="bonuse-section">
+            <div class="container">
+                <div class="row" style="margin: 0 -50px 30px;">
+                    <div class="col-lg-12">
+                        <div class="header-area">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-11 text-center">
+                                    <h1 th:text="${blog.title}"></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row text-justify">
+                    <div class="col-lg-9 col-md-9" style="padding: 0 50px 0 30px;">
+                        <th:block th:utext="${blog.content}"></th:block>
+                        <p class="text-right" th:text="'By '+${blog.author_id}"></p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 article-list">
+                        <h5 style="margin: 0 -15px 15px;">Featured posts</h5>
+                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
+                            <div class="col-9 d-flex flex-column">
+                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
+                            <div class="col-9 d-flex flex-column">
+                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
+                            <div class="col-9 d-flex flex-column">
+                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
+                            <div class="col-9 d-flex flex-column">
+                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
+                            </div>
+                        </a>
+                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
+                            <div class="col-9 d-flex flex-column">
+                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Bonuse Section End -->
+        <section class="contact_section" th:replace="~{/fragments/contact_area :: section}"></section>
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
+    </div>
+    
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+    <th:block id="staticJs">
+
+    </th:block>
+</body>
+</html>

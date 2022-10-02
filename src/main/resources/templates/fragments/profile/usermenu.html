@@ -17,22 +17,22 @@
                         <div class="left-area">
                             <ul>
                                 <li>
-                                    <a th:href="@{/user/my-account/information}" class="left-area-item item-1">Overview</a>
+                                    <a th:href="@{/user/my-account/information}" th:class="@{'left-area-item item-1 '+${overviewSection != null ? 'active' : ''}}">Overview</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/my-account/friend}" class="left-area-item item-2">Friends</a>
+                                    <a th:href="@{/user/my-account/friend}" th:class="@{'left-area-item item-2 '+${friendSection != null ? 'active' : ''}}">Friends</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/my-account/statistic}" class="left-area-item item-3">statistics</a>
+                                    <a th:href="@{/user/my-account/statistic}" th:class="@{'left-area-item item-3 '+${statisticSection != null ? 'active' : ''}}">statistics</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/my-account/play-history}" class="left-area-item item-4">play history</a>
+                                    <a th:href="@{/user/my-account/play-history}" th:class="@{'left-area-item item-4 '+${historySection != null ? 'active' : ''}}">play history</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/my-account/achievement}" class="left-area-item item-5">achievement</a>
+                                    <a th:href="@{/user/my-account/achievement}" th:class="@{'left-area-item item-5 '+${achievementSection != null ? 'active' : ''}}">achievement</a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/user/my-wallet}" class="left-area-item item-6">wallets</a>
+                                    <a th:href="@{/user/my-wallet}" th:class="@{'left-area-item item-6 '+${walletSection != null ? 'active' : ''}}">wallets</a>
                                 </li>
                             </ul>
                         </div>

@@ -155,7 +155,12 @@ public class AuthController {
             session.removeAttribute("lastName");
             session.removeAttribute("thumbnail");
             session.removeAttribute("phone");
-            session.removeAttribute("email");
+            session.removeAttribute("user_id");
+            session.removeAttribute("user_profile_id");
+            session.removeAttribute("is_admin");
+            session.removeAttribute("user_config_id");
+            session.removeAttribute("user_config_string");
+            session.removeAttribute("createdAt");
             return "redirect:/user/sign-in";
         } catch (Exception e) {
             e.printStackTrace();
