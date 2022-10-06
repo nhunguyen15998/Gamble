@@ -303,9 +303,6 @@ function createPagination(ulClass, size){
         li.classList.add('page-item')
         let a = document.createElement('a')
         a.classList.add('page-link')
-        $('.page-link').on('click', (e) => {
-            onPageBtnClick(e)
-        })
         if(i == 1){
             a.classList.add('active')
         }
@@ -313,6 +310,9 @@ function createPagination(ulClass, size){
         li.appendChild(a)
         targetLi.parentNode.insertBefore(li, targetLi.nextSibling)
     }
+    $('.page-link').on('click', (e) => {
+        onPageBtnClick(e)
+    })
 }
 /* end pagination */
 

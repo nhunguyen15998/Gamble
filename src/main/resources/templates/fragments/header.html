@@ -104,7 +104,8 @@
                                         <a th:class="@{'nav-link '+${gameURL != null?'active':''}}" th:href="@{/games}">Games</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a th:class="@{'nav-link '+${articleURL != null?'active':''}}" th:href="@{/articles}">Articles</a>
+                                        <!-- ${cates.get(0).get("name").toString().toLowerCase()} -->
+                                        <a th:class="@{'nav-link '+${articleURL != null?'active':''}}" th:href="@{/articles/{cate}(cate=${currentCate?:'news'},page=1)}">Articles</a>
                                     </li>
                                     <li class="nav-item">
                                         <a th:class="@{'nav-link '+${contactURL != null?'active':''}}" th:href="@{/contact-us}">Contact</a>

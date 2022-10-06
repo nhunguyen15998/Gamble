@@ -18,14 +18,29 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
     public String STATUS_ACTIVATED = "1";
 
     //crud
-    public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy){
+    public int countBlogs(List<DataMapper> conditions){
         try {
-            String[] selects = {"blog_cates.*, blogs.*"};
+            String[] selects = {"blogs.*, blog_cates.*"};
+            conditions.add(DataMapper.getInstance("", "blogs.status", "=", this.STATUS_ACTIVATED, ""));
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("join", "blog_cates", DataMapper.getInstance("", "blog_cates.id", "=", "blogs.blog_cate_id", "")));
+            return this.getCount(selects, conditions, joins);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy, String[] limits){
+        try {
+            String[] selects = {"blog_cates.id as cate_id, blogs.id as blog_id, blog_cates.created_at as cate_created_at, blogs.created_at as blog_created_at,"+
+                                "blog_cates.url_slug as cate_slug, blogs.url_slug as blog_slug, blog_cates.status as cate_status, blogs.status as blog_status,"+
+                                "blog_cates.*, blogs.*"};
             conditions.add(DataMapper.getInstance("", "blog_cates.status", "=", this.STATUS_ACTIVATED, ""));
             conditions.add(DataMapper.getInstance("and", "blogs.status", "=", this.STATUS_ACTIVATED, ""));
             List<JoinCondition> joins = new ArrayList<JoinCondition>();
             joins.add(JoinCondition.getInstance("join", "blog_cates", DataMapper.getInstance("", "blog_cates.id", "=", "blogs.blog_cate_id", "")));
-            return this.getAll(selects, conditions, joins, null, orderBy, null);
+            return this.getAll(selects, conditions, joins, null, orderBy, limits);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -34,11 +49,13 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
 
     public Map<String, Object> getBlog(List<DataMapper> conditions){
         try {
-            String[] selects = {"blog_cates.*, blogs.*"};
+            String[] selects = {"blog_cates.id as cate_id, blogs.id as blog_id, blog_cates.created_at as cate_created_at, blogs.created_at as blog_created_at,"+
+                                "blog_cates.url_slug as cate_slug, blogs.url_slug as blog_slug, blog_cates.status as cate_status, blogs.status as blog_status,"+
+                                "blog_cates.*, blogs.*"};
             conditions.add(DataMapper.getInstance("", "blog_cates.status", "=", this.STATUS_ACTIVATED, ""));
             conditions.add(DataMapper.getInstance("and", "blogs.status", "=", this.STATUS_ACTIVATED, ""));
             List<JoinCondition> joins = new ArrayList<JoinCondition>();
-            joins.add(JoinCondition.getInstance("join", "blog_cates", DataMapper.getInstance("", "blog_cates.id", "=", "blogs.blog_cate_id", "")));
+            joins.add(JoinCondition.getInstance("join", "blog_cates", DataMapper.getInstance("", "blogs.blog_cate_id", "=", "blog_cates.id", "")));
             return this.getFirstBy(selects, conditions, joins);
         } catch (Exception e) {
             e.printStackTrace();

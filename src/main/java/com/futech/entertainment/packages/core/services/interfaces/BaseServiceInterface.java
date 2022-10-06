@@ -16,4 +16,5 @@ public interface BaseServiceInterface<T> {
     public T getFirst(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins);
     public List<Map<String,Object>> getAll(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins, String[] groupBys, String orderBy, String[] limit);
     public Boolean delete(int id);
+    public int getCount(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins);
 }

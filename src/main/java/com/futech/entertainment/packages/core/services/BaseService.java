@@ -53,5 +53,10 @@ public class BaseService<T extends BaseModel> implements BaseServiceInterface<T>
     public Boolean update(T model) {
         return this.baseRepository.update(model);
     }
+
+    @Override
+    public int getCount(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins) {
+        return this.baseRepository.getCount(selects, conditions, joins);
+    }
     
 }

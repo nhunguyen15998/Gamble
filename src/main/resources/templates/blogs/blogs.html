@@ -76,89 +76,36 @@ th:replace="~{layouts/main-layout :: main-fragment(
                     <div class="col-4">
                         <select id="blog-cate-select">
                             <option disabled value="-1">Choose one category</option>
-                            <option disabled value="0" selected="selected">All</option>
                             <option th:each="cate, row : ${cates}" 
                                     th:value="${cate.id}" 
+                                    th:selected="${cate.url_slug == currentCate ?: cate.id == 1}"
                                     th:text="${cate.name}">
                             </option>
                         </select>
                     </div>
                 </div>
-                <div class="row" th:each="blog, row : ${blogs}">
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div>
-                            <a class="card single-bonus" th:href="@{/articles/detail/{cate}/{url}-{id}(cate=${(blog.name).toLowerCase()},id=${blog.id},url=${blog.url_slug})}">
-                                <img th:src="${blog.thumbnail}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title" th:text="${blog.title}"></h4>
-                                    <p class="card-text" th:text="${blog.description}"></p>
-                                </div>
-                            </a>
+                <div class="row" id="blog-section">
+                    <th:block th:if="${blogs != null}">
+                        <div class="col-xl-4 col-lg-4 col-md-6" th:each="blog : ${blogs}">
+                            <div>
+                                <a class="card single-bonus" th:href="@{/articles/detail/{cate}/{url}-{id}(cate=${(blog.name).toLowerCase()},id=${blog.id},url=${blog.url_slug})}">
+                                    <img th:src="${blog.thumbnail}" alt="">
+                                    <div class="card-body">
+                                        <h4 class="card-title" th:text="${blog.title}"></h4>
+                                        <p class="card-text" th:text="${blog.description}"></p>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/cs-image.png}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/bonus.jpeg}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/cs-image.png}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/cs-image.png}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/bonus.jpeg}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="card single-bonus" href="#">
-                                <img th:src="@{/images/defaults/cs-image.png}" alt="">
-                                <div class="card-body">
-                                    <h4 class="card-title">Welcome+ Bonus</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    </th:block>
+                    <th:block th:if="${blogs == null}">
+                        <div class="col-12 text-center mb-5"><p>Not found</p></div>
+                    </th:block>
                 </div>
                 <div class="row">
                     <div class="col-lg-12 d-flex justify-content-end">
-                        <nav>
-                          <ul class="pagination pagination-article">
+                        <nav th:class="${blogs == null ? 'd-none' : ''}">
+                          <ul class="pagination pagination-article" th:item-per-page="${itemPerPage?:0}" th:total-pages="${totalPages?:0}">
                             <li class="page-item"><a class="page-link" onclick="onPrevious()">«</a></li>
                             <li class="page-item"><a class="page-link" onclick="onNext()">»</a></li>
                           </ul>
@@ -175,10 +122,23 @@ th:replace="~{layouts/main-layout :: main-fragment(
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
     <th:block id="staticJS">
         <script>
-            let totalPages = 5
-            createPagination('.pagination-article .page-item:first-child', 4)
+            let itemPerPage = $('.pagination-article').attr('item-per-page')
+            let totalPages = parseInt($('.pagination-article').attr('total-pages'))
+            let url = window.location.href
+            let currentPage = parseInt(url.substring(url.lastIndexOf("?")+6, url.length)) ?? 1
+            function getBlogData(){
+                return {
+                    "cateId": $('#blog-cate-select').val(),
+                    "offset" : getOffset(),
+                }
+            }
+            if(totalPages > 0){
+                let size = totalPages == 1 ? totalPages : 2
+                createPagination('.pagination-article .page-item:first-child', size)
+            }
         </script>
         <script src="/js/pagination.js"></script>
+        <script src="/js/ajax/blog.js"></script>
     </th:block>
 </body>
 </html>

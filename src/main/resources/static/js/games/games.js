@@ -1,6 +1,6 @@
 //auth
-$('#wheel-play').on('click', () => {
-    $.post('/games/wheels/authentication', (response) => {
+function openGame(url){
+    $.post(url, (response) => {
         console.log(response)
         if(response.code == 200){
             window.location.href = response.message
@@ -11,4 +11,8 @@ $('#wheel-play').on('click', () => {
     }).fail((data) => {
         console.log(data)
     })
+}
+
+$('#wheel-play').on('click', () => {
+    openGame('/games/wheels/authentication')
 })

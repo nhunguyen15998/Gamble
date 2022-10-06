@@ -53,36 +53,14 @@ th:replace="~{layouts/main-layout :: main-fragment(
                     </div>
                     <div class="col-lg-3 col-md-3 article-list">
                         <h5 style="margin: 0 -15px 15px;">Featured posts</h5>
-                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
-                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
-                            <div class="col-9 d-flex flex-column">
-                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
-                            </div>
-                        </a>
-                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
-                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
-                            <div class="col-9 d-flex flex-column">
-                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
-                            </div>
-                        </a>
-                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
-                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
-                            <div class="col-9 d-flex flex-column">
-                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
-                            </div>
-                        </a>
-                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
-                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
-                            <div class="col-9 d-flex flex-column">
-                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
-                            </div>
-                        </a>
-                        <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
-                            <img src="/images/defaults/cs-image.png" class="col-3 p-0" width="40" height="60">
-                            <div class="col-9 d-flex flex-column">
-                                <strong style="font-size: 13px;">Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum</strong>
-                            </div>
-                        </a>
+                        <th:block th:each="featuredBlog, row : ${featuredBlogs}">
+                            <a href="#" class="row single-play mb-3" style="padding: 20px 12px;border-radius: 5px;text-align: left;">
+                                <img th:src="${featuredBlog.thumbnail}" class="col-3 p-0" width="40" height="60">
+                                <div class="col-9 d-flex flex-column">
+                                    <strong style="font-size: 13px;" th:text="${featuredBlog.title}"></strong>
+                                </div>
+                            </a>
+                        </th:block>
                     </div>
                 </div>
             </div>

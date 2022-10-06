@@ -13,13 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -321,5 +318,48 @@ public class BaseRepository<T extends BaseModel> implements BaseRepositoryInterf
         }
     }
     
+    @Override
+    public int getCount(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins) {
+        try {
+            String table = this.model.getTable(); // get table name
+            String[] columns = this.model.getColumns(); // get list columns
+
+            if(selects == null){
+                selects = columns;
+            }
+            //condition
+            String conditionStr = " where ";
+            if(conditions != null){
+                for(DataMapper condition : conditions) {
+                    String formatConditionStr = " %s %s %s '%s' %s ";
+                    if(condition.getValue().matches("^[0-9]*$")){
+                        formatConditionStr = (condition.getValue().startsWith("0") && condition.getValue().length() > 1) ? 
+                                             " %s %s %s '%s' %s " : " %s %s %s %s %s ";
+                    }
+                    conditionStr += String.format(formatConditionStr, condition.getPrefix(), condition.getKey(), condition.getOperator(), condition.getValue(), condition.getSuffix());
+                }
+            }
+            //join
+            String joinStr = "";
+            if(joins != null){
+                for (JoinCondition join : joins) {
+                    joinStr += String.format(" %s %s on %s %s %s ", join.getTypeJoin(), join.getTable(), join.getOnEquation().getKey(), join.getOnEquation().getOperator(), join.getOnEquation().getValue());
+                }
+            }
+            //sql
+            String sql = "select " + String.join(",", selects) + " from " + table + " " 
+                                     + (joins != null ? joinStr + " " : "") 
+                                     + (conditions != null ? conditionStr + " " : "");
+
+            var rs = jdbcTemplate.queryForRowSet(sql);
+            rs.last();
+            var count = rs.getRow();
+            System.out.println("query:"+sql);
+            return count;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
 }

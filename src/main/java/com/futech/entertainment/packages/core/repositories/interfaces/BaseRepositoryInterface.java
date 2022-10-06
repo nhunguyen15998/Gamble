@@ -22,4 +22,6 @@ public interface BaseRepositoryInterface<T> {
 
     public Boolean delete(int id);
 
+    public int getCount(String[] selects, List<DataMapper> conditions, List<JoinCondition> joins);
+
 }

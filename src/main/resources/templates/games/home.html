@@ -43,8 +43,8 @@
                                     Money Rewards
                                 </h1>
                                 <div class="links">
-                                    <a href="#" class="mybtn1">Play Now</a>
-                                    <a href="https://www.youtube.com/watch?v=jssO8-5qmag"
+                                    <a class="mybtn1" type="button" onclick="openGame('/games/wheels/authentication')">Play Now</a>
+                                    <a href="#"
                                         class="video_btn play-video mfp-iframe">
                                         <i class="fas fa-play"></i>
                                     </a>
@@ -147,7 +147,7 @@
                                 <img th:src="@{/images/defaults/1.png}" alt="">
                             </div>
                             <div class="contant">
-                                <a href="#" class="mybtn1">Play</a>
+                                <a class="mybtn1" type="button" onclick="openGame('/games/wheels/authentication')">Play</a>
                                 <h4>37 People Playing</h4>
                                 <ul>
                                     <li>
@@ -1066,8 +1066,8 @@
     </div>
 
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
-    <th:block id="staticJs">
-
+    <th:block id="staticJS">
+        <script src="/js/games/games.js"></script>
     </th:block>
 </body>
 

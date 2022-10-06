@@ -12,7 +12,7 @@ public class Blog extends BaseModel{
 
     private String table = "blogs";
     private String[] columns = {"id", "title", "content", "blog_cate_id", "author_id", "created_at", "status",
-                                "thumbnail", "description" };
+                                "thumbnail", "description", "is_featured", "url_slug" };
 
     public String getTable() {
         return this.table;
@@ -28,7 +28,9 @@ public class Blog extends BaseModel{
     private Integer blog_cate_id;  
     private Integer author_id;
     private String thumbnail;
-    private String description;  
+    private String description; 
+    private String url_slug;
+    private boolean is_featured;  
     private LocalDateTime created_at;
     private Integer status;  
 
@@ -79,6 +81,20 @@ public class Blog extends BaseModel{
     }
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUrl_slug() {
+        return url_slug;
+    }
+    public void setUrl_slug(String url_slug) {
+        this.url_slug = url_slug;
+    }
+
+    public boolean isIs_featured() {
+        return is_featured;
+    }
+    public void setIs_featured(boolean is_featured) {
+        this.is_featured = is_featured;
     }
 
     public LocalDateTime getCreated_at() {

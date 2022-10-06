@@ -1,6 +1,5 @@
 package com.futech.entertainment.packages.blogs.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +16,19 @@ public class BlogCateService extends BaseService<BlogCate> implements BlogCateSe
     public String STATUS_ACTIVATED = "1";
 
     // crud
-    public List<Map<String, Object>> getBlogCategories(String[] selects){
+    public List<Map<String, Object>> getBlogCategories(List<DataMapper> conditions){
         try {
-            List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "status", "=", this.STATUS_ACTIVATED, ""));
-            return this.getAll(selects, conditions, null, null, null, null);
+            return this.getAll(null, conditions, null, null, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public Map<String, Object> getBlogCategory(List<DataMapper> conditions){
+        try {
+            conditions.add(DataMapper.getInstance("", "status", "=", this.STATUS_ACTIVATED, ""));
+            return this.getFirstBy(null, conditions, null);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

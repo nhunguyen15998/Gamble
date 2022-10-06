@@ -8,6 +8,7 @@ import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInt
 import com.futech.entertainment.packages.core.utils.DataMapper;
 
 public interface BlogServiceInterface extends BaseServiceInterface<Blog> {
-    public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy);
+    public int countBlogs(List<DataMapper> conditions);
+    public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy, String[] limits);
     public Map<String, Object> getBlog(List<DataMapper> conditions);
 }

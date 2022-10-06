@@ -11,7 +11,7 @@ public class BlogCate extends BaseModel{
     public BlogCate() {}
 
     private String table = "blog_cates";
-    private String[] columns = {"id", "name", "created_at", "status"};
+    private String[] columns = {"id", "name", "created_at", "status", "url_slug"};
 
     public String getTable() {
         return this.table;
@@ -23,6 +23,7 @@ public class BlogCate extends BaseModel{
 
     private Integer id;
     private String name;
+    private String url_slug;
     private LocalDateTime created_at;
     private Integer status;  
 
@@ -38,6 +39,13 @@ public class BlogCate extends BaseModel{
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUrl_slug() {
+        return url_slug;
+    }
+    public void setUrl_slug(String url_slug) {
+        this.url_slug = url_slug;
     }
 
     public LocalDateTime getCreated_at() {
