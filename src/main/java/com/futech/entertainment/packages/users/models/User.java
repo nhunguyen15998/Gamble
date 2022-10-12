@@ -60,7 +60,7 @@ public class User extends BaseModel {
         return is_admin;
     }
 
-    public void setIs_admin(boolean is_admin) {
+    public void setIs_admin(Boolean is_admin) {
         this.is_admin = is_admin;
     }
     public String getplain_password() {

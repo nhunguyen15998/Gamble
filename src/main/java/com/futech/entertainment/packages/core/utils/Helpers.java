@@ -38,7 +38,10 @@ public class Helpers {
     public static String randomString(){
         return UUID.randomUUID().toString().replaceAll("_", "").replace("-", "");
     }
-
+    public static String randomForImageName()
+    {
+        return DateTimeFormatter.ofPattern("ddMMyyyyHHmmss").format(LocalDateTime.now());
+    }
     /* <= 32 */
     public static String randomStringWithLength(int length){
         return UUID.randomUUID().toString().replaceAll("_", "").replace("-", "").substring(0, length > 32 || length < 0 ? 32 : length);
