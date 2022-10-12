@@ -86,7 +86,7 @@ public class BaseRepository<T extends BaseModel> implements BaseRepositoryInterf
                     return statement;
                 }
             }, holder);
-
+            System.out.println(sql);
             int id = holder.getKey().intValue();
             model.setId(id); // fill id to model
             return model;

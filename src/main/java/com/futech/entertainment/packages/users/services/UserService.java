@@ -28,9 +28,12 @@ import com.futech.entertainment.packages.settings.models.UserConfig;
 import com.futech.entertainment.packages.settings.services.interfaces.UserConfigServiceInterface;
 import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
+import com.futech.entertainment.packages.users.repositories.UserRepository;
+import com.futech.entertainment.packages.users.repositories.interfaces.UserRepositoryInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserTokenServiceInterface;
@@ -125,6 +128,19 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         return obj;
     }
 
+    public Map<String, Object> getUserById(String[] selects, int id){
+        try {           
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "users.id", "=", String.valueOf(id), ""));
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("join", "user_profiles", 
+                        DataMapper.getInstance("", "users.id", "=", "user_profiles.user_id", "")));
+               return this.getFirstBy(selects, conditions, joins);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     //for sign in
     public Map<String, Object> getUserByPhone(String[] selects, String phone){
         try {
@@ -179,7 +195,32 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             return null;
         }
     }
-
+    public boolean createUser(UserMapper userMapper){
+        try {
+            User newUser = new User();
+            newUser.setPhone(userMapper.getPhone());
+            newUser.setEmail(userMapper.getEmail());
+            newUser.setplain_password(userMapper.getPlain_password());
+            newUser.sethash_password(passwordEncoder.encode(userMapper.getPlain_password()));
+            newUser.setcreated_at(LocalDateTime.now());
+            newUser.setStatus(Helpers.ACTIVATED);
+            newUser.setactivate_code(null);
+            newUser.setIs_admin(userMapper.isIs_admin());
+            User user = this.create(newUser);
+            UserProfile userProfile = new UserProfile();
+            userProfile.setUserId(user.getId());
+            userProfile.setFirstName(userMapper.getFirst_name());
+            userProfile.setLastName(userMapper.getLast_name());
+            userProfile.setThumbnail(userMapper.getThumbnail());
+            userProfile.setBirth(userMapper.getBirth());
+            userProfile.setGender(userMapper.getGender());
+            this.userProfileServiceInterface.create(userProfile);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean updateUser(User user){
         try {
             return this.update(user);
@@ -203,6 +244,33 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             userProfile.setLastName(userProfileMapper.getlast_name());
             userProfile.setBirth(LocalDate.parse(userProfileMapper.getBirth()));
             userProfile.setGender(userProfileMapper.getGender());
+            var updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
+
+            if(updatedUser && updatedUserProfile){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public boolean updateUserUserProfile(UserMapper userMapper){
+        try {
+            User user = new User();
+            user.setId(userMapper.getUser_id());
+            user.setEmail(userMapper.getEmail());
+            if(userMapper.getPlain_password()!=null) user.setplain_password(userMapper.getPlain_password());
+            if(userMapper.getStatus()!=null) user.setStatus(userMapper.getStatus());
+            var updatedUser = this.update(user);
+
+            UserProfile userProfile = new UserProfile();
+            userProfile.setId(userMapper.getUser_profile_id());
+            userProfile.setUserId(userMapper.getUser_id());
+            userProfile.setFirstName(userMapper.getFirst_name());
+            userProfile.setLastName(userMapper.getLast_name());
+            userProfile.setBirth(userMapper.getBirth());
+            if(userMapper.getThumbnail()!=null) userProfile.setThumbnail(userMapper.getThumbnail());
+            userProfile.setGender(userMapper.getGender());
             var updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
 
             if(updatedUser && updatedUserProfile){

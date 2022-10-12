@@ -22,9 +22,9 @@
                             <h1 class="page-title" th:text="${formType==1?'Update':'Create'}"></h1>
                             <div>
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a>
+                                    <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Users</a>
+                                    <li class="breadcrumb-item"><a href="/admin/users/all?type=0">Users</a>
                                     </li>
                                     <li class="breadcrumb-item active" aria-current="page" th:text="${formType==1?'Update':'Create'}"></li>
                                 </ol>
@@ -34,258 +34,104 @@
                         <!-- ROW OPEN -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12">
-                                <div class="card">
+                                <div class="card" style="padding-bottom: 25px;">
                                     <div class="card-header">
                                         <h3 class="card-title">Infomation</h3> </div>
                                     <div class="card-body">
-                                        <form class="needs-validation" novalidate="">
+                                       <form th:action="${userMapper.user_id!=null}?@{/admin/users/update?id={id}(id=${userMapper.user_id})}:@{/admin/users/create}" th:object="${userMapper}" method="post" enctype="multipart/form-data">
                                             <div style="position: relative;width: 25%;float:left ;margin-right: 1vw;">
-                                                <div style="position: relative;display:table-row; height: auto; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
+                                                <div style="position: relative;display:table-row; height: 100%; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
                                                     <div id="viewer" style="border: 2px dashed rgba(255, 255, 255, 0.2) ;border-radius: 6px; min-height: 280px;height:inherit;padding-top:10px; text-align:center">
-                                                        <!-- <div style="margin-bottom:10px" id="content" class="text-danger" th:if="${#fields.hasErrors('path_img')}" th:errors="*{path_img}"></div> -->
-                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:20px;" />
+                                                        <div style="margin-bottom:10px" id="content" class="text-danger"></div>
+                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:5px;" th:src="(${formType}==0 OR ${userMapper.thumbnail}==null)?'/images/defaults/no-user.jpeg':'/images/users/'+${userMapper.thumbnail}" />
                                                     </div>
-                                                    <input type="file" id="ip-thumbnail" name="pathImg"  class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
+                                                    <input type="file" id="ip-thumbnail" name="pathImg"  th:src="${oldData != null}?${oldData.thumbnail}:''"  onchange="ReadImage(this)" class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
                                                     position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">
                                                 </div>
                                                 <div  style="width:100%;text-align:center;height: auto;float: left;margin-top:-12px;display:table-row;cursor: pointer;position: relative;">
-                                                    <span id="trashimg" style="padding: 11px 13px; background: #e12c2c; border-radius: 50%; border: 0; font-size: 17px; display: none"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
+                                                    <span id="trashimg" style="padding: 13px 18px; border: #b85656 2px solid; background-color: #e9474748; border-radius: 50%; font-size: 17px;" th:styleappend="${userMapper.thumbnail}==null?'display: none':''"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
                                                 </div>
                                         </div>
                                             <div class="form-row">
+                                              <div class="col-xl-6 mb-3" style="display: none;">
+                                                <input type="text" class="form-control" name="user_id" th:value="${oldData != null}?${oldData.user_id}:${userMapper.user_id}" />
+                                                <input type="text" class="form-control" name="user_profile_id" th:value="${oldData != null}?${oldData.user_profile_id}:${userMapper.user_profile_id}" />
+
+                                              </div>
                                                 <div class="col-xl-6 mb-3">
-                                                    <label for="validationCustom01">First name</label>
-                                                    <input type="text" class="form-control" id="validationCustom01">
+                                                    <label for="first_name" >First name</label>
+                                                    <input type="text" class="form-control" name="first_name" th:value="${oldData != null}?${oldData.first_name}:${userMapper.first_name}" >
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('first_name')}" th:errors="*{first_name}" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
                                                    
                                                 </div>
                                                 <div class="col-xl-6 mb-3">
-                                                    <label for="validationCustom02">Last name</label>
-                                                    <input type="text" class="form-control" id="validationCustom02" >
+                                                    <label for="last_name">Last name</label>
+                                                    <input type="text" class="form-control" name="last_name" th:value="${oldData != null}?${oldData.last_name}:${userMapper.last_name}" >                                                        
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('last_name')}" th:errors="*{last_name}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                                 </div>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-xl-6 mb-3">
-                                                    <label for="validationCustom03">Phone</label>
-                                                    <input type="text" class="form-control" id="validationCustom03">
+                                                    <label for="phone">Phone</label>
+                                                    <input type="text" class="form-control" name="phone" th:value="${oldData != null}?${oldData.phone}:${userMapper.phone}" >
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                                 </div>
                                                 <div class="col-xl-6 mb-3"> 
-                                                    <label for="validationCustom05">Email</label>
+                                                    <label for="email">Email</label>
                                                     <!-- is-invalid -->
-                                                    <input type="text" class="form-control"> 
+                                                    <input type="text" class="form-control" name="email" th:value="${oldData != null}?${oldData.email}:${userMapper.email}" > 
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                                 </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationCustom05">Password</label>
-                                                    <input type="password" class="form-control" id="validationCustom05">
+                                                <div class="col-xl-6 mb-3"> 
+                                                  <label for="validationCustom04">Gender</label>
+                                                  <select class="form-control select2"  name="gender" id="validationCustom04">
+                                                    <option th:each="stt : ${genderList}" 
+                                                            th:value="${stt.key}" 
+                                                            th:selected="(${oldData!=null}?${oldData.gender}==${stt.key}:false) OR ${userMapper.gender}==${stt.key}"
+                                                            th:text="${stt.value}" style="background-color:#8677d3;" ></option>
+                                                  </select>
+                                              </div>
+                                              <div class="col-xl-6 mb-3"> 
+                                                <label for="birth">Birth</label>
+                                                <!-- is-invalid -->
+                                                <input type="date" class="form-control" name="birth" id="birth" style="color: white;" th:value="${oldData != null}?${oldData.birth}:${userMapper.birth}" > 
+                                                <small th:class="text-danger" th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
+                                            </div>
+                                                <div class="col-xl-4 mb-3" th:if="${formType}==0">
+                                                    <label for="plain_password">Password</label>
+                                                    <input type="password" class="form-control" name="plain_password" th:value="${oldData != null}?${oldData.plain_password}:${userMapper.plain_password}" >
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('plain_password')}" th:errors="*{plain_password}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                                 </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationCustom05">Confirm password</label>
-                                                    <input type="password" class="form-control" id="validationCustom06">
+                                                <div class="col-xl-4 mb-3" th:if="${formType}==0">
+                                                    <label for="confirm_password">Confirm password</label>
+                                                    <input type="password" class="form-control" name="confirm_password" th:value="${oldData != null}?${oldData.confirm_password}:${userMapper.confirm_password}" >
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('confirm_password')}" th:errors="*{confirm_password}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                                 </div>
-                                                <div class="col-xl-3 mb-3">
+
+                                                <div class="col-xl-4 mb-3" th:if="(${session.user_id}==${userMapper.user_id}) OR ${formType==0}">
                                                     <label for="validationCustom04">Status</label>
-                                                    <select class="form-control select2" id="validationCustom04">
-                                                     <option value="1" style="background-color:#8677d3;">Activated</option>
-                                                     <option value="0" style="background-color:#8677d3;">Deactivated</option>
+                                                    <select class="form-control select2" name="status" id="validationCustom04">
+                                                      <option th:each="stt : ${statusList}" 
+                                                      th:value="${stt.key}" 
+                                                      th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${userMapper.status}==${stt.key}"
+                                                      th:text="${stt.value}" style="background-color:#8677d3;" ></option> 
                                                     </select>
                                                 </div>
+                                              
+                                            <button class="btn btn-primary" th:style="${formType==1}?'margin:4vh 0 auto 0;':''" type="submit">Save</button>
                                             </div>
                                             
-                                            <button class="btn btn-primary" type="submit">Save</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Default Validation</h3> </div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationDefault01">First name</label>
-                                                    <input type="text" class="form-control" id="validationDefault01" value="Mark" required=""> </div>
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationDefault02">Last name</label>
-                                                    <input type="text" class="form-control" id="validationDefault02" value="Otto" required=""> </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationDefault03">City</label>
-                                                    <input type="text" class="form-control" id="validationDefault03" required=""> </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationDefault04">State</label>
-                                                    <select class="form-select form-control" id="validationDefault04" required="">
-                                                        <option selected="" disabled="" value="">Choose...</option>
-                                                        <option>...</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationDefault05">Zip</label>
-                                                    <input type="text" class="form-control" id="validationDefault05" required=""> </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required="">
-                                                    <label class="form-check-label" for="invalidCheck2">Agree to terms and conditions</label>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary" type="submit">Submit form</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Server Side Validation</h3> </div>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationServer01">First name</label>
-                                                    <input type="text" class="form-control is-valid" id="validationServer01" value="Mark" required="">
-                                                    <div class="valid-feedback">Looks good!</div>
-                                                </div>
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationServer02">Last name</label>
-                                                    <input type="text" class="form-control is-valid" id="validationServer02" value="Otto" required="">
-                                                    <div class="valid-feedback">Looks good!</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationServer03">City</label>
-                                                    <input type="text" class="form-control is-invalid" id="validationServer03" aria-describedby="validationServer03Feedback" required="">
-                                                    <div id="validationServer03Feedback" class="invalid-feedback">Please provide a valid city.</div>
-                                                </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationServer04">State</label>
-                                                    <select class="form-select form-control is-invalid" id="validationServer04" aria-describedby="validationServer04Feedback" required="">
-                                                        <option selected="" disabled="" value="">Choose...</option>
-                                                        <option>...</option>
-                                                    </select>
-                                                    <div id="validationServer04Feedback" class="invalid-feedback">Please select a valid state.</div>
-                                                </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationServer05">Zip</label>
-                                                    <input type="text" class="form-control is-invalid" id="validationServer05" aria-describedby="validationServer05Feedback" required="">
-                                                    <div id="validationServer05Feedback" class="invalid-feedback">Please provide a valid zip.</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-check">
-                                                    <input class="form-check-input is-invalid" type="checkbox" value="" id="invalidCheck3" aria-describedby="invalidCheck3Feedback" required="">
-                                                    <label class="form-check-label" for="invalidCheck3">Agree to terms and conditions</label>
-                                                    <div id="invalidCheck3Feedback" class="invalid-feedback">You must agree before submitting.</div>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary" type="submit">Submit form</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Supported Elements</h3> </div>
-                                    <div class="card-body">
-                                        <form class="was-validated">
-                                            <div class="mb-3">
-                                                <label for="validationTextarea">Textarea</label>
-                                                <textarea class="form-control is-invalid" id="validationTextarea" placeholder="Required example textarea" required=""></textarea>
-                                                <div class="invalid-feedback">Please enter a message in the textarea.</div>
-                                            </div>
-                                            <div class="custom-control custom-checkbox mb-3">
-                                                <input type="checkbox" class="custom-control-input" id="customControlValidation1" required="">
-                                                <label class="custom-control-label" for="customControlValidation1">Check this custom checkbox</label>
-                                                <div class="invalid-feedback">Example invalid feedback text</div>
-                                            </div>
-                                            <div class="custom-control custom-radio">
-                                                <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required="">
-                                                <label class="custom-control-label" for="customControlValidation2">Toggle this custom radio</label>
-                                            </div>
-                                            <div class="custom-control custom-radio mb-3">
-                                                <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" required="">
-                                                <label class="custom-control-label" for="customControlValidation3">Or toggle this other custom radio</label>
-                                                <div class="invalid-feedback">More example invalid feedback text</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="input-group is-invalid"> <span class="input-group-text" id="validatedInputGroupPrepend">@</span>
-                                                    <input type="text" class="form-control is-invalid" aria-describedby="validatedInputGroupPrepend" required=""> </div>
-                                                <div class="invalid-feedback">Example invalid input group feedback</div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="input-group is-invalid">
-                                                    <label class="input-group-text" for="validatedInputGroupSelect">Options</label>
-                                                    <select class="form-select form-control" id="validatedInputGroupSelect" required="">
-                                                        <option value="">Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                                <div class="invalid-feedback">Example invalid input group feedback</div>
-                                            </div>
-                                            <div class="input-group is-invalid">
-                                                <div class="form-file">
-                                                    <input type="file" class="form-control" id="validatedInputGroupCustomFile" required="">
-                                                    <label for="validatedInputGroupCustomFile"></label>
-                                                </div>
-                                            </div>
-                                            <div class="invalid-feedback">Example invalid input group feedback</div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Tooltips</h3> </div>
-                                    <div class="card-body">
-                                        <form class="needs-validation" novalidate="">
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationTooltip01">First name</label>
-                                                    <input type="text" class="form-control" id="validationTooltip01" value="Mark" required="">
-                                                    <div class="valid-tooltip">Looks good!</div>
-                                                </div>
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationTooltip02">Last name</label>
-                                                    <input type="text" class="form-control" id="validationTooltip02" value="Otto" required="">
-                                                    <div class="valid-tooltip">Looks good!</div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="validationTooltip03">City</label>
-                                                    <input type="text" class="form-control" id="validationTooltip03" required="">
-                                                    <div class="invalid-tooltip">Please provide a valid city.</div>
-                                                </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationTooltip04">State</label>
-                                                    <select class="select2 form-control select2-hidden-accessible" id="validationTooltip04" required="" tabindex="-1" aria-hidden="true">
-                                                        <option selected="" disabled="" value="">Choose...</option>
-                                                        <option>...</option>
-                                                    </select><span class="select2 select2-container select2-container--default" dir="ltr" style="width: 276.3px;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-validationTooltip04-container"><span class="select2-selection__rendered" id="select2-validationTooltip04-container" title="Choose...">Choose...</span>
-                                                    <span
-                                                    class="select2-selection__arrow" role="presentation"><b role="presentation"></b>
-                                                        </span>
-                                                        </span>
-                                                        </span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
-                                                        <div class="invalid-tooltip">Please select a valid state.</div>
-                                                </div>
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationTooltip05">Zip</label>
-                                                    <input type="text" class="form-control" id="validationTooltip05" required="">
-                                                    <div class="invalid-tooltip">Please provide a valid zip.</div>
-                                                </div>
-                                            </div>
-                                            <button class="btn btn-primary" type="submit">Submit form</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+                    
                         </div>
                         <!-- ROW CLOSED -->
                     </div>
@@ -659,4 +505,22 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
+     function ReadImage(input) {
+                document.getElementById("trashimg").style.removeProperty("display");
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+
+                        $('#imgViewer').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                 }
+             }
+             $("#trashimg").click(function () {
+                    $("#imgViewer").attr("src", "/images/defaults/no-user.jpeg");
+                    $("#ip-thumbnail").val("");
+                    $(this).css("display","none")
+            });
+   
 </script>
