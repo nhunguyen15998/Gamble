@@ -257,7 +257,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             }
             //create token
             Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.SECOND, 20);
+            calendar.add(Calendar.HOUR, 3);
             Date expireDate = calendar.getTime();
             
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);

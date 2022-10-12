@@ -23,14 +23,13 @@ $('#pills-transaction-tab').on('click', () => {
                     break
             }
 
-            
             let tr = `<tr>
                         <td>${i}</td>
                         <td>${element.code}</td>
                         <td>${type}</td>
                         <td>${method}</td>
                         <td>${parseFloat(element.amount).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:6})}</td>
-                        <td>${element.created_at}</td>
+                        <td>${new Intl.DateTimeFormat('en-US', {dateStyle: 'short', timeStyle: 'medium' }).format(new Date(element.created_at))}</td>
                         <td>${status}</td>
                         <td>${element.bcaddress != null ? element.bcaddress  : "None"}</td>
                         <td>${element.receiver != null ? element.receiver  : "None"}</td>
