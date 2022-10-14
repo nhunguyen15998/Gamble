@@ -21,6 +21,8 @@ public class Helpers {
     public static final int FEMALE = 1; 
     public static final int OTHER = 2;
 
+    public static final String EMPTY = "";
+
     public static String formatDateTime(LocalDateTime dateTime){
         return DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm:ss").format(dateTime);
     }

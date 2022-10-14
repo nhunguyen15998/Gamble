@@ -20,7 +20,7 @@
                         <!-- PAGE-HEADER -->
                     <div class="page-header">
                         <h1 class="page-title">
-                    Blogs</h1>
+                    Blog Categories</h1>
                     <div>
                         <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -28,7 +28,7 @@
                     Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                    Blogs</li>
+                    Blog Categories</li>
                     </ol>
                     </div>
                     </div>
@@ -74,11 +74,12 @@
                       <div class="col-sm-12 col-md-6">
                        <div id="data-table_filter" class="dataTables_filter">
                         <label style="width:450px">
-                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by phone, email,..." id="search-by-cond" aria-controls="data-table">
-                         <span style="width:11%;float:right;" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
-                         <span style="width:11%;float:right;" th:if="${is_admin==1}">
-                          <li class="icons-list-item" onclick="window.location.href='/admin/users/create'" style="height:80%;cursor: pointer;"><i class="fa fa-user-plus" style="pointer-events: none;"></i></li>
-                         </span> 
+                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by name, url slug" id="search-by-cond" aria-controls="data-table">
+                         <span style="width:11%;float:right" onclick="ClearFilter();"><li  class="icons-list-item" style="height:70%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
+                         
+                         <span style="width:11%;float:right;height:50px;" >
+                          <li class="icons-list-item" style="height:80%;cursor: pointer;" onclick="window.location.href='/admin/blog-categories/create'"><i class="fa fa-plus" style="pointer-events: none;"></i></li>
+                           </span> 
                         </label>
                      </div>
                      </div>
@@ -92,7 +93,9 @@
                         #</th>
                        <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
                         Name</th>
-                       
+                        <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
+                          Url Slug</th>
+                         
                        <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
                         Created time</th>
                       
@@ -103,7 +106,7 @@
                      </tr>
                       </thead>
                         <tbody>
-                        <!-- <tr th:each="u, row : ${users}" class="border-bottom odd table-item">
+                        <tr th:each="b, row : ${blogCates}" class="border-bottom odd table-item">
                           <td class="text-center">
                             <div class="mt-0 mt-sm-2 d-block">
                             <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
@@ -114,46 +117,40 @@
                         <div class="d-flex">
                       
                         <div class="ms-3 mt-0 mt-sm-2 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.first_name+' '+u.last_name}"></h6>
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.name}"></h6>
                       </div>
                       </div>
                       </td>
                        <td>
                         <div class="d-flex">
                         <div class="mt-0 mt-sm-3 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.phone}"></h6>
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.url_slug}"></h6>
                       </div>
                       </div>
                       </td>
+                      
                        <td>
-                       <span class="mt-sm-2 d-block" th:text="${u.email}">1</span>
-                     </td>
-                       <td>
-                       <span class="fw-semibold mt-sm-2 d-block" th:text="${u.created_at}"></span>
+                       <span class="fw-semibold mt-sm-2 d-block" th:text="${b.created_at}"></span>
                       </td>
-                       <td>
-                        <div class="d-flex">
-                        <div class="mt-0 mt-sm-3 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.ranking==null?'Normal':'Super'}"></h6>
-                      </div>
-                      </div>
-                      </td>
+                       
                        <td>
                         <div class="mt-sm-1 d-block">
-                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${u.status==1?'text-success':''}" th:text="${u.status==1?'Activated':'Deactivated'}">
+                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${b.status==1?'text-success':''}" th:text="${b.status==1?'Activated':'Deactivated'}">
                        </span>
                       </div>
                       </td>
                        <td>
                         <div class="g-2">
-                        <a th:href="@{/admin/users/update?id=${u.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
+                        <a th:href="@{'/admin/blog-categories/update?id='+${b.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
                        <span class="fe fe-edit fs-14">
-       
                       </span>
                      </a>
+                     <span class="btn text-danger btn-sm" data-bs-original-title="Delete">
+                      <span class="fe fe-trash-2 fs-14">
+                      </span>
                       </div>
                       </td>
-                     </tr> -->
+                     </tr>
                         </tbody>
                        </table>
                         </div>
@@ -568,15 +565,14 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
-//   var pages=1;
-//   var pageControl = [[${paging}]];
-//   var userType=[[${is_admin}]];
-//   $(window).on('load',function(){
-//     if($('#msg').html().length>0){
-//       $("#msg").css("display", "block");
-//       $("#msg").delay(6000).fadeOut(300);
-//   }
-//   })
+  var pages=1;
+  var pageControl = [[${paging}]];
+  $(window).on('load',function(){
+    if($('#msg').html().length>0){
+      $("#msg").css("display", "block");
+      $("#msg").delay(4000).fadeOut(300);
+  }
+  })
 //   function ClearFilter() {
 //         $("#search-by-cond").val("");
 //         $("#take-record").val(10);
@@ -659,7 +655,7 @@
 //               success: function (data) {
 
 //                   for (var i = 0; i < data.length; i++) {
-//                         $("#data-table").append('<tr th:each="u, row : ${users}" class="border-bottom odd table-item">'
+//                         $("#data-table").append('<tr th:each="u, row : ${blog-categories}" class="border-bottom odd table-item">'
 //                           +'<td class="text-center">'
 //                           +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
 //                           +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].first_name+' '+data[i].last_name+'</h6></div></div>'
@@ -667,7 +663,7 @@
 //                           +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+data[i].email+'</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
 //                           +'</td> <td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold" >'+(data[i].ranking==null?'Normal':'Super')+'</h6>'
 //                           +'</div> </div> </td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
-//                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/users/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
+//                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/blog-categories/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
 //                           +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
 //                             row = row + 1;
     

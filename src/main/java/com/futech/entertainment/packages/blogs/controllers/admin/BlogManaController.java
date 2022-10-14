@@ -1,4 +1,4 @@
-package com.futech.entertainment.packages.users.controllers.admin;
+package com.futech.entertainment.packages.blogs.controllers.admin;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.futech.entertainment.packages.blogs.modelMappers.BlogMapper;
+import com.futech.entertainment.packages.blogs.services.interfaces.BlogCateServiceInterface;
+import com.futech.entertainment.packages.blogs.services.interfaces.BlogServiceInterface;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.FileUploadUtil;
 import com.futech.entertainment.packages.core.utils.Helpers;
@@ -42,7 +45,10 @@ import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
 public class BlogManaController {
-
+    @Autowired
+    BlogServiceInterface blogServiceInterface;
+    @Autowired
+    BlogCateServiceInterface blogCateServiceInterface;
     @ModelAttribute("statusList")
     public Map<Integer, String> getStatusList() {
         Map<Integer, String> statusList = new HashMap<Integer, String>();
@@ -51,30 +57,34 @@ public class BlogManaController {
 
         return statusList;
     }
-    @ModelAttribute("genderList")
-    public Map<Integer, String> getGenderList() {
-        Map<Integer, String> genderList = new HashMap<Integer, String>();
-        genderList.put(Helpers.MALE, "Male");
-        genderList.put(Helpers.FEMALE, "Female");
-        genderList.put(Helpers.OTHER, "Other");
-
-        return genderList;
+   
+    public Map<Integer, String> getBlogCateList(int blog_cate_id) {
+        String[] selects = {"id, name"};
+        List<DataMapper> cond = new ArrayList<DataMapper>();
+        cond.add(DataMapper.getInstance("", "status", "=", "1", blog_cate_id!=0?" or id = "+blog_cate_id:""));
+        var u = blogCateServiceInterface.getAll(selects, cond, null, null, "id desc", null);
+        Map<Integer, String>  blogCateList = new HashMap<Integer, String>();
+        if(u.size()>0){
+            for (var blog : u) 
+                blogCateList.put(Integer.parseInt(blog.get("id").toString()), blog.get("name").toString());
+        }
+        return  blogCateList;
     }
-
 
     @GetMapping("/admin/blogs/all")
     public String ViewUser(Model mdl){
-        // mdl.addAttribute("users",LoadData(1,"", 10,type) );
-        // mdl.addAttribute("paging", RowEvent(GetCount("",type),10));
+        mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
+        mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "blogs/administrator/all-blogs";
     } 
 
-    // @GetMapping("/admin/users/create")
-    // public String showCreateForm(Model mdl){
-    //     mdl.addAttribute("userMapper", new UserMapper());
-    //     mdl.addAttribute("formType", 0);
-    //     return "users/administrator/create-update";
-    // }
+    @GetMapping("/admin/blogs/create")
+    public String showCreateForm(Model mdl){
+        mdl.addAttribute("blogMapper", new BlogMapper());
+        mdl.addAttribute("blogCateList",getBlogCateList(0));
+        mdl.addAttribute("formType", 0);
+        return "blogs/administrator/create-update";
+    }
 
     // @PostMapping("/admin/users/create")
     // public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model)  throws IOException
@@ -110,19 +120,21 @@ public class BlogManaController {
     //         return "redirect:/admin/users/all?type=1";
     //     }
     // }
-    // @GetMapping("/admin/users/update")
-    // public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts)
-    // {
-    //     try{
-    //         model.addAttribute("userMapper", getUserMapperByID(id));
-    //         model.addAttribute("formType", 1);
-    //         return "users/administrator/create-update";
-    //     } catch(Exception ex){
-    //         atts.addFlashAttribute("error", ex.getMessage());
-    //         return "/admin/users/all?type=1";
+    @GetMapping("/admin/blogs/update")
+    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts)
+    {
+        try{
+            BlogMapper temp= getBlogMapperByID(id);
+            model.addAttribute("userMapper",temp);
+            model.addAttribute("formType", 1);
+            model.addAttribute("blogCateList", getBlogCateList(temp.getBlog_cate_id()));
+            return "users/administrator/create-update";
+        } catch(Exception ex){
+            atts.addFlashAttribute("error", ex.getMessage());
+            return "/admin/users/all?type=1";
 
-    //     }
-    // }
+        }
+    }
     // @PostMapping("/admin/users/update")
     // public String updateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
     //     try {
@@ -153,79 +165,79 @@ public class BlogManaController {
     //     }
     //     return "redirect:/admin/users/all?type=1";
     // }
-    // public UserMapper getUserMapperByID(int id){
-    //     String[] selects = {"users.id as user_id, users.status, users.phone, users.email,users.is_admin, "+
-    //         "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
-    //         "user_profiles.birth, user_profiles.gender"};
-    //         var u = userServiceiInterface.getUserById(selects,id);
-    //         UserMapper mapper=new UserMapper(
-    //            Integer.parseInt(u.get("user_id").toString()),
-    //            Integer.parseInt(u.get("user_profile_id").toString()),
-    //             u.get("first_name").toString(),
-    //             u.get("last_name").toString(),
-    //             u.get("phone").toString(),
-    //             u.get("email").toString(),
-    //             LocalDate.parse(u.get("birth").toString().subSequence(0, 10)),
-    //             Integer.parseInt(u.get("gender").toString()),
-    //             u.get("thumbnail")==null?"":u.get("thumbnail").toString(),
-    //             Integer.parseInt(u.get("status").toString()),
-    //             Boolean.parseBoolean(u.get("is_admin").toString())
-    //         );
-    //         return mapper;
-    // }
+    public BlogMapper getBlogMapperByID(int id){
+        String[] selects = {"title, content,blogs.url_slug, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%m-%d-%Y %H:%i') as created_at, blogs.status,"
+                             +"bc.name, p.first_name,p.last_name"};
+            var u = blogServiceInterface.getBlogById(selects,id);
+            BlogMapper mapper=new BlogMapper(
+               Integer.parseInt(u.get("id").toString()),
+               u.get("title").toString(),
+                u.get("content").toString(),
+                Integer.parseInt(u.get("blog_cate_id").toString()),
+                u.get("blogCate").toString(),
+                Integer.parseInt(u.get("author_id").toString()),
+                u.get("author_name").toString(),
+                u.get("url_slug").toString(),
+                Integer.parseInt(u.get("status").toString())
+            );
+            return mapper;
+    }
  //Pagination
-//  @PostMapping("/admin/user/all/LoadDataUser")
-//  public @ResponseBody ResponseEntity<List<Map<String,Object>>> LoadDataUser(int p, String cond, int take, int is_admin)
-//  {
-//      List<Map<String,Object>> emps = LoadData(p, cond, take,is_admin);
-//      return new ResponseEntity<List<Map<String,Object>>>(emps, HttpStatus.OK);
-//  }
+ @PostMapping("/admin/blogs/all/LoadDataBlog")
+ public @ResponseBody ResponseEntity<List<Map<String,Object>>> LoadDataBlog(int p, String cond, int take)
+ {
+     List<Map<String,Object>> objs = LoadData(p, cond, take);
+     return new ResponseEntity<List<Map<String,Object>>>(objs, HttpStatus.OK);
+ }
 
-//  public List<Map<String,Object>>  LoadData(int p, String cond, int take,int is_admin)
-//  {
-//         int currentSkip = take * (p - 1);
-//         //select
-//         String[] selects = {"users.id,users.phone, users.email, DATE_FORMAT(users.created_at,'%m-%d-%Y %H:%i') as created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
-//        //join
-//         List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
-//         lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "users.id", "=", "p.user_id", "")));
-//        //limit
-//         String[] limit = {String.valueOf(currentSkip),String.valueOf(take==0?1:take)};
-//        //condition
-//        List<DataMapper> lsCond = new ArrayList<DataMapper>();
-//        lsCond.add(DataMapper.getInstance("", "users.is_admin", "=", is_admin==1?"1":"0", ""));
-//         if(!cond.isEmpty()&&cond!=null){
-//             lsCond.add(DataMapper.getInstance("and (users.email like '%"+cond+"%' or ", "users.phone", "like", "%"+cond+"%", "or p.first_name like '%"+cond+"%' or p.last_name like '%"+cond+"%')"));
-//         }
-//         var u = userServiceiInterface.getAll(selects, lsCond.size()==0?null:lsCond, lsJoin, null, "users.id desc", limit);
-//         return u;
-//  }
+ public List<Map<String,Object>>  LoadData(int p, String cond, int take)
+ {
+        int currentSkip = take * (p - 1);
+        //select
+        String[] selects = {"b.title, b.content, b.author_id,b.blog_cate_id, DATE_FORMAT(b.created_at,'%m-%d-%Y %H:%i') as created_at, b.status,"
+                            +"bc.name, p.first_name,p.last_name"};
+       //join
+        List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
+        lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "b.author_id", "=", "p.user_id", "")));
+        lsJoin.add(JoinCondition.getInstance("left join", "blog_cates bc", DataMapper.getInstance("", "b.blog_cate_id", "=", "bc.id", "")));
+       //limit
+        String[] limit = {String.valueOf(currentSkip),String.valueOf(take==0?1:take)};
+       //condition
+       List<DataMapper> lsCond = new ArrayList<DataMapper>();
+        if(!cond.isEmpty()&&cond!=null){
+            lsCond.add(DataMapper.getInstance(" b.title like '%"+cond+"%' or ", "p.first_name", "like", "%"+cond+"%", "or p.last_name like '%"+cond+"%' or bc.name like '%"+cond+"%'"));
+        }
+        var u = blogServiceInterface.getAll(selects, lsCond.size()==0?null:lsCond, lsJoin, null, "b.id desc", limit);
+        return u;
+ }
 
-// @PostMapping("/admin/user/all/GetCount")
-//  public @ResponseBody int GetCount(String cond,int is_admin)
-//  {
-//      //select
-//      String[] selects = {"users.phone, users.email, DATE_FORMAT(users.created_at,'%m-%d-%Y %H:%i') as created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
-//      //join
-//       List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
-//       lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "users.id", "=", "p.user_id", "")));
-//      //condition
-//      List<DataMapper> lsCond = new ArrayList<DataMapper>();
-//      lsCond.add(DataMapper.getInstance("", "users.is_admin", "=", is_admin==1?"1":"0", ""));
-//       if(!cond.isEmpty()&&cond!=null){
-//           lsCond.add(DataMapper.getInstance("and (users.email like '%"+cond+"%' or ", "users.phone", "like", "'%"+cond+"%'", "p.first_name like '%"+cond+"%' or p.last_name like '%"+cond+"%')"));
-//       }
-//       var u = userServiceiInterface.getAll(selects, lsCond, lsJoin, null, null, null);
-//       return u.size();
-//  }
-// @PostMapping("/admin/user/all/RowEvent")
-//  public @ResponseBody  int RowEvent(int i, int take)
-//  {
-//      double pagi = i / Double.parseDouble(String.valueOf(take==0?1:take));
-//      double temp = pagi - Math.floor(pagi);
-//      return (int)(pagi+(temp>0?1:0));
+@PostMapping("/admin/blogs/all/GetCount")
+ public @ResponseBody int GetCount(String cond)
+ {
+    String[] selects = {"b.title, b.content, b.author_id,b.blog_cate_id, DATE_FORMAT(b.created_at,'%m-%d-%Y %H:%i') as created_at, b.status,"
+    +"bc.name, p.first_name,p.last_name"};
+    //join
+    List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
+    lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "b.author_id", "=", "p.user_id", "")));
+    lsJoin.add(JoinCondition.getInstance("left join", "blog_cates bc", DataMapper.getInstance("", "b.blog_cate_id", "=", "bc.id", "")));
+   
+    //condition
+    List<DataMapper> lsCond = new ArrayList<DataMapper>();
+    if(!cond.isEmpty()&&cond!=null){
+    lsCond.add(DataMapper.getInstance(" b.title like '%"+cond+"%' or ", "p.first_name", "like", "%"+cond+"%", "or p.last_name like '%"+cond+"%' or bc.name like '%"+cond+"%'"));
+    }
+    var u = blogServiceInterface.getAll(selects, lsCond.size()==0?null:lsCond, lsJoin, null, "b.id desc", null);
+    return u==null?0:u.size();
+ }
+
+@PostMapping("/admin/blogs/all/RowEvent")
+ public @ResponseBody  int RowEvent(int i, int take)
+ {
+     double pagi = i / Double.parseDouble(String.valueOf(take==0?1:take));
+     double temp = pagi - Math.floor(pagi);
+     return (int)(pagi+(temp>0?1:0));
      
-//  }
+ }
  //End pagination
 
 }

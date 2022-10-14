@@ -64,4 +64,19 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
     }
 
     //end crud
+    public Map<String, Object> getBlogById(String[] selects, int id){
+        try {           
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "blogs.id", "=", String.valueOf(id), ""));
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("join", "blog_cates bc", 
+                        DataMapper.getInstance("", "blogs.blog_cate_id", "=", "bc.id", "")));
+            joins.add(JoinCondition.getInstance("join", "user_profiles p", 
+                        DataMapper.getInstance("", "p.user_id", "=", "blogs.author_id", "")));
+               return this.getFirstBy(selects, conditions, joins);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

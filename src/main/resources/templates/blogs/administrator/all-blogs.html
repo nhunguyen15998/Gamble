@@ -74,11 +74,12 @@
                       <div class="col-sm-12 col-md-6">
                        <div id="data-table_filter" class="dataTables_filter">
                         <label style="width:450px">
-                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by phone, email,..." id="search-by-cond" aria-controls="data-table">
-                         <span style="width:11%;float:right;" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
-                         <span style="width:11%;float:right;" th:if="${is_admin==1}">
-                          <li class="icons-list-item" onclick="window.location.href='/admin/users/create'" style="height:80%;cursor: pointer;"><i class="fa fa-user-plus" style="pointer-events: none;"></i></li>
-                         </span> 
+                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by title, url slug, author name,..." id="search-by-cond" aria-controls="data-table">
+                         <span style="width:11%;float:right" onclick="ClearFilter();"><li  class="icons-list-item" style="height:70%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
+                         
+                         <span style="width:11%;float:right;height:50px;" >
+                          <li class="icons-list-item" style="height:80%;cursor: pointer;" onclick="window.location.href='/admin/blogs/create'"><i class="fa fa-plus" style="pointer-events: none;"></i></li>
+                           </span> 
                         </label>
                      </div>
                      </div>
@@ -88,12 +89,10 @@
                        <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
                         <thead class="border-top">
                        <tr role="row">
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 88.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
+                       <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 15.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
                         #</th>
                        <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
                         Title</th>
-                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
-                        Content</th>
                        <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Date: activate to sort column ascending" style="width: 89.2px;">
                         Blog category</th>
                        <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
@@ -107,7 +106,7 @@
                      </tr>
                       </thead>
                         <tbody>
-                        <!-- <tr th:each="u, row : ${users}" class="border-bottom odd table-item">
+                        <tr th:each="b, row : ${blogs}" class="border-bottom odd table-item">
                           <td class="text-center">
                             <div class="mt-0 mt-sm-2 d-block">
                             <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
@@ -118,19 +117,13 @@
                         <div class="d-flex">
                       
                         <div class="ms-3 mt-0 mt-sm-2 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.first_name+' '+u.last_name}"></h6>
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.title}"></h6>
                       </div>
                       </div>
                       </td>
+                       
                        <td>
-                        <div class="d-flex">
-                        <div class="mt-0 mt-sm-3 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.phone}"></h6>
-                      </div>
-                      </div>
-                      </td>
-                       <td>
-                       <span class="mt-sm-2 d-block" th:text="${u.email}">1</span>
+                       <span class="mt-sm-2 d-block" th:text="${b.blogCate}">1</span>
                      </td>
                        <td>
                        <span class="fw-semibold mt-sm-2 d-block" th:text="${u.created_at}"></span>
@@ -138,26 +131,30 @@
                        <td>
                         <div class="d-flex">
                         <div class="mt-0 mt-sm-3 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${u.ranking==null?'Normal':'Super'}"></h6>
+                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.author}"></h6>
                       </div>
                       </div>
                       </td>
                        <td>
                         <div class="mt-sm-1 d-block">
-                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${u.status==1?'text-success':''}" th:text="${u.status==1?'Activated':'Deactivated'}">
+                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${b.status==1?'text-success':''}" th:text="${b.status==1?'Activated':'Deactivated'}">
                        </span>
                       </div>
                       </td>
                        <td>
                         <div class="g-2">
-                        <a th:href="@{/admin/users/update?id=${u.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
+                        <a th:href="@{/admin/blogs/update?id=${b.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
                        <span class="fe fe-edit fs-14">
        
                       </span>
                      </a>
+                     <span class="btn text-danger btn-sm" data-bs-original-title="Delete">
+                      <span class="fe fe-trash-2 fs-14">
+                      </span>
+                    </span>
                       </div>
                       </td>
-                     </tr> -->
+                     </tr>
                         </tbody>
                        </table>
                         </div>

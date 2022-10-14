@@ -11,4 +11,5 @@ public interface BlogServiceInterface extends BaseServiceInterface<Blog> {
     public int countBlogs(List<DataMapper> conditions);
     public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy, String[] limits);
     public Map<String, Object> getBlog(List<DataMapper> conditions);
+    public Map<String, Object> getBlogById(String[] selects, int id);
 }

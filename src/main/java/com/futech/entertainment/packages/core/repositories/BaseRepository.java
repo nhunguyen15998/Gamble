@@ -188,7 +188,7 @@ public class BaseRepository<T extends BaseModel> implements BaseRepositoryInterf
             if(limit != null){
                 sql += " limit " + String.join(",", limit);
             }
-            System.out.println("query:"+sql);
+            System.out.println("query select:"+sql);
             List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
             return list;
         } catch (Exception e) {

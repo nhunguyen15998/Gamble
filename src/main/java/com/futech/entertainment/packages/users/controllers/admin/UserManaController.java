@@ -219,7 +219,7 @@ public class UserManaController {
           lsCond.add(DataMapper.getInstance("and (users.email like '%"+cond+"%' or ", "users.phone", "like", "'%"+cond+"%'", "p.first_name like '%"+cond+"%' or p.last_name like '%"+cond+"%')"));
       }
       var u = userServiceiInterface.getAll(selects, lsCond, lsJoin, null, null, null);
-      return u.size();
+      return u==null?0:u.size();
  }
 @PostMapping("/admin/user/all/RowEvent")
  public @ResponseBody  int RowEvent(int i, int take)
