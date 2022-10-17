@@ -1,11 +1,13 @@
 package com.futech.entertainment.packages.blogs.services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.futech.entertainment.packages.blogs.modelMappers.BlogMapper;
 import com.futech.entertainment.packages.blogs.models.Blog;
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogServiceInterface;
 import com.futech.entertainment.packages.core.services.BaseService;
@@ -62,7 +64,42 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
             return null;
         }
     }
+    public boolean createBlog(BlogMapper blogMapper){
+        try {
+            Blog newBlog = new Blog();
+            newBlog.setTitle(blogMapper.getTitle());
+            newBlog.setContent(blogMapper.getContent());
+            newBlog.setBlog_cate_id(blogMapper.getBlog_cate_id());
+            newBlog.setAuthor_id(blogMapper.getAuthor_id());
+            newBlog.setStatus(blogMapper.getStatus());
+            newBlog.setUrl_slug(blogMapper.getUrl_slug());
+            newBlog.setCreated_at(LocalDateTime.now());
+            this.create(newBlog);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean updateBlog(BlogMapper blogMapper){
+        try {
+            Blog upBlog = new Blog();
+            upBlog.setId(blogMapper.getId());
+            upBlog.setTitle(blogMapper.getTitle());
+            upBlog.setContent(blogMapper.getContent());
+            upBlog.setBlog_cate_id(blogMapper.getBlog_cate_id());
+            upBlog.setStatus(blogMapper.getStatus());
+            upBlog.setUrl_slug(blogMapper.getUrl_slug());
+            var updated = this.update(upBlog);
 
+            if(updated){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     //end crud
     public Map<String, Object> getBlogById(String[] selects, int id){
         try {           

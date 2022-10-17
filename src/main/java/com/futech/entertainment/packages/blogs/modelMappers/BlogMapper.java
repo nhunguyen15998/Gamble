@@ -1,6 +1,8 @@
 package com.futech.entertainment.packages.blogs.modelMappers;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class BlogMapper {
     
@@ -10,6 +12,7 @@ public class BlogMapper {
     private String title;
     @NotBlank(message = "Content is required")
     private String content;
+    @NotNull(message = "Blog category is required")
     private Integer blog_cate_id;
     private String blogCate;
     private Integer author_id;

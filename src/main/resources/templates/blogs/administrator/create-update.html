@@ -81,13 +81,15 @@
                                                
                                                 <div class="col-xl-4 mb-3"> 
                                                   <label for="validationCustom04">Blog caterogy</label>
-                                                  <select class="form-control select2"  name="blogCate" id="validationCustom04">
+                                                  <select class="form-control select2"  name="blog_cate_id" id="validationCustom04">
                                                     <option disabled value="-1" th:selected="${formType==0}">select category</option>
                                                     <option th:each="stt : ${blogCateList}" 
                                                             th:value="${stt.key}" 
                                                             th:selected="(${oldData!=null}?${oldData.blog_cate_id}==${stt.key}:false) OR ${blogMapper.blog_cate_id}==${stt.key}"
                                                             th:text="${stt.value}" style="background-color:#8677d3;" ></option>
                                                   </select>
+                                                  <small th:class="text-danger" th:if="${#fields.hasErrors('blog_cate_id')}" th:errors="*{blog_cate_id}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                               </div>
                                             
                                               <!-- th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${blogMapper.status}==${stt.key}" -->

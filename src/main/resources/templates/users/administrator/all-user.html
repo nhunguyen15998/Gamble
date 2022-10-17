@@ -117,7 +117,7 @@
                      </tr>
                       </thead>
                         <tbody>
-                        <tr th:each="u, row : ${users}" class="border-bottom odd table-item">
+                        <!-- <tr th:each="u, row : ${users}" class="border-bottom odd table-item">
                           <td class="text-center">
                             <div class="mt-0 mt-sm-2 d-block">
                             <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
@@ -167,7 +167,7 @@
                      </a>
                       </div>
                       </td>
-                     </tr>
+                     </tr> -->
                         </tbody>
                        </table>
                         </div>
@@ -673,7 +673,7 @@
               success: function (data) {
 
                   for (var i = 0; i < data.length; i++) {
-                        $("#data-table").append('<tr th:each="u, row : ${users}" class="border-bottom odd table-item">'
+                        $("#data-table").append('<tr class="border-bottom odd table-item">'
                           +'<td class="text-center">'
                           +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
                           +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].first_name+' '+data[i].last_name+'</h6></div></div>'

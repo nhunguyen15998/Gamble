@@ -60,7 +60,7 @@
                        <div class="col-sm-12 col-md-6">
                        <div class="dataTables_length" id="data-table_length">
                        <label>
-                       Show <select class="form-select" style="width:60px;font-size:15px;padding:0 5px; text-align:center" id="take-record">
+                       Show <select class="form-select"  style="width:60px;font-size:15px;padding:0 5px; text-align:center" id="take-record">
                             <option value="10" style="background-color:#8677d3; opacity: 0.2;">10</option>
                             <option value="20" style="background-color:#8677d3; opacity: 0.2;">20</option>
                             <option value="40" style="background-color:#8677d3; opacity: 0.2;">40</option>
@@ -106,7 +106,7 @@
                      </tr>
                       </thead>
                         <tbody>
-                        <tr th:each="b, row : ${blogCates}" class="border-bottom odd table-item">
+                        <!-- <tr th:each="b, row : ${blogCates}" class="border-bottom odd table-item">
                           <td class="text-center">
                             <div class="mt-0 mt-sm-2 d-block">
                             <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
@@ -150,7 +150,7 @@
                       </span>
                       </div>
                       </td>
-                     </tr>
+                     </tr> -->
                         </tbody>
                        </table>
                         </div>
@@ -164,7 +164,7 @@
                                   <ul class="pagination" id="paginations">
                                     <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span>
                                     </li>
-                                    <!-- <th:block th:each="page : ${#numbers.sequence(1, paging==0?1:paging)}">
+                                    <th:block th:each="page : ${#numbers.sequence(1, paging==0?1:paging)}">
                                      
                                       <li class="paginate_button page-item active" data-page="1" th:if="${page==1}">
                                         <span class="page-link">1</span>
@@ -172,7 +172,7 @@
                                     <li class="paginate_button page-item" th:if="${page!=1}" th:data-page="'page-'+${page}">
                                       <span class="page-link" th:text="${page}"></span>
                                     </li>
-                                    </th:block> -->
+                                    </th:block>
                                     <li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span>
                                     </li>
                                   </ul>
@@ -573,148 +573,144 @@
       $("#msg").delay(4000).fadeOut(300);
   }
   })
-//   function ClearFilter() {
-//         $("#search-by-cond").val("");
-//         $("#take-record").val(10);
-//         SearchFilter(1);
-//     }
-//   $('body').delegate('.page-item', 'click', function () {
-//       var str = $(this).attr("data-page");
-//       var re = document.getElementsByClassName('page-item');
-//       for (var i = 0; i < re.length; i++) {
-//             $(re[i]).removeClass('active');
-//       }
+  function ClearFilter() {
+        $("#search-by-cond").val("");
+        $("#take-record").val(10);
+        SearchFilter(1);
+    }
+  $('body').delegate('.page-item', 'click', function () {
+      var str = $(this).attr("data-page");
+      var re = document.getElementsByClassName('page-item');
+      for (var i = 0; i < re.length; i++) {
+            $(re[i]).removeClass('active');
+      }
 
-//       if (str == "prev" && pages >= 1) {
+      if (str == "prev" && pages >= 1) {
 
-//           if (pages == 1) {
-//               pages = 1;
-//               $('[data-page="page-1"]').addClass('active')
+          if (pages == 1) {
+              pages = 1;
+              $('[data-page="page-1"]').addClass('active')
               
-//                   return;
+                  return;
 
-//           } else {
-//               pages -= 1;
+          } else {
+              pages -= 1;
 
-//           }
+          }
 
-//       } else if (str == "next" && pages <=pageControl) {
-//           if (pages ==pageControl) {
-//               pages = pageControl;
-//               $('[data-page="page-'+pages+'"]').addClass('active');
-//               return;
-//           } else {
-//               pages += 1;
-//           }
+      } else if (str == "next" && pages <=pageControl) {
+          if (pages ==pageControl) {
+              pages = pageControl;
+              $('[data-page="page-'+pages+'"]').addClass('active');
+              return;
+          } else {
+              pages += 1;
+          }
 
 
-//       }  else {
-//           if (pages == parseInt(str.replace("page-", ""))) {
-//               pages = -1;
-//           } else {
-//               pages = parseInt(str.replace("page-", ""));
-//           }
-//           $(this).addClass('active');
-//       }
-//       SearchFilter(pages,"");
+      }  else {
+          if (pages == parseInt(str.replace("page-", ""))) {
+              pages = -1;
+          } else {
+              pages = parseInt(str.replace("page-", ""));
+          }
+          $(this).addClass('active');
+      }
+      SearchFilter(pages,"");
 
-//       });
-//       function SearchFilter(page){
-//         var cond = $("#search-by-cond").val();
-//         var take = $("#take-record").val();
-//         if(take<0||take>100) {take=10; $("#take-record").val(1);}
-//         LoadData(page, cond, take);
-//       }
-//       $("#take-record").on('change',function(){
-//           SearchFilter(1);
-//       })
-//       $("#search-by-cond").on('keyup', function (e) {
-//       if (e.key === 'Enter' || e.keyCode === 13) 
-//           SearchFilter(1);
-//       });
-//       function LoadData( page, cond,take) {
+      });
+      function SearchFilter(page){
+        var cond = $("#search-by-cond").val();
+        var take = $("#take-record").val();
+        if(take<0||take>100) {take=10; $("#take-record").val(1);}
+        LoadData(page, cond, take);
+      }
+      $("#take-record").on('change',function(){
+          SearchFilter(1);
+      })
+      $("#search-by-cond").on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) 
+          SearchFilter(1);
+      });
+      function LoadData( page, cond,take) {
       
-//       if (page > 0 && page <=pages) {
-//           var r = document.getElementsByClassName('table-item');
-//           while (r.length > 0) {
-//               r[0].parentNode.removeChild(r[0]);
-//           }
-//           var formDT = new FormData();
-//           formDT.append("p", page);
-//           formDT.append("cond", cond);
-//           formDT.append("take", take);
-//           formDT.append("is_admin", userType);
+      if (page > 0 && page <=pages) {
+          var r = document.getElementsByClassName('table-item');
+          while (r.length > 0) {
+              r[0].parentNode.removeChild(r[0]);
+          }
+          var formDT = new FormData();
+          formDT.append("p", page);
+          formDT.append("cond", cond);
+          formDT.append("take", take);
           
-//           var row = page == 1 ? 1 : take * (page - 1) + 1;
-//           $.ajax({
-//               type: "POST",
-//               url: "/admin/user/all/LoadDataUser/",
-//               data: formDT,
-//               processData: false,
-//               contentType: false,
-//               success: function (data) {
+          var row = page == 1 ? 1 : take * (page - 1) + 1;
+          $.ajax({
+              type: "POST",
+              url: "/admin/blog-caterogies/all/LoadDataBlogCate",
+              data: formDT,
+              processData: false,
+              contentType: false,
+              success: function (data) {
 
-//                   for (var i = 0; i < data.length; i++) {
-//                         $("#data-table").append('<tr th:each="u, row : ${blog-categories}" class="border-bottom odd table-item">'
-//                           +'<td class="text-center">'
-//                           +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
-//                           +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].first_name+' '+data[i].last_name+'</h6></div></div>'
-//                           +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+data[i].phone+'</h6>'
-//                           +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+data[i].email+'</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
-//                           +'</td> <td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold" >'+(data[i].ranking==null?'Normal':'Super')+'</h6>'
-//                           +'</div> </div> </td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
-//                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/blog-categories/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
-//                           +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
-//                             row = row + 1;
+                  for (var i = 0; i < data.length; i++) {
+                        $("#data-table").append('<tr th:each="u, row : ${blog-categories}" class="border-bottom odd table-item">'
+                          +'<td class="text-center">'
+                          +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
+                          +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].name+'</h6></div></div>'
+                          +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+data[i].url_slug+'</h6>'
+                          +'</div> </div> </td><td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
+                          +'</td>  <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
+                          +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/blog-categories/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
+                          +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
+                            row = row + 1;
     
     
-//                           }
+                          }
     
-//                   var f = new FormData();
-//                   f.append("cond", cond);
-//                   f.append("is_admin", userType);
+                  var f = new FormData();
+                  f.append("cond", cond);
 
-//                   $.ajax({
-//                       type: "POST",
-//                       url: "/admin/user/all/GetCount/",
-//                       data: f,
-//                       processData: false,
-//                       contentType: false,
-//                       success: function (data) {
-//                           var fdt = new FormData();
-//                           fdt.append("i", data);
-//                           fdt.append("take", take);
-//                           fdt.append("is_admin", userType);
-//                           $("#data-table_info").html("Showing "+(take>data?data:take)+" of "+data+" entries")
+                  $.ajax({
+                      type: "POST",
+                      url: "/admin/blog-categories/all/GetCount/",
+                      data: f,
+                      processData: false,
+                      contentType: false,
+                      success: function (data) {
+                          var fdt = new FormData();
+                          fdt.append("i", data);
+                          fdt.append("take", take);
+                          $("#data-table_info").html("Showing "+(take>data?data:take)+" of "+data+" entries")
 
-//                           $.ajax({
-//                               type: "POST",
-//                               url: "/admin/user/all/RowEvent/",
-//                               data: fdt,
-//                               processData: false,
-//                               contentType: false,
-//                               success: function (dt) {
-//                                   var r = document.getElementsByClassName('page-item');
-//                                   while (r.length > 0) {
-//                                       r[0].parentNode.removeChild(r[0]);
-//                                   }
-//                                   var strs = "";
-//                                   pageControl=dt;
-//                                   for (var j = 1; j <= dt; j++) {
-//                                           strs += '<li class="paginate_button page-item '+(j == page?'active':'')+'" data-page="page-'+j+'"><span class="page-link">' + j + '</span></li>';
+                          $.ajax({
+                              type: "POST",
+                              url: "/admin/blog-categories/all/RowEvent/",
+                              data: fdt,
+                              processData: false,
+                              contentType: false,
+                              success: function (dt) {
+                                  var r = document.getElementsByClassName('page-item');
+                                  while (r.length > 0) {
+                                      r[0].parentNode.removeChild(r[0]);
+                                  }
+                                  var strs = "";
+                                  pageControl=dt;
+                                  for (var j = 1; j <= dt; j++) {
+                                          strs += '<li class="paginate_button page-item '+(j == page?'active':'')+'" data-page="page-'+j+'"><span class="page-link">' + j + '</span></li>';
     
-//                                   }
-//                                   $("#paginations").append(' <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span></li>' + strs + '<li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span></li>');
+                                  }
+                                  $("#paginations").append(' <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span></li>' + strs + '<li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span></li>');
     
-//                               }
-//                           });
+                              }
+                          });
     
-//                       }
+                      }
     
-//                   });
-//               }
-//           });
-//         }
-//       }
+                  });
+              }
+          });
+        }
+      }
     
 </script>
