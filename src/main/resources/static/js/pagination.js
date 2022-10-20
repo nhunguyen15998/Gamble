@@ -30,10 +30,8 @@ function updatePageByNumber(){
                 let blogs = `<div class="col-xl-4 col-lg-4 col-md-6">
                                 <div>
                                     <a class="card single-bonus" href="/articles/detail/${cateSlug}/${blog.blog_slug}-${blog.blog_id}">
-                                        <img src="${blog.thumbnail}" alt="">
                                         <div class="card-body">
                                             <h4 class="card-title">${blog.title}</h4>
-                                            <p class="card-text">${blog.description}</p>
                                         </div>
                                     </a>
                                 </div>
@@ -119,6 +117,7 @@ function redrawPagination(totalPages){
         $('.pagination-article').parent().removeClass('d-none')
     }
     size = totalPages <= 1 ? totalPages : 2
+    
     createPagination('.pagination-article .page-item:first-child', size)
     lisChanged = [...document.querySelectorAll('.pagination-article > li:not(:first-child):not(:last-child)')]
 }

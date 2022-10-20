@@ -37,12 +37,15 @@ public class UserMapper {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
+
     @NotNull(message = "Birth is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
+
     private Integer gender;
     private String thumbnail;
     private Integer status;
+    
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 15, message = "Password must range from 6 to 15")
     private String plain_password;
