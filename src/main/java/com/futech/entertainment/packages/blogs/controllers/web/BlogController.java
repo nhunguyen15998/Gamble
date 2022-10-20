@@ -32,7 +32,7 @@ public class BlogController {
     @Autowired
     private BlogServiceInterface blogServiceInterface;
 
-    private int itemPerPage = 1;
+    private int itemPerPage = 3;
     private String startPoint = "0";
     private String[] limits = {startPoint, String.valueOf(itemPerPage)};
 
@@ -89,7 +89,7 @@ public class BlogController {
 
             conditions.clear();
             conditions.add(DataMapper.getInstance("", "blog_cates.id", "=", cateId, "and"));
-            var allBlogs = this.blogServiceInterface.countBlogs(conditions);
+            var allBlogs = (double)this.blogServiceInterface.countBlogs(conditions);
             if(blogs.size() == 0 || allBlogs == 0){
                 obj.put("code", 404);
                 obj.put("message", "Not found");
@@ -97,7 +97,8 @@ public class BlogController {
                 blogs.add(obj);
             }
             obj.put("total", allBlogs);
-            blogs.add(0, obj);;
+            obj.put("totalPages", (int)Math.ceil(allBlogs/itemPerPage));
+            blogs.add(0, obj);
             return new ResponseEntity<List<Map<String, Object>>>(blogs, HttpStatus.OK);
         } catch (Exception e) {
             obj.put("code", 500);

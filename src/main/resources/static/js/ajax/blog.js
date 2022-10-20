@@ -14,7 +14,8 @@ $('#blog-cate-select').on('change', () => {
             response.forEach(blog => {
                 if(blog.total != null){
                     $('.pagination-article').attr('total-pages', blog.total)
-                    totalPages = parseInt(blog.total)
+                    totalPages = parseInt(blog.totalPages)
+                    console.log("totalPages: "+totalPages)
                 } else {
                     cateSlug = blog.cate_slug
                     let blogs = `<div class="col-xl-4 col-lg-4 col-md-6">
