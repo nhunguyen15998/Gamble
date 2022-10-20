@@ -118,7 +118,7 @@ public class BlogController {
             conditions.add(DataMapper.getInstance("", "blogs.id", "=", id, "and"));
             var blog = this.blogServiceInterface.getBlog(conditions);
             conditions.clear();
-            conditions.add(DataMapper.getInstance("", "blogs.is_featured", "=", "1", "and"));
+            //conditions.add(DataMapper.getInstance("", "blogs.is_featured", "=", "1", "and"));
             String orderBy = "blogs.created_at desc";
             String[] limits = {"1"};
             var featuredBlogs = this.blogServiceInterface.getBlogs(conditions, orderBy, limits);

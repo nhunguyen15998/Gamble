@@ -6,7 +6,7 @@ $('#blog-cate-select').on('change', () => {
         $('#blog-section').empty()
         //clear pagination
         clearPagination()
-        if(response[0].code == 404){
+        if(response[0].code == 404 || $('#blog-cate-select').val()==-1){
             let div = '<div class="col-12 text-center mb-5"><p>Not found</p></div>'
             $('#blog-section').append(div)
             cateSlug = response[0].cateSlug
@@ -21,10 +21,8 @@ $('#blog-cate-select').on('change', () => {
                     let blogs = `<div class="col-xl-4 col-lg-4 col-md-6">
                                     <div>
                                         <a class="card single-bonus" href="/articles/detail/${cateSlug}/${blog.blog_slug}-${blog.blog_id}">
-                                            <img src="${blog.thumbnail}" alt="">
                                             <div class="card-body">
                                                 <h4 class="card-title">${blog.title}</h4>
-                                                <p class="card-text">${blog.description}</p>
                                             </div>
                                         </a>
                                     </div>

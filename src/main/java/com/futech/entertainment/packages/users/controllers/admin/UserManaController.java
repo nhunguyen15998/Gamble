@@ -127,15 +127,15 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
         try {
             if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
                 bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
 
             }
-            if(bindingResult.hasErrors()&&bindingResult.getErrorCount()!=4){
-                atts.addAttribute("oldData", userMapper);
-                atts.addAttribute("formType", 0);
+            if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=6){
+                model.addAttribute("oldData", userMapper);
+                model.addAttribute("formType", 0);
                 return "users/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
@@ -144,7 +144,6 @@ public class UserManaController {
                 userMapper.setThumbnail(fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
-
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
                 atts.addFlashAttribute("successMsg", "Successfully update user");
@@ -154,7 +153,7 @@ public class UserManaController {
         } catch(Exception ex) {
             atts.addFlashAttribute("error", ex.getMessage());
         }
-        return "redirect:/admin/users/all?type=1";
+        return "redirect:/admin/users/all?type="+(userMapper.isIs_admin()==true?1:0);
     }
     public UserMapper getUserMapperByID(int id){
         String[] selects = {"users.id as user_id, users.status, users.phone, users.email,users.is_admin, "+

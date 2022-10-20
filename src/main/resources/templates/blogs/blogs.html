@@ -75,7 +75,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
                 <div class="justify-content-center mb-5 row">
                     <div class="col-4">
                         <select id="blog-cate-select">
-                            <option disabled value="-1">Choose one category</option>
+                            <option  value="-1">Choose one category</option>
                             <option th:each="cate, row : ${cates}" 
                                     th:value="${cate.id}" 
                                     th:selected="${cate.url_slug == currentCate ?: cate.id == 1}"
@@ -89,10 +89,9 @@ th:replace="~{layouts/main-layout :: main-fragment(
                         <div class="col-xl-4 col-lg-4 col-md-6" th:each="blog : ${blogs}">
                             <div>
                                 <a class="card single-bonus" th:href="@{/articles/detail/{cate}/{url}-{id}(cate=${(blog.name).toLowerCase()},id=${blog.id},url=${blog.url_slug})}">
-                                    <img th:src="${blog.thumbnail}" alt="">
+                                    <!-- <img th:src="${blog.thumbnail}" alt=""> -->
                                     <div class="card-body">
                                         <h4 class="card-title" th:text="${blog.title}"></h4>
-                                        <p class="card-text" th:text="${blog.description}"></p>
                                     </div>
                                 </a>
                             </div>

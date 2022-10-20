@@ -261,6 +261,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             user.setEmail(userMapper.getEmail());
             if(userMapper.getPlain_password()!=null) user.setplain_password(userMapper.getPlain_password());
             if(userMapper.getStatus()!=null) user.setStatus(userMapper.getStatus());
+            user.setIs_admin(userMapper.isIs_admin());
             var updatedUser = this.update(user);
 
             UserProfile userProfile = new UserProfile();
