@@ -19,13 +19,15 @@ public class BlogMapper {
     private String url_slug;
     private String author_name;
     private Integer status;
+    private String thumbnail;
+    @NotBlank(message = "Description is required")
+    private String description;
 
-    
     public BlogMapper() {
     }
 
     public BlogMapper(Integer id, String title, String content, Integer blog_cate_id, String blogCate,
-            Integer author_id, String author_name, String url, Integer status) {
+            Integer author_id, String author_name, String url, Integer status,String thumbnail,String descript) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -35,6 +37,8 @@ public class BlogMapper {
         this.author_name = author_name;
         this.status = status;
         this.url_slug=url;
+        this.thumbnail=thumbnail;
+        this.description=descript;
     }
 
     public Integer getId() {
@@ -114,4 +118,22 @@ public class BlogMapper {
     public void setUrl_slug(String url_slug) {
         this.url_slug = url_slug;
     }
+    
+    
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

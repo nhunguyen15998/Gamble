@@ -40,9 +40,9 @@ public class Helpers {
     public static String randomString(){
         return UUID.randomUUID().toString().replaceAll("_", "").replace("-", "");
     }
-    public static String randomForImageName()
+    public static String randomStringDate()
     {
-        return DateTimeFormatter.ofPattern("ddMMyyyyHHmmss").format(LocalDateTime.now());
+        return DateTimeFormatter.ofPattern("ddMMyyyyHHmmssSSS").format(LocalDateTime.now());
     }
     /* <= 32 */
     public static String randomStringWithLength(int length){

@@ -3,7 +3,15 @@
 
     // PAGE LOADING
     $(window).on("load", function (e) {
-        $("#global-loader").fadeOut("slow");
+        $('.app-sidebar').css("display","none");
+        $('.app-header').css("display","none");
+        $("#global-loader").delay(500).fadeOut("slow");
+        
+    
+        $('.app-sidebar').css("display","block");
+        $('.app-header').css("display","block");
+
+
     })
 
     // COLOR THEME

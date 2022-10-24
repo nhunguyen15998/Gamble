@@ -75,7 +75,7 @@
                                             <div class="form-row">
                                                 <div class="col-xl-6 mb-3">
                                                     <label for="phone">Phone</label>
-                                                    <input type="text" class="form-control" th:disabled="${formType==1}" name="phone" th:value="${oldData != null}?${oldData.phone}:${userMapper.phone}" >
+                                                    <input type="text" class="form-control" name="phone" th:value="${oldData != null}?${oldData.phone}:${userMapper.phone}" >
                                                     <small th:class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
 
                                                 </div>

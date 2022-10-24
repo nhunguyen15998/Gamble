@@ -76,6 +76,8 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
             newBlog.setStatus(blogMapper.getStatus());
             newBlog.setUrl_slug(blogMapper.getUrl_slug());
             newBlog.setCreated_at(LocalDateTime.now());
+            newBlog.setThumbnail(blogMapper.getThumbnail());
+
             this.create(newBlog);
             return true;
         } catch (Exception e) {
@@ -92,6 +94,7 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
             upBlog.setBlog_cate_id(blogMapper.getBlog_cate_id());
             upBlog.setStatus(blogMapper.getStatus());
             upBlog.setUrl_slug(blogMapper.getUrl_slug());
+            upBlog.setThumbnail(blogMapper.getThumbnail());
             var updated = this.update(upBlog);
 
             if(updated){

@@ -173,7 +173,7 @@ function localStorageBackup() {
     }
 
     if (localStorage.sashtransparentBgImgPrimary) {
-		document.getElementById('transparentBgImgPrimaryColorID').value = localStorage.sashtransparentBgImgPrimary;
+		//document.getElementById('transparentBgImgPrimaryColorID').value = localStorage.sashtransparentBgImgPrimary;
 		document.querySelector('html').style.setProperty('--primary-bg-color', localStorage.sashtransparentBgImgPrimary);
 		document.querySelector('html').style.setProperty('--primary-bg-hover', localStorage.sashtransparentBgImgPrimary);
 		document.querySelector('html').style.setProperty('--primary-bg-border', localStorage.sashtransparentBgImgPrimary);

@@ -130,16 +130,16 @@
             }
         }
     });
-    if ($('.slide-item').hasClass('active')) {
-        $('.app-sidebar').animate({
-            scrollTop: $('a.slide-item.active').offset().top - 600
-        }, 600);
-    }
-    if ($('.sub-slide-item').hasClass('active')) {
-        $('.app-sidebar').animate({
-            scrollTop: $('a.sub-slide-item.active').offset().top - 600
-        }, 600);
-    }
+    // if ($('.slide-item').hasClass('active')) {
+    //     $('.app-sidebar').animate({
+    //         scrollTop: $('a.slide-item.active').offset().top - 600
+    //     }, 600);
+    // }
+    // if ($('.sub-slide-item').hasClass('active')) {
+    //     $('.app-sidebar').animate({
+    //         scrollTop: $('a.sub-slide-item.active').offset().top - 600
+    //     }, 600);
+    // }
 
 
     var toggleSidebar = function () {
