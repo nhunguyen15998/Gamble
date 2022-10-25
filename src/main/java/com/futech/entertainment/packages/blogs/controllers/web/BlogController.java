@@ -39,13 +39,12 @@ public class BlogController {
     @GetMapping("/articles/{cate}")
     public String blog(HttpServletRequest request, Model model, @PathVariable String cate, @RequestParam String page) throws IOException {
         try {
-            List<DataMapper> conditions = new ArrayList<DataMapper>();
-            var cateList = this.blogCateServiceInterface.getBlogCategories(conditions);
-            
+            var cateList = this.blogCateServiceInterface.getBlogCategories();
             cateList.sort(Comparator.comparing(c -> String.valueOf(c.get("name"))));
             model.addAttribute("cates", cateList);
-            conditions.clear();
+
             String orderBy = "blogs.created_at desc";
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "blog_cates.url_slug", "=", cate, "and"));
             String[] limit = {String.valueOf(Integer.parseInt(page)*itemPerPage-itemPerPage), String.valueOf(itemPerPage)};
             var blogs = this.blogServiceInterface.getBlogs(conditions, orderBy, Integer.parseInt(page) == 1 ? limits : limit);

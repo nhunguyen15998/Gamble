@@ -11,7 +11,7 @@ import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInt
 import com.futech.entertainment.packages.core.utils.DataMapper;
 
 public interface BlogCateServiceInterface extends BaseServiceInterface<BlogCate>{
-    public List<Map<String, Object>> getBlogCategories(List<DataMapper> conditions);
+    public List<Map<String, Object>> getBlogCategories();
     public Map<String, Object> getBlogCategory(List<DataMapper> conditions);
     public boolean createBlog(BlogCateMapper blogCateMapper);
     public  Map<String, Object> getBlogCateById(String[] selects, int id);

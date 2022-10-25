@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.futech.entertainment.packages.blogs.modelMappers.BlogCateMapper;
-import com.futech.entertainment.packages.blogs.models.Blog;
 import com.futech.entertainment.packages.blogs.models.BlogCate;
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogCateServiceInterface;
 import com.futech.entertainment.packages.core.services.BaseService;
@@ -20,8 +19,9 @@ public class BlogCateService extends BaseService<BlogCate> implements BlogCateSe
     public String STATUS_ACTIVATED = "1";
 
     // crud
-    public List<Map<String, Object>> getBlogCategories(List<DataMapper> conditions){
+    public List<Map<String, Object>> getBlogCategories(){
         try {
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "status", "=", this.STATUS_ACTIVATED, ""));
             return this.getAll(null, conditions, null, null, null, null);
         } catch (Exception e) {

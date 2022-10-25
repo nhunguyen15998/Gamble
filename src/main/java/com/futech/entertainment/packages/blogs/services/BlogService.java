@@ -35,9 +35,9 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
 
     public List<Map<String, Object>> getBlogs(List<DataMapper> conditions, String orderBy, String[] limits){
         try {
-            String[] selects = {"blog_cates.id as cate_id,concat(p.first_name,' ',p.last_name) as author_name,content, blogs.id as blog_id, blog_cates.created_at as cate_created_at, blogs.created_at as blog_created_at,"+
-                                "blog_cates.url_slug as cate_slug, blogs.url_slug as blog_slug, blog_cates.status as cate_status, blogs.status as blog_status,"+
-                                "blog_cates.*, blogs.*"};
+            String[] selects = {"blog_cates.id as cate_id,concat(p.first_name,' ',p.last_name) as author_name,content, blogs.*,"+
+                                "blog_cates.url_slug as cate_slug, blog_cates.status as cate_status,"+
+                                "blog_cates.name as blog_cate_name"};
             conditions.add(DataMapper.getInstance("", "blog_cates.status", "=", this.STATUS_ACTIVATED, ""));
             conditions.add(DataMapper.getInstance("and", "blogs.status", "=", this.STATUS_ACTIVATED, ""));
             List<JoinCondition> joins = new ArrayList<JoinCondition>();
