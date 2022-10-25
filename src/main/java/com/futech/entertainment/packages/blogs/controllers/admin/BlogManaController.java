@@ -87,9 +87,10 @@ public class BlogManaController {
     }
 
     @PostMapping("/admin/blogs/create")
-    public String CreateUser(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session) 
-    {
+    public String CreateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    
         try {
+            if(multipartFile.getOriginalFilename().isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
             
             if(bindingResult.hasErrors()){
                 model.addAttribute("blogMapper", blogMapper);
@@ -98,11 +99,11 @@ public class BlogManaController {
 
                 return "blogs/administrator/create-update";
             }
-            // if(!multipartFile.getOriginalFilename().isEmpty()){
-            //     String fileName = Helpers.randomForImageName()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            //     blogMapper.setThumbnail(fileName);
-            //     FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            // }
+            if(!multipartFile.getOriginalFilename().isEmpty()){
+                String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                blogMapper.setThumbnail(fileName);
+                FileUploadUtil.saveFile("src/main/resources/static/images/blogs/", fileName, multipartFile);
+            }
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
             blogMapper.setAuthor_id(Integer.parseInt(session.getAttribute("user_id").toString()));
             boolean sent = this.blogServiceInterface.createBlog(blogMapper);
@@ -133,22 +134,22 @@ public class BlogManaController {
         }
     }
     @PostMapping("/admin/blogs/update")
-    public String updateUser(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper, BindingResult bindingResult, RedirectAttributes atts)  throws IOException {
+    public String updateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,Model model, BindingResult bindingResult, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
         try {
-           
+            
             if(bindingResult.hasErrors()){
-                atts.addAttribute("oldData", blogMapper);
+                model.addAttribute("oldData", blogMapper);
                 atts.addAttribute("formType", 0);
                 atts.addAttribute("blogCateList", getBlogCateList(blogMapper.getId()));
 
                 return "blogs/administrator/create-update";
             }
-            // if(!multipartFile.getOriginalFilename().isEmpty()){
-            //     FileUploadUtil.deleteFile(getBlogMapperByID(blogMapper.getUser_id()).getThumbnail());
-            //     String fileName = Helpers.randomForImageName()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-            //     blogMapper.setThumbnail(fileName);
-            //     FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            // }
+            if(!multipartFile.getOriginalFilename().isEmpty()){
+                FileUploadUtil.deleteFile(getBlogMapperByID(blogMapper.getId()).getThumbnail());
+                String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                blogMapper.setThumbnail(fileName);
+                FileUploadUtil.saveFile("src/main/resources/static/images/blogs/", fileName, multipartFile);
+            }
 
             boolean updated = this.blogServiceInterface.updateBlog(blogMapper);
             if(updated){
@@ -162,7 +163,7 @@ public class BlogManaController {
         return "redirect:/admin/blogs/all";
     }
     public BlogMapper getBlogMapperByID(int id){
-        String[] selects = {"blogs.id,title,blogs.url_slug, content, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%m-%d-%Y %H:%i') as created_at, blogs.status,"
+        String[] selects = {"blogs.id,title,blogs.url_slug, content,description,blogs.thumbnail, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%d-%m-%Y %H:%i') as created_at, blogs.status,"
         +"bc.name as blogCate,  concat(p.first_name,' ',p.last_name) as author_name"};
             var u = blogServiceInterface.getBlogById(selects,id);
             BlogMapper mapper=new BlogMapper(
@@ -174,7 +175,9 @@ public class BlogManaController {
                 Integer.parseInt(u.get("author_id").toString()),
                 u.get("author_name").toString(),
                 u.get("url_slug").toString(),
-                Integer.parseInt(u.get("status").toString())
+                Integer.parseInt(u.get("status").toString()),
+                u.get("thumbnail")==null?"":u.get("thumbnail").toString(),
+                u.get("description").toString()
             );
             return mapper;
     }
@@ -190,7 +193,7 @@ public class BlogManaController {
  {
         int currentSkip = take * (p - 1);
         //select
-        String[] selects = {"blogs.id,title,blogs.url_slug, content, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%m-%d-%Y %H:%i') as created_at, blogs.status,"
+        String[] selects = {"blogs.id,title,blogs.url_slug, content,description,blogs.thumbnail, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%d-%m-%Y %H:%i') as created_at, blogs.status,"
         +"bc.name as blogCate,  concat(p.first_name,' ',p.last_name) as author_name"};
        //join
         List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
@@ -210,7 +213,7 @@ public class BlogManaController {
 @PostMapping("/admin/blogs/all/GetCount")
  public @ResponseBody int GetCount(String cond)
  {
-    String[] selects = {"blogs.id,title,blogs.url_slug, content, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%m-%d-%Y %H:%i') as created_at, blogs.status,"
+    String[] selects = {"blogs.id,title,blogs.url_slug, content,description,blogs.thumbnail, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%d-%m-%Y %H:%i') as created_at, blogs.status,"
     +"bc.name as blogCate,  concat(p.first_name,' ',p.last_name) as author_name"};
     //join
     List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();

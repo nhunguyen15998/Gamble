@@ -78,7 +78,10 @@ public class UserManaController {
         mdl.addAttribute("formType", 0);
         return "users/administrator/create-update";
     }
-
+    @GetMapping("/admin/users/my-profile")
+    public String showMyProfile(Model mdl){
+        return "users/administrator/my-profile";
+    }
     @PostMapping("/admin/users/create")
     public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model)  throws IOException
     {
@@ -96,7 +99,7 @@ public class UserManaController {
                 return "users/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
-                String fileName = Helpers.randomForImageName()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail(fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
@@ -133,14 +136,14 @@ public class UserManaController {
                 bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
 
             }
-            if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=6){
+            if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=4){
                 model.addAttribute("oldData", userMapper);
                 model.addAttribute("formType", 0);
                 return "users/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
                 FileUploadUtil.deleteFile(getUserMapperByID(userMapper.getUser_id()).getThumbnail());
-                String fileName = Helpers.randomForImageName()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail(fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
@@ -187,7 +190,7 @@ public class UserManaController {
  {
         int currentSkip = take * (p - 1);
         //select
-        String[] selects = {"users.id,users.phone, users.email, DATE_FORMAT(users.created_at,'%m-%d-%Y %H:%i') as created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
+        String[] selects = {"users.id,users.phone, users.email, DATE_FORMAT(users.created_at,'%d-%m-%Y %H:%i') as created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
        //join
         List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
         lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "users.id", "=", "p.user_id", "")));
@@ -207,7 +210,7 @@ public class UserManaController {
  public @ResponseBody int GetCount(String cond,int is_admin)
  {
      //select
-     String[] selects = {"users.phone, users.email, DATE_FORMAT(users.created_at,'%m-%d-%Y %H:%i') as created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
+     String[] selects = {"users.phone, users.email, users.created_at, users.status, users.is_admin,p.first_name, p.last_name,p.ranking"};
      //join
       List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
       lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p", DataMapper.getInstance("", "users.id", "=", "p.user_id", "")));

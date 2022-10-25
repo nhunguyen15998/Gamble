@@ -1,27 +1,25 @@
-package com.futech.entertainment.packages.contacts.models;
+package com.futech.entertainment.packages.contacts.modelMappers;
 
 import java.time.LocalDateTime;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import javax.validation.constraints.NotBlank;
 
-import com.futech.entertainment.packages.core.models.BaseModel;
-
-@Qualifier("Contact")
-public class Contact extends BaseModel {
-    public Contact() {}
-
-    private String table = "contacts";
-
-    private String[] columns = { "id", "name", "email", "message", "reply", "created_at", "status","case_number" };
-
-    public String getTable() {
-        return this.table;
+public class ContactSentMapper {
+    
+    
+    
+    public ContactSentMapper(Integer id, String name, String email, String case_number, String message, String reply,
+            LocalDateTime created_at, Integer status) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.case_number = case_number;
+        this.message = message;
+        this.reply = reply;
+        this.created_at = created_at;
+        this.status = status;
     }
-
-    public String[] getColumns() {
-        return this.columns;
-    }
-
+    public ContactSentMapper(){};
     private Integer id;
     private String name;
     private String email;
@@ -89,4 +87,3 @@ public class Contact extends BaseModel {
     }
 
 }
-

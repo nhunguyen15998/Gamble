@@ -142,7 +142,7 @@ public class BlogCategoriesManaController {
  {
         int currentSkip = take * (p - 1);
         //select
-        String[] selects = {"id, name, DATE_FORMAT(created_at,'%m-%d-%Y %H:%i') as created_at,url_slug, status"};
+        String[] selects = {"id, name, DATE_FORMAT(created_at,'%d-%m-%Y %H:%i') as created_at,url_slug, status"};
        //limit
         String[] limit = {String.valueOf(currentSkip),String.valueOf(take==0?1:take)};
        //condition
@@ -158,13 +158,13 @@ public class BlogCategoriesManaController {
  public @ResponseBody int GetCount(String cond)
  {
      //select
-     String[] selects = {"bc.id, bc.name, DATE_FORMAT(blog-categories.created_at,'%m-%d-%Y %H:%i') as created_at, bc.status"};
+     String[] selects = {"id, name, DATE_FORMAT(created_at,'%d-%m-%Y %H:%i') as created_at, status"};
      //condition
      List<DataMapper> lsCond = new ArrayList<DataMapper>();
       if(!cond.isEmpty()&&cond!=null){
-          lsCond.add(DataMapper.getInstance("", "bc.name", "like", "%"+cond+"%", ""));
+          lsCond.add(DataMapper.getInstance("", "name", "like", "%"+cond+"%", ""));
       }
-      var u = blogCateServiceInterface.getAll(selects, lsCond.size()==0?null:lsCond, null, null, "bc.id desc", null);
+      var u = blogCateServiceInterface.getAll(selects, lsCond.size()==0?null:lsCond, null, null, "id desc", null);
       
       return u!=null?u.size():0;
  }
