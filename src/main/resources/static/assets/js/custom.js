@@ -5,7 +5,7 @@
     $(window).on("load", function (e) {
         $('.app-sidebar').css("display","none");
         $('.app-header').css("display","none");
-        $("#global-loader").delay(500).fadeOut("slow");
+        $("#global-loader").delay(100).fadeOut("slow");
         
     
         $('.app-sidebar').css("display","block");

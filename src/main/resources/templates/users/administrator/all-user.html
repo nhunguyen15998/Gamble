@@ -662,7 +662,7 @@
           formDT.append("cond", cond);
           formDT.append("take", take);
           formDT.append("is_admin", userType);
-          
+          window.history.pushState({}, null, '/admin/users/all?type='+userType+`&page=${page}`)
           var row = page == 1 ? 1 : take * (page - 1) + 1;
           $.ajax({
               type: "POST",

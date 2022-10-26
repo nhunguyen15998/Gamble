@@ -1570,7 +1570,7 @@
                                             <!-- SIDE-MENU -->
                                             <div class="dropdown d-flex profile-1">
                                                 <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                                                    <img th:src="${session.thumbnail}==null?'/images/defaults/no-user.jpeg':'/images/users/'+${session.thumbnail}" alt="profile-user" class="avatar  profile-user brround cover-image">
+                                                    <img th:src="${session.thumbnail}==null?'/images/defaults/no-user.jpeg':${session.thumbnail}" alt="profile-user" class="avatar  profile-user brround cover-image">
                                                 </a>
                                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                     <div class="drop-heading">
@@ -1582,7 +1582,7 @@
                                                     <div class="dropdown-divider m-0">
 
                                                     </div>
-                                                    <a class="dropdown-item" href="profile.html">
+                                                    <a class="dropdown-item" href="/admin/users/my-profile">
                                                         <i class="dropdown-icon fe fe-user">
 
                             </i> Profile </a>
@@ -1645,7 +1645,7 @@
                               Main</h3>
                                 </li>
                                 <li class="slide is-expanded">
-                                    <a class="side-menu__item has-link active" data-bs-toggle="slide" href="index.html">
+                                    <a class="side-menu__item has-link active" data-bs-toggle="slide" href="/admin/dashboard">
                                         <i class="side-menu__icon fe fe-home">  </i>
                                         <span class="side-menu__label"> Dashboard</span>
                                     </a>
