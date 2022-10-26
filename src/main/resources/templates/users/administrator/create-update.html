@@ -38,7 +38,7 @@
                                     <div class="card-header">
                                         <h3 class="card-title">Infomation</h3> </div>
                                     <div class="card-body">
-                                       <form th:action="${userMapper.user_id!=null}?@{/admin/users/update?id={id}(id=${userMapper.user_id})}:@{/admin/users/create}" th:object="${userMapper}" method="post" enctype="multipart/form-data">
+                                       <form th:action="${userMapper.user_id!=null}?@{/admin/users/update?id={id}(id=${userMapper.user_id},type=${userType})}:@{/admin/users/create}" th:object="${userMapper}" method="post" enctype="multipart/form-data">
                                             <div style="position: relative;width: 25%;float:left ;margin-right: 1vw;">
                                                 <div style="position: relative;display:table-row; height: 100%; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
                                                     <div id="viewer" style="border: 2px dashed rgba(255, 255, 255, 0.2) ;border-radius: 6px; min-height: 280px;height:inherit;padding-top:10px; text-align:center">
@@ -56,7 +56,7 @@
                                               <div class="col-xl-6 mb-3" style="display: none;">
                                                 <input type="text" class="form-control" name="user_id" th:value="${oldData != null}?${oldData.user_id}:${userMapper.user_id}" />
                                                 <input type="text" class="form-control" name="user_profile_id" th:value="${oldData != null}?${oldData.user_profile_id}:${userMapper.user_profile_id}" />
-                                                <input type="text" class="form-control" name="is_admin" th:value="${oldData != null}?${oldData.is_admin}:${userMapper.is_admin}" />
+                                                <!-- <input type="text" class="form-control" name="is_admin" th:value="${userMapper.is_admin}" /> -->
  
                                               </div>
                                                 <div class="col-xl-6 mb-3">

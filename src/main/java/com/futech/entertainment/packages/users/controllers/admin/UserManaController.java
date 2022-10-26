@@ -103,7 +103,7 @@ public class UserManaController {
                 userMapper.setThumbnail(fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
-            userMapper.setIs_admin(true);
+            //userMapper.setIs_admin(true);
             boolean sent = this.userServiceiInterface.createUser(userMapper);
             if(sent){
                 redirAttrs.addFlashAttribute("successMsg", String.format("Saved successfully!"));
@@ -117,20 +117,21 @@ public class UserManaController {
         }
     }
     @GetMapping("/admin/users/update")
-    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts)
+    public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts)
     {
         try{
             model.addAttribute("userMapper", getUserMapperByID(id));
             model.addAttribute("formType", 1);
+            model.addAttribute("userType", type);
             return "users/administrator/create-update";
         } catch(Exception ex){
             atts.addFlashAttribute("error", ex.getMessage());
-            return "/admin/users/all?type=1";
+            return "/admin/users/all?type="+type;
 
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
         try {
             if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
                 bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
@@ -156,26 +157,25 @@ public class UserManaController {
         } catch(Exception ex) {
             atts.addFlashAttribute("error", ex.getMessage());
         }
-        return "redirect:/admin/users/all?type="+(userMapper.isIs_admin()==true?1:0);
+        return "redirect:/admin/users/all?type="+type;//+(userMapper.isIs_admin()==true?1:0);
     }
     public UserMapper getUserMapperByID(int id){
         String[] selects = {"users.id as user_id, users.status, users.phone, users.email,users.is_admin, "+
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
             "user_profiles.birth, user_profiles.gender"};
             var u = userServiceiInterface.getUserById(selects,id);
-            UserMapper mapper=new UserMapper(
-               Integer.parseInt(u.get("user_id").toString()),
-               Integer.parseInt(u.get("user_profile_id").toString()),
-                u.get("first_name").toString(),
-                u.get("last_name").toString(),
-                u.get("phone").toString(),
-                u.get("email").toString(),
-                LocalDate.parse(u.get("birth").toString().subSequence(0, 10)),
-                Integer.parseInt(u.get("gender").toString()),
-                u.get("thumbnail")==null?"":u.get("thumbnail").toString(),
-                Integer.parseInt(u.get("status").toString()),
-                Boolean.parseBoolean(u.get("is_admin").toString())
-            );
+            UserMapper mapper=new UserMapper();
+            mapper.setUser_id(Integer.parseInt(u.get("user_id").toString()));
+            mapper.setUser_profile_id(Integer.parseInt(u.get("user_profile_id").toString()));
+            mapper.setFirst_name(u.get("first_name").toString());
+            mapper.setLast_name(u.get("last_name").toString());
+            mapper.setPhone(u.get("phone").toString());
+            mapper.setEmail(u.get("email").toString());
+            mapper.setBirth(LocalDate.parse(u.get("birth").toString().subSequence(0, 10)));
+            mapper.setGender(Integer.parseInt(u.get("gender").toString()));
+            mapper.setThumbnail(u.get("thumbnail")==null?"":u.get("thumbnail").toString());
+            mapper.setStatus(Integer.parseInt(u.get("status").toString()));
+            //mapper.setIs_admin(Boolean.parseBoolean(u.get("is_admin").toString()));
             return mapper;
     }
  //Pagination
