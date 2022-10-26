@@ -204,20 +204,20 @@ function hovermenu() {
 }
 
 
-//________________Horizontal js
-jQuery(function () {
-    'use strict';
-    document.addEventListener("touchstart", function () { }, false);
-    jQuery(function () {
-        jQuery('body').wrapInner('<div class="horizontalMenucontainer" />');
-    });
-}());
+// //________________Horizontal js
+// jQuery(function () {
+//     'use strict';
+//     document.addEventListener("touchstart", function () { }, false);
+//     jQuery(function () {
+//         jQuery('body').wrapInner('<div class="horizontalMenucontainer" />');
+//     });
+// }());
 
 // for Icon-text Menu
 //icontext(); 
 
 // default layout
-hovermenu();
+//hovermenu();
 
 
 // ______________HOVER JS start
@@ -515,6 +515,7 @@ $(document).on("click", ".ltr #slide-left", function () {
     })
     //
 });
+
 $(document).on("click", ".ltr #slide-right", function () {
     let menuWidth = document.querySelector('.app-sidebar')
     let menuItems = document.querySelector('.side-menu')
@@ -601,6 +602,7 @@ $(document).on("click", ".rtl #slide-left", function () {
     })
     //
 });
+
 $(document).on("click", ".rtl #slide-right", function () {
     let menuWidth = document.querySelector('.app-sidebar')
     let menuItems = document.querySelector('.side-menu')

@@ -27,7 +27,7 @@ public class User extends BaseModel {
     private Integer id;
     private String phone;
     private String email;
-    private boolean is_admin;
+    private Boolean is_admin;
     private String plain_password;
     private String hash_password;
     private LocalDateTime created_at;
@@ -56,7 +56,7 @@ public class User extends BaseModel {
     public void setEmail(String email) {
         this.email = email;
     }
-    public boolean isIs_admin() {
+    public Boolean isIs_admin() {
         return is_admin;
     }
 

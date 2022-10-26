@@ -188,6 +188,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             newUser.setcreated_at(LocalDateTime.now());
             newUser.setStatus(Helpers.DEACTIVATED);
             newUser.setactivate_code(activateCode);
+            newUser.setIs_admin(false);
             User user = this.create(newUser);
             return user;
         } catch (Exception e) {
@@ -205,7 +206,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             newUser.setcreated_at(LocalDateTime.now());
             newUser.setStatus(Helpers.ACTIVATED);
             newUser.setactivate_code(null);
-            newUser.setIs_admin(userMapper.isIs_admin());
+            newUser.setIs_admin(true);
             User user = this.create(newUser);
             UserProfile userProfile = new UserProfile();
             userProfile.setUserId(user.getId());
@@ -261,7 +262,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             user.setEmail(userMapper.getEmail());
             if(userMapper.getPlain_password()!=null) user.setplain_password(userMapper.getPlain_password());
             if(userMapper.getStatus()!=null) user.setStatus(userMapper.getStatus());
-            user.setIs_admin(userMapper.isIs_admin());
+            //user.setIs_admin(userMapper.isIs_admin());
             var updatedUser = this.update(user);
 
             UserProfile userProfile = new UserProfile();

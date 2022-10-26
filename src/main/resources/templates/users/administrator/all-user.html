@@ -681,7 +681,7 @@
                           +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+data[i].email+'</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
                           +'</td> <td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold" >'+(data[i].ranking==null?'Normal':'Super')+'</h6>'
                           +'</div> </div> </td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
-                          +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/users/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
+                          +`</span> </div> </td> <td> <div class="g-2"> <a href="/admin/users/update?id=${data[i].id}&type=${userType}" class="btn text-primary btn-sm" data-bs-original-title="Edit">`
                           +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
                             row = row + 1;
     

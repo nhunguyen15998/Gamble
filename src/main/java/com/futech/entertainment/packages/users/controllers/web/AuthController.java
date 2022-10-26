@@ -49,7 +49,7 @@ public class AuthController {
     @GetMapping("/user/sign-up")
     public String getRegister(Model model, HttpSession session){
         if(session.getAttribute("phone") != null){
-            return "home";
+            return "redirect:/";
         }
         model.addAttribute("signUpMapper", new SignUpMapper());
         return "users/authentication/register";
@@ -99,7 +99,7 @@ public class AuthController {
     @GetMapping("/user/sign-in")
     public String getSignIn(Model model, HttpSession session){
         if(session.getAttribute("phone") != null){
-            return "home";
+            return "redirect:/";
         }
         model.addAttribute("signInMapper", new SignInMapper());
         return "users/authentication/sign_in";

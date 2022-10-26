@@ -56,28 +56,28 @@ public class UserMapper {
     private String confirm_password;
     
 
-    private boolean is_admin;
+    // private boolean is_admin;
     
 
     public UserMapper() {
     }
     
 
-    public UserMapper(Integer user_id,Integer user_pf_id, String first_name,
-           String last_name, String phone,String email,
-           LocalDate birth, Integer gender, String thumbnail, Integer status, Boolean is_admin) {
-        this.user_id = user_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.phone = phone;
-        this.email = email;
-        this.birth = birth;
-        this.gender = gender;
-        this.thumbnail = thumbnail;
-        this.status = status;
-        this.is_admin = is_admin;
-        this.user_profile_id=user_pf_id;
-    }
+    // public UserMapper(Integer user_id,Integer user_pf_id, String first_name,
+    //        String last_name, String phone,String email,
+    //        LocalDate birth, Integer gender, String thumbnail, Integer status, Boolean is_admin) {
+    //     this.user_id = user_id;
+    //     this.first_name = first_name;
+    //     this.last_name = last_name;
+    //     this.phone = phone;
+    //     this.email = email;
+    //     this.birth = birth;
+    //     this.gender = gender;
+    //     this.thumbnail = thumbnail;
+    //     this.status = status;
+    //     this.is_admin = is_admin;
+    //     this.user_profile_id=user_pf_id;
+    // }
 
 
 
@@ -152,13 +152,13 @@ public class UserMapper {
     public void setStatus(int status) {
         this.status = status;
     }
-    public boolean isIs_admin() {
-        return is_admin;
-    }
+    // public boolean isIs_admin() {
+    //     return is_admin;
+    // }
 
-    public void setIs_admin(Boolean is_admin) {
-        this.is_admin = is_admin;
-    }
+    // public void setIs_admin(Boolean is_admin) {
+    //     this.is_admin = is_admin;
+    // }
     public String getPlain_password() {
         return plain_password;
     }
