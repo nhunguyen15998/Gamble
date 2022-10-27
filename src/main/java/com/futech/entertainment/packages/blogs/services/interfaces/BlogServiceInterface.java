@@ -3,8 +3,6 @@ package com.futech.entertainment.packages.blogs.services.interfaces;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-
 import com.futech.entertainment.packages.blogs.modelMappers.BlogMapper;
 import com.futech.entertainment.packages.blogs.models.Blog;
 import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInterface;
