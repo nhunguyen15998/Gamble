@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,8 +81,16 @@ public class UserManaController {
         return "users/administrator/create-update";
     }
     @GetMapping("/admin/users/my-profile")
-    public String showMyProfile(Model mdl){
-        return "users/administrator/my-profile";
+    public String showMyProfile( Model model, RedirectAttributes atts, HttpSession session)
+    {
+        try{
+            model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
+            return "users/administrator/my-profile";
+        } catch(Exception ex){
+            atts.addFlashAttribute("error", ex.getMessage());
+            return "redirect:/";
+
+        }
     }
     @PostMapping("/admin/users/create")
     public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model)  throws IOException
@@ -100,7 +110,7 @@ public class UserManaController {
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                userMapper.setThumbnail(fileName);
+                userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
             //userMapper.setIs_admin(true);
@@ -145,7 +155,7 @@ public class UserManaController {
             if(!multipartFile.getOriginalFilename().isEmpty()){
                 FileUploadUtil.deleteFile(getUserMapperByID(userMapper.getUser_id()).getThumbnail());
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                userMapper.setThumbnail(fileName);
+                userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
             }
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
@@ -177,6 +187,24 @@ public class UserManaController {
             mapper.setStatus(Integer.parseInt(u.get("status").toString()));
             //mapper.setIs_admin(Boolean.parseBoolean(u.get("is_admin").toString()));
             return mapper;
+    }
+    @PostMapping("/admin/users/my-profile/update-password")
+    public String updatePassword(@ModelAttribute("userMapper") UserMapper userMapper){
+return"";
+    }
+    @PostMapping("/admin/users/my-profile/update-infomation")
+    public ResponseEntity<Map<String, Object>> updateInfomation(@Valid @RequestBody UserMapper userMapper){
+        Map<String, Object> items = new HashMap<String,Object>();
+    try{
+      
+        boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
+
+    } catch(Exception ex) {
+        items.put("message", ex.getMessage());
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.BAD_REQUEST);
+    }
+  
     }
  //Pagination
  @PostMapping("/admin/user/all/LoadDataUser")

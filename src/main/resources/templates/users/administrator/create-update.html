@@ -43,7 +43,7 @@
                                                 <div style="position: relative;display:table-row; height: 100%; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
                                                     <div id="viewer" style="border: 2px dashed rgba(255, 255, 255, 0.2) ;border-radius: 6px; min-height: 280px;height:inherit;padding-top:10px; text-align:center">
                                                         <div style="margin-bottom:10px" id="content" class="text-danger"></div>
-                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:5px;" th:src="(${formType}==0 OR ${userMapper.thumbnail}==null)?'/images/defaults/no-user.jpeg':'/images/users/'+${userMapper.thumbnail}" />
+                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:5px;" th:src="(${formType}==0 OR ${userMapper.thumbnail}==null)?'/images/defaults/no-user.jpeg':${userMapper.thumbnail}" />
                                                     </div>
                                                     <input type="file" id="ip-thumbnail" name="pathImg"  th:src="${oldData != null}?${oldData.thumbnail}:''"  onchange="ReadImage(this)" class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
                                                     position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">

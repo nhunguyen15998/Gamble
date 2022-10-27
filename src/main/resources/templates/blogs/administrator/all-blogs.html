@@ -647,7 +647,7 @@
           formDT.append("p", page);
           formDT.append("cond", cond);
           formDT.append("take", take);
-          
+          window.history.pushState({}, null, '/admin/blogs/all'+`?page=${page}`)
           var row = page == 1 ? 1 : take * (page - 1) + 1;
           $.ajax({
               type: "POST",

@@ -16,6 +16,7 @@ public class BlogMapper {
     private Integer blog_cate_id;
     private String blogCate;
     private Integer author_id;
+    @NotBlank(message = "Url slug is required")
     private String url_slug;
     private String author_name;
     private Integer status;

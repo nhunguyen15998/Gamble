@@ -39,7 +39,7 @@
                                     <div class="card-body">
                                         <div class="text-center chat-image mb-5">
                                             <div class="avatar avatar-xxl chat-profile mb-3 brround" style="margin-left:0.7vw ;">
-                                                <a class="" href="profile.html"><img alt="avatar" th:src="${session.thumbnail}==null?'/images/defaults/no-user.jpeg':'/images/users/'+${session.thumbnail}" class="brround" >
+                                                <a class="" href="profile.html"><img alt="avatar" th:src="${session.thumbnail}==null?'/images/defaults/no-user.jpeg':${session.thumbnail}"  >
                                                 </a>
                                             </div>
                                             <div class="main-chat-msg-name mt-5">
@@ -67,11 +67,13 @@
                                                 <input class="input100 form-control" type="password" placeholder="Confirm Password" autocomplete="new-password"> </div>
                                         </div>
                                     </div>
-                                    <div class="card-footer text-end"> <a href="javascript:void(0)" class="btn btn-primary">Update</a> <a href="javascript:void(0)" class="btn btn-danger">Cancel</a> </div>
+                                    <div class="card-footer text-end"> <span id="save-password" class="btn btn-primary">Update</span></div>
                                 </div>
                                
-                            </div>
-                            <div class="col-xl-8">
+                            
+                              </div>
+                          <div class="col-xl-8"  >
+                            
                                 <div class="card">
                                     <div class="card-header">
                                         <h3 class="card-title">Edit Profile</h3> </div>
@@ -80,36 +82,54 @@
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="form-group">
                                                     <label for="exampleInputname">First Name</label>
-                                                    <input type="text" class="form-control" id="exampleInputname" placeholder="First Name"> </div>
-                                            </div>
+                                                    <input type="text" class="form-control" id="exampleInputname" name="first_name" th:value="${userMapper.first_name}" placeholder="First Name"> </div>
+                                                    <small th:class="text-danger" id="first_name_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                          
+                                                  </div>
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="form-group">
                                                     <label for="exampleInputname1">Last Name</label>
-                                                    <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Last Name"> </div>
-                                            </div>
+                                                    <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Last Name" name="last_name" th:value="${userMapper.last_name}"> </div>
+                                                    <small th:class="text-danger" id="last_name_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                            
+                                                  </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email address"> </div>
+                                            <input type="email" class="form-control" id="exampleInputEmail1" name="email" th:value="${userMapper.email}" placeholder="Email address"> </div>
+                                            <small th:class="text-danger" id="email_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                        
                                         <div class="form-group">
                                             <label for="exampleInputnumber">Contact Number</label>
-                                            <input type="number" class="form-control" id="exampleInputnumber" placeholder="Contact number"> </div>
-                                        <div class="form-group">
-                                            <label class="form-label">About Me</label>
-                                            <textarea class="form-control" rows="6">My bio.........</textarea>
+                                            <input type="number" disabled class="form-control" id="exampleInputnumber" placeholder="Contact number" name="phone" th:value="${userMapper.phone}"> </div>
+                                            <div class="form-group"> 
+                                              <label for="validationCustom04">Gender</label>
+                                              <select class="form-control select2"  name="gender" id="validationCustom04">
+                                                <option th:each="stt : ${genderList}" 
+                                                        th:value="${stt.key}" 
+                                                        th:selected="(${oldData!=null}?${oldData.gender}==${stt.key}:false) OR ${userMapper.gender}==${stt.key}"
+                                                        th:text="${stt.value}" style="background-color:#8677d3;" ></option>
+                                              </select>
+                                          </div>
+                                          <div class="form-group"> 
+                                            <label for="birth">Birth</label>
+                                          
+                                            <input type="date" class="form-control" name="birth" id="birth" style="color: white;" th:value="${userMapper.birth}" > 
+                                            <small th:class="text-danger" id="birth_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+
                                         </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Website</label>
-                                            <input class="form-control" placeholder="http://splink.com"> </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Date Of Birth</label>
-                                           
-                                        </div>
+                                        <div class="col-xl-3 mt-3 p-0">
+                                          Status:
+                                              <span class="badge bg-success-transparent rounded-pill p-2 px-3" style="font-size:14px ;" th:classappend="${userMapper.status==1?'text-success':''}" th:text="${userMapper.status==1?'Activated':'Deactivated'}">
+                                              </span> 
+                                          
+                                      </div>
+
                                     </div>
-                                    <div class="card-footer text-end"> <a href="javascript:void(0)" class="btn btn-success my-1">Save</a> <a href="javascript:void(0)" class="btn btn-danger my-1">Cancel</a> </div>
+                                    <div class="card-footer text-end"> <span id="save-infomation" class="btn btn-success my-1">Save</span> </div>
                                 </div>
                                 
-                            </div>
+                              </div>
                         </div>
                         <!-- ROW-1 CLOSED -->
                     </div>
@@ -482,6 +502,34 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
+  $('#save-infomation').on('click', () => {
+    let data = {
+        "first_name": $('input[name="first_name"]').val(),
+        "last_name": $('input[name="last_name"]').val(),
+        "email": $('input[name="email"]').val(),
+        "birth": $('input[name="birth"]').val().replace("T",""),
+        "gender": $('input[name="gender"]').val()
+    }
+    $.ajax({
+        url: '/admin/users/my-profile/update-infomation',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+            $('#first_name_err').text("")
+            $('#last_name_err').text("")
+            $('#email_err').text("")
+            $('#birth_err').text("")
+        },
+        error: function(data){
+            console.log(data)
+            data.responseJSON.errors.forEach(err => {
+                $(`#${err.field}_err`).text(err.defaultMessage ?? "")
+            })
+        }
+    })
+})
   $(".togglePassword").click(function(){
     if($(this).find("i").hasClass('zmdi-eye')){
         $(this).find("i").removeClass('zmdi-eye');
