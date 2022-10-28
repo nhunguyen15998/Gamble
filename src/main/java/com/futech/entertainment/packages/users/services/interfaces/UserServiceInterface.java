@@ -6,6 +6,7 @@ import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInt
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 
@@ -20,7 +21,8 @@ public interface UserServiceInterface extends BaseServiceInterface<User> {
    public boolean createUser(UserMapper usermapper);
    public boolean updateUser(User user);
    public boolean updateUserUserProfile(UserProfileMapper userProfileMapper);
-   public boolean updateUserUserProfile(UserMapper userMapper);
+   public boolean updateUserUserProfile(UserUpdateMapper userMapper);
+   public boolean checkPassword(UserUpdateMapper userMapper);
 
    public Map<String, Object> verifyPassword(String password, String phone);
 

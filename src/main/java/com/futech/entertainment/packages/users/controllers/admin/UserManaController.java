@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,7 @@ import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.UserService;
@@ -141,10 +143,10 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
         try {
-            if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
-                bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
+            if(LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+                bindingResult.addError(new FieldError("userMapper", "birth", "need more than 18 years old"));
 
             }
             if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=4){
@@ -189,14 +191,36 @@ public class UserManaController {
             return mapper;
     }
     @PostMapping("/admin/users/my-profile/update-password")
-    public String updatePassword(@ModelAttribute("userMapper") UserMapper userMapper){
-return"";
+    public ResponseEntity<Map<String, Object>>  updatePassword(@RequestBody UserUpdateMapper userMapper, HttpSession session){
+        Map<String, Object> items = new HashMap<String,Object>();
+        userMapper.setUser_id(Integer.parseInt(session.getAttribute("user_id").toString()));
+        userMapper.setUser_profile_id(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
+           
+        if(!userServiceiInterface.checkPassword(userMapper)) items.put("current", "Current password is not correct");
+        if(userServiceiInterface.checkPassword(userMapper)&&userMapper.getNew_password().length()>=6&&userMapper.getNew_password().length()<=15&&userMapper.getCurrent_password().equals(userMapper.getNew_password()))items.put("newPass", "The new password must be different from the current password.");
+        if(userMapper.getNew_password().length()<6||userMapper.getNew_password().length()>15) items.put("newPass", "Password must range from 6 to 15");
+        if(!userMapper.getConfirm_password().equals(userMapper.getNew_password())) items.put("confirm", "Does not match the new password");
+        
+        if(userMapper.getCurrent_password().isBlank()) items.put("current", "Current password is required.");
+        if(userMapper.getNew_password().isBlank()) items.put("newPass", "New password is required.");
+        if(items.size()>0) items.put("code",400);
+        else userServiceiInterface.updateUserUserProfile(userMapper);
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
     }
     @PostMapping("/admin/users/my-profile/update-infomation")
-    public ResponseEntity<Map<String, Object>> updateInfomation(@Valid @RequestBody UserMapper userMapper){
+    public ResponseEntity<Map<String, Object>> updateInfomation(@Valid @RequestBody UserUpdateMapper userMapper, HttpSession session){
         Map<String, Object> items = new HashMap<String,Object>();
     try{
-      
+        if(LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+            items.put("birth", "need more than 18 years old");
+            items.put("code",400);
+        }
+        if(items.size()>0)
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
+
+        
+        userMapper.setUser_id(Integer.parseInt(session.getAttribute("user_id").toString()));
+        userMapper.setUser_profile_id(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
         boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
         return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
 
