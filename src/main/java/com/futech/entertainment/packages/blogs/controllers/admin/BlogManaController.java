@@ -72,7 +72,7 @@ public class BlogManaController {
     }
 
     @GetMapping("/admin/blogs/all")
-    public String ViewUser(Model mdl){
+    public String ViewBlogs(Model mdl){
         mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "blogs/administrator/all-blogs";
