@@ -20,7 +20,7 @@
                         <!-- PAGE-HEADER -->
                     <div class="page-header">
                         <h1 class="page-title">
-                    Blogs</h1>
+                    Transactions</h1>
                     <div>
                         <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -28,7 +28,7 @@
                     Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                    Blogs</li>
+                    Transactions</li>
                     </ol>
                     </div>
                     </div>
@@ -57,53 +57,80 @@
                         <div class="table-responsive">
                         <div id="data-table_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                        <div class="row">
-                       <div class="col-sm-12 col-md-6">
-                       <div class="dataTables_length" id="data-table_length">
-                       <label>
-                       Show <select class="form-select" style="width:60px;font-size:15px;padding:0 5px; text-align:center" id="take-record">
-                            <option value="10" style="background-color:#8677d3; opacity: 0.2;">10</option>
-                            <option value="20" style="background-color:#8677d3; opacity: 0.2;">20</option>
-                            <option value="40" style="background-color:#8677d3; opacity: 0.2;">40</option>
-                            <option value="100" style="background-color:#8677d3; opacity: 0.2;">100</option>
-                     </select>
-                        entries</label>
-                       
-                     </div>
+                       <div class="col-xl-12 col-md-6">
+                        <div class="dataTables_length" id="data-table_length">
+                            <style>
+                                .form-select option{
+                                    background-color:#8677d3;
+                                    opacity: 0.2;
+                                }
+                            </style>
+                           <label>
+                            
+                           Show <select class="form-select" style="width:60px;font-size:15px;padding:0 5px; text-align:center" id="take-record">
+                                <option value="10" >10</option>
+                                <option value="20" >20</option>
+                                <option value="40" >40</option>
+                                <option value="100" >100</option>
+                         </select> entries</label>
+    
+                            <label style="margin-left:1.5vw ;">
+                                Type:  <select class="form-select" style="width:80px;font-size:15px;padding:0 5px; text-align:center" id="take-type">
+                                    <option value="-1" >All</option>
+                                     <option value="0" >Deposit</option>
+                                     <option value="1" >Withdraw</option>
+                                     <option value="2" >Transfer</option>
+                                      </select> </label>
+                                
+                            <label style="margin-left:1.5vw ;">
+                            Method: <select class="form-select" style="width:75px;font-size:15px;padding:0 5px; text-align:center" id="take-method">
+                                    
+                            </select></label>
+    
+                            <label style="margin-left:1.5vw ;">
+                                Status: <select class="form-select" style="width:75px;font-size:15px;padding:0 5px; text-align:center" id="take-status">
+                                        <option value="-1" >All</option>
+                                        <option value="0" >Pending</option>
+                                        <option value="1" >Success</option>
+                                        <option value="2" >Fail</option>
+                                </select></label>
+                            <label style="margin-left:1.5vw ;">
+                              From: <input type="date" class="form-select" style="width: 135px; padding: 0 10px;" id="take-from"/></label>
+                            <label style="margin-left:1.5vw ;">
+                              To: <input type="date" class="form-select" style="width: 135px; padding: 0 10px;" id="take-to"/></label>
+
+                                <label style="width:50px;float:right;"  onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></label>
+                             
+                                    
+                         </div>
                      
                     </div>
-                      <div class="col-sm-12 col-md-6">
-                       <div id="data-table_filter" class="dataTables_filter">
-                        <label style="width:450px">
-                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by code, name,..." id="search-by-cond" aria-controls="data-table">
-                         <span style="width:11%;float:right;" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
-                         <span style="width:11%;float:right;" th:if="${is_admin==1}">
-                          <li class="icons-list-item" onclick="window.location.href='/admin/games/create'" style="height:80%;cursor: pointer;"><i class="fa fa-game-plus" style="pointer-events: none;"></i></li>
-                         </span> 
-                        </label>
-                     </div>
-                     </div>
                      </div>
                       <div class="row">
                        <div class="col-sm-12">
                        <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
                         <thead class="border-top">
-                       <tr role="row">
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 15.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
-                        #</th>
-                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
-                        Code</th>
-                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
-                        Name</th>
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
-                        Created time</th>
-                       <th class="bg-transparent border-bottom-0 sorting" style="width: 67.7375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
-                       Status</th>
-                       <th class="bg-transparent border-bottom-0 sorting" style="width: 51.6375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">
-                       Action</th>
-                     </tr>
+                            <tr role="row">
+                                <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 18.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
+                                 #</th>
+                                <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
+                                 No.</th>
+                                <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                                 Type</th>
+                                <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Date: activate to sort column ascending" style="width: 89.2px;">
+                                 Method</th>
+                                 <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Payment Mode" style="width: 139.038px;">
+                                 Amount</th>
+                                <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
+                                 Created time</th>
+                                <th class="bg-transparent border-bottom-0 sorting" style="width: 67.7375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
+                                Status</th>
+                                <th class="bg-transparent border-bottom-0 sorting" style="width: 40.6375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">
+                                Action</th>
+                              </tr>
                       </thead>
                         <tbody>
-                        <!-- <tr th:each="u, row : ${games}" class="border-bottom odd table-item">
+                        <!-- <tr th:each="u, row : ${transaction}" class="border-bottom odd table-item">
                           <td class="text-center">
                             <div class="mt-0 mt-sm-2 d-block">
                             <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
@@ -146,7 +173,7 @@
                       </td>
                        <td>
                         <div class="g-2">
-                        <a th:href="@{/admin/games/update?id=${u.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
+                        <a th:href="@{/admin/transaction/update?id=${u.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
                        <span class="fe fe-edit fs-14">
        
                       </span>
@@ -570,6 +597,7 @@
 <script>
   var pages=1;
   var pageControl = parseInt('[[${paging}]]');
+  var loop = true;
   $(window).on('load',function(){
     if($('#msg').html().length>0){
       $("#msg").css("display", "block");
@@ -577,8 +605,10 @@
   }
   })
   function ClearFilter() {
-        $("#search-by-cond").val("");
         $("#take-record").val(10);
+        $("#take-type").val(-1);
+        $("#take-method").val(-1);
+        $("#take-status").val(-1);
         SearchFilter(1);
     }
   $('body').delegate('.page-item', 'click', function () {
@@ -622,70 +652,123 @@
       SearchFilter(pages,"");
 
       });
+    
       function SearchFilter(page){
-        var cond = $("#search-by-cond").val();
         var take = $("#take-record").val();
+        var type = $("#take-type").val();
+        var from = $("#take-from").val();
+        var to = $("#take-to").val();
+        var method = type==-1?-1:$("#take-method").val();
+        var status = $("#take-status").val();
+        if(from>to&&from!=''&&to!=''){
+          $("#take-from").val(to)
+          $("#take-to").val(from)
+        }
         if(take<0||take>100) {take=10; $("#take-record").val(1);}
-        LoadData(page, cond, take);
+        LoadData(page, take,type,method,status, from,to);
+       
       }
+      $('body').delegate('#take-method', 'change', function () {
+        SearchFilter(1);
+      })
+
       $("#take-record").on('change',function(){
           SearchFilter(1);
       })
-      $("#search-by-cond").on('keyup', function (e) {
-      if (e.key === 'Enter' || e.keyCode === 13) 
+      $("#take-from").on('change',function(){
           SearchFilter(1);
-      });
-      function LoadData( page, cond,take) {
+      })
+      $("#take-to").on('change',function(){
+          SearchFilter(1);
+      })
+      $("#take-status").on('change',function(){
+          SearchFilter(1);
+      })
+      $("#take-type").on('change',function(){
+        $("#take-method").empty();
+        var str='<option value="-1" >All</option>';
+        if($(this).val()==0){ str += ' <option value="0" >VNPAY</option>  <option value="1" >MoMo</option><option value="2" >Bitcoin</option>'  }
+        else if($(this).val()==1){ str += '<option value="1" >Bank</option>  <option value="2" >Bitcoin</option>'  }
+        else if($(this).val()==-1){ str += ''  }
+        else{ str = '<option value="-1" >None</option>'  }
+        $("#take-method").append(str);
+          SearchFilter(1);
+      })
+    
+      function LoadData( page,take,type,method,status, from,to) {
       
       if (page > 0 && page <=pages) {
-      
+         
           var formDT = new FormData();
-          formDT.append("p", page);
-          formDT.append("cond", cond);
+          formDT.append("p", page)
           formDT.append("take", take);
-          
+          formDT.append("type", type);
+          formDT.append("method", method);
+          formDT.append("status", status);
+          formDT.append("from", from);
+          formDT.append("to", to);
           var row = page == 1 ? 1 : take * (page - 1) + 1;
           $.ajax({
               type: "POST",
-              url: "/admin/games/all/LoadDataGame/",
+              url: "/admin/transactions/all/LoadDataTransaction",
               data: formDT,
               processData: false,
               contentType: false,
               success: function (data) {
                 $("#data-table").find('tbody').empty();
                   for (var i = 0; i < data.length; i++) {
+                    var typeTrans='';
+                    var methodTrans='';
+                    switch(data[i].type) {
+                            case 0:
+                               typeTrans = 'Deposit'
+                               methodTrans = data[i].method == 0 ? 'VNPAY' : (data[i].method == 1 ? 'MOMO' : 'BTC')
+                                break
+                            case 1: 
+                                typeTrans = 'Withdraw'
+                                methodTrans = data[i].method == 1 ? 'Bank' : 'BTC'
+                                break
+                            case 2:
+                                typeTrans = 'Transfer'
+                                methodTrans = 'None'
+                                break
+                        }
+
                         $("#data-table").append('<tr class="border-bottom odd table-item">'
                           +'<td class="text-center">'
                           +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
                           +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].code+'</h6></div></div>'
-                          +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+data[i].name+'</h6>'
-                          +'</div> </div> </td><td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
-                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
-                          +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/games/update?code='+data[i].code+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
-                          +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
+                          +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+typeTrans+'</h6>'
+                          +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+methodTrans+'</span> </td> <td> <span class="mt-sm-2 d-block">'+(data[i].status==1?parseFloat(data[i].amount).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:6}):parseFloat(data[i].amount).toLocaleString('it-IT', {style : 'currency', currency : 'VND',minimumFractionDigits:6}))+'</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
+                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Success':(data[i].status==0?'Pending':'Fail'))
+                          +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/transactions/view?code='+data[i].code+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
+                          +'<span class="zmdi zmdi-eye text-muted ml-3" style="font-size:15px;">  </span> </a>  </div> </td> </tr>')
                             row = row + 1;
     
     
                           }
     
                   var f = new FormData();
-                  f.append("cond", cond);
-
+                    f.append("type", type);
+                    f.append("method", method);
+                    f.append("status", status);
+                    f.append("from", from);
+                    f.append("to", to);
                   $.ajax({
                       type: "POST",
-                      url: "/admin/games/all/GetCount/",
+                      url: "/admin/transactions/all/GetCount/",
                       data: f,
                       processData: false,
                       contentType: false,
                       success: function (data) {
                           var fdt = new FormData();
                           fdt.append("i", data);
-                          fdt.append("take", take);
+                          fdt.append("take", take); 
                           $("#data-table_info").html("Showing "+(take>data?data:take)+" of "+data+" entries")
 
                           $.ajax({
                               type: "POST",
-                              url: "/admin/games/all/RowEvent/",
+                              url: "/admin/transactions/all/RowEvent/",
                               data: fdt,
                               processData: false,
                               contentType: false,

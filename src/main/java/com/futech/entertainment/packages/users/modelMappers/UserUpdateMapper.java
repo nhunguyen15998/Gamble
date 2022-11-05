@@ -22,6 +22,7 @@ public class UserUpdateMapper {
     @Email(message = "Invalid email format")
     private String email;
 
+    @NotBlank(message = "Birth is required")
     private String birth;
 
     private Integer gender;

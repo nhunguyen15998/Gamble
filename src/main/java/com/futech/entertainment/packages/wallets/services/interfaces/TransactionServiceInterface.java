@@ -12,4 +12,5 @@ public interface TransactionServiceInterface extends BaseServiceInterface<Transa
     public List<Map<String, Object>> getTransaction(String userId);
     public Transaction createTransaction(TransactionMapper transactionMapper);
     public Transaction createTransaction(Transaction transactionMapper);
+    public Map<String, Object> getTransactionByCode(String code);
 }

@@ -43,13 +43,13 @@
                                                 <div style="position: relative;display:table-row; height: 100%; min-height: 280px;width: 100%; background: none; float: left;padding:0 ">
                                                     <div id="viewer" style="border: 2px dashed rgba(255, 255, 255, 0.2) ;border-radius: 6px; min-height: 280px;height:inherit;padding-top:10px; text-align:center">
                                                         <div style="margin-bottom:10px" id="content" class="text-danger"></div>
-                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:5px;" th:src="(${formType}==0 OR ${userMapper.thumbnail}==null)?'/images/defaults/no-user.jpeg':${userMapper.thumbnail}" />
+                                                        <img id="imgViewer" style="border:none; width:90%;height:auto;margin-bottom:2vh;border-radius:5px;" th:src="(${formType}==0 OR ${userMapper.thumbnail}=='')?'/images/defaults/no-user.jpeg':${userMapper.thumbnail}" />
                                                     </div>
                                                     <input type="file" id="ip-thumbnail" name="pathImg"  th:src="${oldData != null}?${oldData.thumbnail}:''"  onchange="ReadImage(this)" class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
                                                     position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">
                                                 </div>
                                                 <div  style="width:100%;text-align:center;height: auto;float: left;margin-top:-12px;display:table-row;cursor: pointer;position: relative;">
-                                                    <span id="trashimg" style="padding: 13px 18px; border: #b85656 2px solid; background-color: #e9474748; border-radius: 50%; font-size: 17px;" th:styleappend="${userMapper.thumbnail}==null?'display: none':''"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
+                                                    <span id="trashimg" style="padding: 13px 18px; border: #b85656 2px solid; background-color: #e9474748; border-radius: 50%; font-size: 17px;" th:styleappend="${userMapper.thumbnail}==''?'display: none':''"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
                                                 </div>
                                         </div>
                                             <div class="form-row">
@@ -57,7 +57,10 @@
                                                 <input type="text" class="form-control" name="user_id" th:value="${oldData != null}?${oldData.user_id}:${userMapper.user_id}" />
                                                 <input type="text" class="form-control" name="user_profile_id" th:value="${oldData != null}?${oldData.user_profile_id}:${userMapper.user_profile_id}" />
                                                 <!-- <input type="text" class="form-control" name="is_admin" th:value="${userMapper.is_admin}" /> -->
- 
+                                                <input type="text" id="imgViewerThumb" name ="imgViewer" th:value="(${formType}==0 OR ${userMapper.thumbnail}==null)?'':${userMapper.thumbnail}"/>
+                                                <input type="text"  class="form-control" name="phone" th:value="${userMapper.phone}" >
+                                                <input type="text"  class="form-control" name="userType" th:value="${userType}" >
+
                                               </div>
                                                 <div class="col-xl-6 mb-3">
                                                     <label for="first_name" >First name</label>
@@ -75,8 +78,8 @@
                                             <div class="form-row">
                                                 <div class="col-xl-6 mb-3">
                                                     <label for="phone">Phone</label>
-                                                    <input type="text" class="form-control" name="phone" th:value="${oldData != null}?${oldData.phone}:${userMapper.phone}" >
-                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                                    <input type="text" th:disabled="${formType==1}" class="form-control" name="phone" th:value="${userMapper.phone}" >
+                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('phone') && formType==0}" th:errors="*{phone}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
 
                                                 </div>
                                                 <div class="col-xl-6 mb-3"> 
@@ -102,7 +105,7 @@
                                                 <small th:class="text-danger" th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
 
                                             </div>
-                                                <div class="col-xl-4 mb-3" th:if="${formType}==0">
+                                                <div class="col-xl-4 mb-3" th:if="${formType==0}">
                                                     <label for="plain_password">Password</label>
                                                     <input type="password" class="form-control" name="plain_password" th:value="${oldData != null}?${oldData.plain_password}:${userMapper.plain_password}" >
                                                     <small th:class="text-danger" th:if="${#fields.hasErrors('plain_password')}" th:errors="*{plain_password}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
@@ -506,13 +509,15 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
-     function ReadImage(input) {
-                document.getElementById("trashimg").style.removeProperty("display");
+     function ReadImage(input){
+                    document.getElementById("trashimg").style.removeProperty("display");
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function (e) {
 
                         $('#imgViewer').attr('src', e.target.result);
+                        $("#imgViewerThumb").val(e.target.result);
+                       
                     }
 
                     reader.readAsDataURL(input.files[0]);
@@ -522,6 +527,8 @@
                     $("#imgViewer").attr("src", "/images/defaults/no-user.jpeg");
                     $("#ip-thumbnail").val("");
                     $(this).css("display","none")
+                    $("#imgViewerThumb").val("");
             });
-   
+
+      
 </script>

@@ -3,6 +3,7 @@ package com.futech.entertainment.packages.users.controllers.admin;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,7 @@ import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
 public class UserManaController {
+    public static int userType;
     @Autowired
     private UserServiceInterface userServiceiInterface;
     @ModelAttribute("statusList")
@@ -68,7 +70,9 @@ public class UserManaController {
 
 
     @GetMapping("/admin/users/all")
-    public String ViewUser(Model mdl,@RequestParam int type){
+    public String ViewUser(Model mdl,@RequestParam int type, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("users",LoadData(1,"", 10,type) );
         mdl.addAttribute("is_player",true);
         mdl.addAttribute("is_admin",type);
@@ -77,7 +81,9 @@ public class UserManaController {
     } 
 
     @GetMapping("/admin/users/create")
-    public String showCreateForm(Model mdl){
+    public String showCreateForm(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("userMapper", new UserMapper());
         mdl.addAttribute("formType", 0);
         return "users/administrator/create-update";
@@ -86,6 +92,8 @@ public class UserManaController {
     public String showMyProfile( Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
             return "users/administrator/my-profile";
         } catch(Exception ex){
@@ -95,17 +103,22 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/create")
-    public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model)  throws IOException
+    public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model, @RequestParam String imgViewer)  throws IOException
     {
         try {
+
             if(!userMapper.getPlain_password().trim().equals(userMapper.getConfirm_password().trim())){
                 bindingResult.addError(new FieldError("userMapper", "confirm_password", "Passwords do not match"));
             } 
-            if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
-                bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
+            if(userMapper.getBirth().isEmpty()) 
+            bindingResult.addError(new FieldError("userMapper", "birth", "Birth is required."));
+
+            else if(LocalDate.parse(userMapper.getBirth()).getYear()<Year.now().getValue()-100||LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+                bindingResult.addError(new FieldError("userMapper", "birth", "Invalid year need more than 18 years old"));
 
             }
             if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) userMapper.setThumbnail(imgViewer);
                 model.addAttribute("userMapper", userMapper);
                 model.addAttribute("formType", 0);
                 return "users/administrator/create-update";
@@ -114,7 +127,7 @@ public class UserManaController {
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }
+            }else  userMapper.setThumbnail(null);
             //userMapper.setIs_admin(true);
             boolean sent = this.userServiceiInterface.createUser(userMapper);
             if(sent){
@@ -129,12 +142,15 @@ public class UserManaController {
         }
     }
     @GetMapping("/admin/users/update")
-    public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts)
+    public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             model.addAttribute("userMapper", getUserMapperByID(id));
             model.addAttribute("formType", 1);
             model.addAttribute("userType", type);
+            userType=type;
             return "users/administrator/create-update";
         } catch(Exception ex){
             atts.addFlashAttribute("error", ex.getMessage());
@@ -143,23 +159,30 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
         try {
-            if(LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
-                bindingResult.addError(new FieldError("userMapper", "birth", "need more than 18 years old"));
+            if(userMapper.getBirth().isEmpty()) 
+            bindingResult.addError(new FieldError("userMapper", "birth", "Birth is required."));
+
+            else if(LocalDate.parse(userMapper.getBirth()).getYear()<Year.now().getValue()-100||LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+                bindingResult.addError(new FieldError("userMapper", "birth", "Invalid year need more than 18 years old"));
 
             }
-            if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=4){
+            if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) userMapper.setThumbnail(imgViewer);
                 model.addAttribute("oldData", userMapper);
-                model.addAttribute("formType", 0);
+                model.addAttribute("formType", 1);
+                model.addAttribute("userType", userType);
+
                 return "users/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
-                FileUploadUtil.deleteFile(getUserMapperByID(userMapper.getUser_id()).getThumbnail());
+                var tn = getUserMapperByID(userMapper.getUser_id()).getThumbnail();
+                if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }
+            }else  userMapper.setThumbnail(null);
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
                 atts.addFlashAttribute("successMsg", "Successfully update user");
@@ -183,7 +206,7 @@ public class UserManaController {
             mapper.setLast_name(u.get("last_name").toString());
             mapper.setPhone(u.get("phone").toString());
             mapper.setEmail(u.get("email").toString());
-            mapper.setBirth(LocalDate.parse(u.get("birth").toString().subSequence(0, 10)));
+            mapper.setBirth(u.get("birth").toString().substring(0, 10));
             mapper.setGender(Integer.parseInt(u.get("gender").toString()));
             mapper.setThumbnail(u.get("thumbnail")==null?"":u.get("thumbnail").toString());
             mapper.setStatus(Integer.parseInt(u.get("status").toString()));

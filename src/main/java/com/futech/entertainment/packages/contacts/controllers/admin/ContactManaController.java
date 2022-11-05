@@ -1,7 +1,6 @@
 package com.futech.entertainment.packages.contacts.controllers.admin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,10 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.futech.entertainment.packages.contacts.modelMappers.ContactSentMapper;
-import com.futech.entertainment.packages.contacts.models.Contact;
 import com.futech.entertainment.packages.contacts.services.ContactService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
-import com.futech.entertainment.packages.core.utils.Helpers;
 
 @Controller
 public class ContactManaController {

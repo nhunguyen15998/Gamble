@@ -1,14 +1,11 @@
 package com.futech.entertainment.packages.blogs.controllers.admin;
 
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.futech.entertainment.packages.blogs.modelMappers.BlogCateMapper;
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogCateServiceInterface;
 import com.futech.entertainment.packages.core.utils.DataMapper;
-import com.futech.entertainment.packages.core.utils.FileUploadUtil;
 import com.futech.entertainment.packages.core.utils.Helpers;
-import com.futech.entertainment.packages.core.utils.JoinCondition;
-import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
 public class BlogCategoriesManaController {
@@ -50,14 +40,18 @@ public class BlogCategoriesManaController {
     }
 
     @GetMapping("/admin/blog-categories/all")
-    public String ViewUser(Model mdl){
+    public String ViewBlog(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("blogCates",LoadData(1,"", 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(""),10));
         return "blogcategories/administrator/all-blog-categories";
     } 
 
     @GetMapping("/admin/blog-categories/create")
-    public String showCreateForm(Model mdl){
+    public String showCreateForm(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("blogCateMapper", new BlogCateMapper());
         mdl.addAttribute("formType", 0);
         return "blogcategories/administrator/create-update";
@@ -87,9 +81,11 @@ public class BlogCategoriesManaController {
         }
     }
     @GetMapping("/admin/blog-categories/update")
-    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts)
+    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             model.addAttribute("blogCateMapper", getBlogCateMapperByID(id));
             model.addAttribute("formType", 1);
             return  "blogcategories/administrator/create-update";
@@ -110,9 +106,9 @@ public class BlogCategoriesManaController {
             
             boolean updated = blogCateServiceInterface.updateBlogCate(blogCateMapper);
             if(updated){
-                atts.addFlashAttribute("successMsg", "Successfully update user");
+                atts.addFlashAttribute("successMsg", "Successfully update blog");
             } else {
-                atts.addFlashAttribute("errorMsg", "Cannot update user");
+                atts.addFlashAttribute("errorMsg", "Cannot update blog");
             }
         } catch(Exception ex) {
             atts.addFlashAttribute("error", ex.getMessage());

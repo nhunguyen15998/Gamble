@@ -46,7 +46,7 @@
                         <div class="panel panel-primary">
                         <div class="tab-menu-heading border-0 p-0">
                         <div class="tabs-menu1">
-                       <div class="alert" id="msg" style="display: none;"  th:text="${successMsg}?:${errorMsg}" th:classappend="${successMsg}?'alert-success':(${errorMsg}?'alert-danger':'')"></div>
+                       <div class="alert" id="msg" style="display: none; margin-bottom: 3vh;"  th:text="${successMsg}?:${errorMsg}" th:classappend="${successMsg}?'alert-success':(${errorMsg}?'alert-danger':'')"></div>
                         <!-- Tabs -->
                         <ul class="nav panel-tabs product-sale">
                         <li>
@@ -583,8 +583,8 @@
 
 <script>
   var pages=1;
-  var pageControl = [[${paging}]];
-  var userType=[[${is_admin}]];
+  var pageControl = parseInt('[[${paging}]]');
+  var userType=parseInt('[[${is_admin}]]');
   $(window).on('load',function(){
     if($('#msg').html().length>0){
       $("#msg").css("display", "block");
@@ -653,10 +653,7 @@
       function LoadData( page, cond,take) {
       
       if (page > 0 && page <=pages) {
-          var r = document.getElementsByClassName('table-item');
-          while (r.length > 0) {
-              r[0].parentNode.removeChild(r[0]);
-          }
+         
           var formDT = new FormData();
           formDT.append("p", page);
           formDT.append("cond", cond);
@@ -671,7 +668,7 @@
               processData: false,
               contentType: false,
               success: function (data) {
-
+                $("#data-table").find('tbody').empty();
                   for (var i = 0; i < data.length; i++) {
                         $("#data-table").append('<tr class="border-bottom odd table-item">'
                           +'<td class="text-center">'

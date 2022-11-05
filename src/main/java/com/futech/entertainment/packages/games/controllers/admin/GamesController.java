@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,9 @@ public class GamesController {
     @Autowired 
     WheelServiceInterface wheelServiceInterface;
     @GetMapping("/admin/games/all")
-    public String ViewGames(Model mdl){
+    public String ViewGames(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("games",LoadData(1,Helpers.EMPTY, 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "games/administrator/all";
@@ -52,9 +55,10 @@ public class GamesController {
         return statusList;
     }
     @GetMapping("/admin/games/update")
-    public String showFormUpdate(@RequestParam String code, Model model, RedirectAttributes atts)
+    public String showFormUpdate(@RequestParam String code, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
             
             model.addAttribute("gameMapper",getWheel(code));
             model.addAttribute("formType", 1);
@@ -78,6 +82,7 @@ public class GamesController {
     @PostMapping("/admin/games/update")
     public ResponseEntity<Map<String, Object>> updateConfig(@Valid @RequestBody WheelMapper wheelMapper)
     {
+        
         Map<String, Object> items = new HashMap<String,Object>();
         
         boolean updated = wheelServiceInterface.updateWheel(wheelMapper);

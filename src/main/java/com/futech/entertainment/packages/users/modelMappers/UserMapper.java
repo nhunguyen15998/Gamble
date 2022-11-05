@@ -37,10 +37,8 @@ public class UserMapper {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
-
-    @NotNull(message = "Birth is required")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birth;
+    
+    private String birth;
 
     private Integer gender;
     private String thumbnail;
@@ -121,13 +119,7 @@ public class UserMapper {
         this.email = email;
     }
 
-    public LocalDate getBirth() {
-        return birth;
-    }
-
-    public void setBirth(LocalDate birth) {
-        this.birth = birth;
-    }
+  
 
     public Integer getGender() {
         return gender;
@@ -180,5 +172,20 @@ public class UserMapper {
 
     public void setUser_profile_id(Integer user_profile_id) {
         this.user_profile_id = user_profile_id;
+    }
+
+
+    public String getBirth() {
+        return birth;
+    }
+
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

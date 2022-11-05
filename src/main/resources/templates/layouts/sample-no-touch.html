@@ -643,10 +643,7 @@
 //       function LoadData( page, cond,take) {
       
 //       if (page > 0 && page <=pages) {
-//           var r = document.getElementsByClassName('table-item');
-//           while (r.length > 0) {
-//               r[0].parentNode.removeChild(r[0]);
-//           }
+
 //           var formDT = new FormData();
 //           formDT.append("p", page);
 //           formDT.append("cond", cond);
@@ -661,7 +658,7 @@
 //               processData: false,
 //               contentType: false,
 //               success: function (data) {
-
+//               $("#data-table").find('tbody').empty();
 //                   for (var i = 0; i < data.length; i++) {
 //                         $("#data-table").append('<tr th:each="u, row : ${users}" class="border-bottom odd table-item">'
 //                           +'<td class="text-center">'

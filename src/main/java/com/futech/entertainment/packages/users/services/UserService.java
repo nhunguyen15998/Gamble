@@ -214,7 +214,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
             userProfile.setThumbnail(userMapper.getThumbnail());
-            userProfile.setBirth(userMapper.getBirth());
+            userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
             userProfile.setGender(userMapper.getGender());
             this.userProfileServiceInterface.create(userProfile);
             return true;
@@ -274,7 +274,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
             userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
-            if(userMapper.getThumbnail()!=null) userProfile.setThumbnail(userMapper.getThumbnail());
+            userProfile.setThumbnail(userMapper.getThumbnail());
             userProfile.setGender(userMapper.getGender());
             updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
 

@@ -21,14 +21,13 @@
                     <div class="main-container container-fluid">
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title" th:text="${formType==1?'Update':'Create'}"></h1>
+                            <h1 class="page-title"> Transactions</h1>
                             <div>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="/admin/blogs/all">Blogs</a>
+                                    <li class="breadcrumb-item"><a href="/admin/transactions/all">Transations</a>
                                     </li>
-                                    <li class="breadcrumb-item active" aria-current="page" th:text="${formType==1?'Update':'Create'}"></li>
                                 </ol>
                             </div>
                         </div>
@@ -38,97 +37,47 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="card" style="padding-bottom: 25px;">
                                     <div class="card-header">
-                                        <h3 class="card-title">Infomation</h3> </div>
-                                    <div class="card-body">
-                                       <form th:action="${blogMapper.id!=null}?@{/admin/blogs/update?id={id}(id=${blogMapper.id})}:@{/admin/blogs/create}" th:object="${blogMapper}" method="post" enctype="multipart/form-data">
-                                      
-                                            <div class="form-row">
-                                              <div class="col-xl-6 mb-3" style="display: none;">
-                                                <input type="text" class="form-control" name="id" th:value="${oldData != null}?${oldData.id}:${blogMapper.id}" />
-                                                <input type="text" id="imgViewerThumb" name ="imgViewer" th:value="(${formType}==0 OR ${blogMapper.thumbnail}==null)?'/images/defaults/noimage.png':${blogMapper.thumbnail}"/>
-
-                                              </div>
-                                              <div class="col-xl-12 mb-3">
-                                                <label for="validationCustom04" th:text="'Author: '+(${blogMapper.author_name!=null}?${blogMapper.author_name}:'')"></label>
-                                              </div>
-                                                <div class="col-xl-6 mb-3">
-                                                    <label for="title" >Title</label>
-                                                    <input type="text" class="form-control" name="title" th:value="${oldData != null}?${oldData.title}:${blogMapper.title}" >
-                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
-                                                   
-                                                </div>
-                                                <div class="col-xl-6 mb-3">
-                                                  <label for="Url Slug" >Url Slug</label>
-                                                  <input type="text" class="form-control" name="url_slug" id="url_slug" th:value="${oldData != null}?${oldData.url_slug}:${blogMapper.url_slug}" >
-                                                  <small th:class="text-danger" th:if="${#fields.hasErrors('url_slug')}" th:errors="*{url_slug}" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
-                                                 
-                                              </div>
-                                                <div class="col-xl-12 mb-3">
-                                                    <label for="content">Content</label>
-                                                    <textarea id="content" rows="10" cols="90" class="form-control error_input"  name="content"  placeholder="content"
-                                                    th:data-id="${blogMapper.id}?:''" th:text="${oldData != null}?${oldData.content}:${blogMapper.content}">
-                                                    </textarea>
-                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
-
-                                                    <script>
-                                                        // Replace the <textarea id="editor1"> with a CKEditor 4
-                                                        // instance, using default configuration.
-                                                        CKEDITOR.replace( 'content' );
-                                                    </script>
-
-                                                </div>
+                                        <h3 class="card-title"><a href="/admin/transactions/all"><i class="fa fa-angle-left" style="pointer-events: none; margin-right: 1vw;"></i></a>Infomation</h3> </div>
+                                        <style>
+                                            .form-row label{
+                                                color:rgba(251, 251, 251, 0.726);
+                                            }
+                                            .form-row span{
+                                                color:rgba(251, 251, 251, 0.979);
+                                            }
+                                        </style>
+                                    <div class="card-body">    
+                                        <div class="form-row">
+                                            <div class="col-xl-5 mb-3" style="display: table-row;border-right: 1.5px solid rgba(251, 251, 251, 0.1);">
+                                                <label>No:</label>      <span th:text="${transaction.code}"></span><br/>
+                                                <label>Type:</label>    <span th:text="${type}"></span><br/>
+                                                <label>Method:</label>  <span th:text="${method}"></span> <br/>
+                                                <label th:text="${(transaction.type==0||transation.type==1) ? 'User :' : 'Sender :'}"></label>  <a style="text-decoration: underline;" th:href="@{/admin/users/update?id={id}(id=${transaction.sender},type=${sender.is_admin?1:0})}" th:text="${sender != null ? (sender.first_name+' '+sender.last_name) : ''}"></a><br/>
+                                                <label th:text="${(transaction.type==2) ? 'Receiver :' : 'Error :'}" th:if="${receiver}"></label>  <a style="text-decoration: underline;" th:if="${receiver}" th:href="@{/admin/users/update?id={id}(id=${transaction.receiver},type=${receiver.is_admin?1:0})}" th:text="${receiver != null ? (receiver.first_name+' '+receiver.last_name) : ''}"></a><br th:if="${receiver}"/><br/>
+                                                <label>Amount: </label>  <span th:text="${((transaction.status==1)?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2)?' VND':'')}"></span> <br/>
+                                                <label  th:if="${receiver}">Received amount: </label>  <span  th:if="${receiver}" th:text="${((transaction.status==1)?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2)?' VND':'')}"></span> <br  th:if="${receiver}"/>
+                                                <label>Title:</label>  <span th:text="${transaction.title}"></span> <br/>
+                                                <label>Note:</label>  <span th:text="${transaction.note}"></span> <br/>
+                                                <!-- <label>Exchange rate:</label>  <span th:text="${transaction.exchange_rate}"></span> <br/>
+                                                <label>From currency:</label>  <span th:text="${transaction.from_currency}"></span> <br/> -->
+                                                <label>Address:</label>  <span th:text="${transaction.bcaddress}"></span> <br/>
+                                                <label>Transaction time:</label>  <span th:text="${#temporals.format(transaction.created_at,'dd-MM-yyyy HH:mm:ss')}"></span> <br/>
+                                                <label>Status:</label>  <span th:text="${transaction.status==1?'Success':(transaction.status==0?'Pending':'Fail')}" class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${transaction.status==1?'text-success':''}" style="font-size:13px"></span> <br/>
+                                            
                                             </div>
-                                            <div class="form-row">
+                                            <div class="col-xl-6 mb-3 pl-3" style="display: table-row;padding-left:1.5vw"  th:if="transaction.type==2">
+                                                <label>Account name:</label>      <span th:text="${transaction.account_name}"></span><br/>
+                                                <label>Account number:</label>    <span th:text="${transaction.account_number}"></span><br/>
+                                                <label>Bank:</label>  <span th:text="${transaction.bank}"></span> <br/>
+                                                <label>Amount:</label>  <span th:text="${transaction.wAmount}"></span> <br/>
+                                                <label>Notes:</label>  <span th:text="${transaction.wNotes}"></span> <br/>
                                                
-                                                <div class="col-xl-4 mb-3"> 
-                                                  <label for="validationCustom04">Blog caterogy</label>
-                                                  <select class="form-control select2"  name="blog_cate_id" id="validationCustom04">
-                                                    <option disabled value="-1" th:selected="${formType==0}">select category</option>
-                                                    <option th:each="stt : ${blogCateList}" 
-                                                            th:value="${stt.key}" 
-                                                            th:selected="(${oldData!=null}?${oldData.blog_cate_id}==${stt.key}:false) OR ${blogMapper.blog_cate_id}==${stt.key}"
-                                                            th:text="${stt.value}" style="background-color:#8677d3;" ></option>
-                                                  </select>
-                                                  <small th:class="text-danger" th:if="${#fields.hasErrors('blog_cate_id')}" th:errors="*{blog_cate_id}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
 
-                                              </div>
+                                           </div>
+
+                                         </div>
+                                     </div>
                                             
-                                              <!-- th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${blogMapper.status}==${stt.key}" -->
-                                                <div class="col-xl-3 mb-3">
-                                                    <label for="validationCustom04">Status</label>
-                                                    <select class="form-control select2" name="status" id="validationCustom04">
-                                                      <option th:each="stt : ${statusList}" 
-                                                      th:value="${stt.key}" 
-                                                      th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${blogMapper.status}==${stt.key}"
-                                                      th:text="${stt.value}" style="background-color:#8677d3;" ></option> 
-                                                    </select>
-                                                </div>
-                                                <div class="mt-3" style="position: relative;width: 48%; float:left ;margin-right: 1vw;">
-                                                  <div style="position: relative;display:table-row; height: 100%; min-height: 200px;width: 100%; background: none; float: left;padding:0 ">
-                                                    <div id="viewer" th:styleappend="${#fields.hasErrors('thumbnail')==true}?'border: 2px dashed #ff373791':'border: 2px dashed #ffffff30'" style="border-radius: 6px; min-height:100px;height:inherit;padding-top:10px;">
-                                                      <div style="margin-bottom:10px;text-align: center;" id="contenttext">Click or drag to upload thumbnail</div>
-                                                      <img id="imgViewer"   style="border:none; width:93%;height:auto;margin:0 1vw 3vh 1vw;border-radius:20px;" th:src="(${formType}==0 OR ${blogMapper.thumbnail}==null)?'/images/defaults/noimage.png':${blogMapper.thumbnail}"/>
-                                                      </div>
-                                                      <input type="file" id="ip-thumbnail" name="pathImg"   onchange="ReadImage(this)" th:src="${oldData != null}?${oldData.thumbnail}:''"  class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
-                                                      position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">
-                                                  </div>
-                                                  <div  style="width:100%;text-align:center;height: auto;float: left;margin-top:-12px;display:table-row;cursor: pointer;position: relative;">
-                                                      <span id="trashimg" style="padding: 13px 18px; border: #b85656 2px solid; background-color: #e9474748; border-radius: 50%; font-size: 17px;" th:styleappend="${blogMapper.thumbnail}==null?'display: none':''"><i style="color:white;pointer-events:none" class="fa fa-trash"></i></span>
-                                                  </div>
-                                                  <small th:class="text-danger" th:if="${#fields.hasErrors('thumbnail')}" th:errors="*{thumbnail}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
-
-                                                </div>
-                                                <div class="mt-3" style="float:left;width: 50%;">
-                                                  <textarea id="description" rows="10" cols="90" class="form-control error_input"  name="description"  placeholder="description"
-                                                    th:data-id="${blogMapper.id}?:''" th:text="${oldData != null}?${oldData.description}:${blogMapper.description}">
-                                                    </textarea>
-                                                    <small th:class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
-
-                                                </div>
-                                            <button class="btn btn-primary" style="margin:4vh 0 auto 0;" type="submit">Save</button>
-                                            </div>
-                                            
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -506,31 +455,6 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
-       function ReadImage(input) {
-                document.getElementById("trashimg").style.removeProperty("display");
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    $("#contenttext").html("");
-                    reader.onload = function (e) {
-
-                        $('#imgViewer').attr('src', e.target.result);
-                        $("#imgViewerThumb").val(e.target.result);
-                        
-
-
-                    }
-
-                    reader.readAsDataURL(input.files[0]);
-                 }
-             }
-             $("#trashimg").click(function () {
-              $("#contenttext").html("Click or drag to upload thumbnail");
-              $("#imgViewer").attr('src','/images/defaults/noimage.png');
-                    $("#ip-thumbnail").val("");
-                    $(this).css("display","none")
-                    $("#imgViewerThumb").val("");
-
-            });
   
    
 </script>
