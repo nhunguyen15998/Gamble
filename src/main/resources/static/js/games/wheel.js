@@ -539,7 +539,7 @@ $('#btn-wheel-bet-all').on('click', () => {
         document.querySelector('#warning-modal p').innerHTML = 'Looks like you ran out of coins. Please top up to continue playing!'
         $('#warning-modal').modal('show')
     } else {
-        $('input[name="wheel_bet_amount"]').val(balance.substring(1, balance.length))
+        $('input[name="wheel_bet_amount"]').val(balance.replace(",",""))
         isBet = true
         isPartialBet = false
     }
