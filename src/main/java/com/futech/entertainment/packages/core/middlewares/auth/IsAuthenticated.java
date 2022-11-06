@@ -25,7 +25,6 @@ public class IsAuthenticated implements ConstraintValidator<Authentication, Map<
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-
             return false;
         }
     }

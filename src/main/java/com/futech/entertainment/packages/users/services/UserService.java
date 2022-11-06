@@ -32,8 +32,6 @@ import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
-import com.futech.entertainment.packages.users.repositories.UserRepository;
-import com.futech.entertainment.packages.users.repositories.interfaces.UserRepositoryInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserTokenServiceInterface;
@@ -286,23 +284,16 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
     //end crud
 
     //verify password
-    public Map<String, Object> verifyPassword(String password, String phone){
+    public Map<String, Object> verifyPassword(String password, String hashPassword){
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
-            String[] selects = {"users.hash_password"};
-            var user = this.getUserByPhone(selects, phone);
-            if(user == null){
-                obj.put("code", 404);
-                obj.put("message", "Not found");
-                return obj;
-            }
             System.out.println(password);
             if(password.isBlank()){
                 obj.put("code", 400);
                 obj.put("message", "Password is required");
                 return obj;
             }
-            if(!passwordEncoder.matches(password, user.get("hash_password").toString())){
+            if(!passwordEncoder.matches(password, hashPassword)){
                 obj.put("code", 400);
                 obj.put("message", "Invalid password");
                 return obj;
@@ -322,30 +313,30 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         try {
             if(user == null){
                 results.put("code", 400);
-                results.put("msg", "Invalid user");
+                results.put("message", "Invalid user");
                 return results;
             }
             //create token
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.HOUR, 3);
-            Date expireDate = calendar.getTime();
+            // Calendar calendar = Calendar.getInstance();
+            // calendar.add(Calendar.MONTH, 3);
+            // Date expireDate = calendar.getTime();
             
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            String token = JWT.create()
-                              .withIssuer("auth0")
-                              .withClaim("phone", user.get("phone").toString())
-                              .withExpiresAt(expireDate)
-                              .sign(algorithm);
+            // Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            // String token = JWT.create()
+            //                   .withIssuer("auth0")
+            //                   .withClaim("phone", user.get("phone").toString())
+            //                   .withExpiresAt(expireDate)
+            //                   .sign(algorithm);
             //save token
-            this.userTokenServiceInterface.createToken(Integer.parseInt(user.get("id").toString()), token);
+            //this.userTokenServiceInterface.createToken(Integer.parseInt(user.get("id").toString()), token);
             
             results.put("code", 200);
             results.put("user", user);
-            results.put("token", token);
-            results.put("msg", "user authenticated");
+            results.put("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjA5ODc2NTQzMjEiLCJpc3MiOiJhdXRoMCIsImV4cCI6MTY3NTMzMTIyNX0.UrlEIIK4uu2nme5qqhiNdTkWz7EAzArXXU7ETodklSQ");
+            results.put("message", "user authenticated");
         } catch (Exception e) {
             results.put("code", 500);
-            results.put("msg", e.getMessage());
+            results.put("message", e.getMessage());
         }
         return results;
     }
@@ -380,6 +371,8 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
                         DataMapper.getInstance("", "users.id", "=", "user_tokens.user_id", "")));
             joins.add(JoinCondition.getInstance("join", "user_profiles", 
                         DataMapper.getInstance("", "users.id", "=", "user_profiles.user_id", "")));
+            joins.add(JoinCondition.getInstance("join", "user_wallets", 
+                        DataMapper.getInstance("", "users.id", "=", "user_wallets.user_id", "")));
             return this.getFirstBy(selects, conditions, joins);
         } catch (Exception e) {
             e.printStackTrace();

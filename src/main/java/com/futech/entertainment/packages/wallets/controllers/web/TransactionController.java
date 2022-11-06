@@ -71,7 +71,7 @@ public class TransactionController {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
         try {
             var userId = session.getAttribute("user_id").toString();
-            list = this.transactionServiceInterface.getTransaction(userId);
+            list = this.transactionServiceInterface.getTransactions(userId);
             return new ResponseEntity<List<Map<String, Object>>>(list, HttpStatus.OK);
         } catch (Exception e) {
             List<Map<String, Object>> errs = new ArrayList<Map<String,Object>>();

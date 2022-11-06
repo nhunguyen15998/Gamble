@@ -402,6 +402,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             Transaction transaction = new Transaction();
             transaction.setCode(transactionCode);
             transaction.setType(transferMapper.getType());
+            transaction.setMethod(0);
             transaction.setSender(transferMapper.getSender());
             transaction.setcreated_at(LocalDateTime.now());
             transaction.setStatus(PaymentHelpers.SUCCESS);

@@ -6,9 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogCateServiceInterface;
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogServiceInterface;
+import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authentication;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 
+@Validated
 @RestController
 @RequestMapping(path = "/api")
 public class BlogsController {
@@ -83,7 +89,8 @@ public class BlogsController {
 
     //blogs by cates 
     @GetMapping("/articles")
-    public ResponseEntity<List<Map<String, Object>>> getBlogs(@RequestParam Optional<String> cateId){//, @RequestHeader("limit") Optional<String[]> limit) {
+    public ResponseEntity<List<Map<String, Object>>> getBlogs(@RequestParam Optional<String> cateId, @RequestParam String page){
+        System.out.println("page:"+page);
         List<Map<String, Object>> blogs = new ArrayList<Map<String, Object>>();
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
@@ -93,7 +100,9 @@ public class BlogsController {
                 conditions.add(DataMapper.getInstance("", "blog_cates.id", "=", cateId.get(), "and"));
             }
             String orderBy = "blogs.created_at desc";
-            blogs = this.blogServiceInterface.getBlogs(conditions, orderBy, limits);//.get().length > 0 ? limit.get() : null);
+            itemPerPage = 4;
+            String[] limit = {String.valueOf(Integer.parseInt(page)*itemPerPage-itemPerPage), String.valueOf(itemPerPage)};
+            blogs = this.blogServiceInterface.getBlogs(conditions, orderBy, limit);
 
             return new ResponseEntity<List<Map<String, Object>>>(blogs, HttpStatus.OK);
         } catch (Exception e) {
@@ -103,4 +112,53 @@ public class BlogsController {
             return new ResponseEntity<List<Map<String, Object>>>(blogs, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    //blog by id
+    @GetMapping("/articles/detail")
+    public ResponseEntity<Map<String, Object>> getBlog(@RequestParam String blogId){
+        Map<String, Object> blog = new HashMap<String, Object>();
+        try {
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "blogs.id", "=", blogId, "and"));
+            blog = this.blogServiceInterface.getBlog(conditions);
+
+            return new ResponseEntity<Map<String, Object>>(blog, HttpStatus.OK);
+        } catch (Exception e) {
+            blog.put("code", 500);
+            blog.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(blog, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //search
+    @GetMapping("/articles/search-results")
+    public ResponseEntity<List<Map<String, Object>>> searchBlog(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers, @RequestParam String search, @RequestParam String page){
+        List<Map<String, Object>> blogs = new ArrayList<Map<String, Object>>();
+        Map<String, Object> obj = new HashMap<String, Object>();
+        try {
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("(", "blogs.title", "like", "%"+search.trim()+"%", "or"));
+            conditions.add(DataMapper.getInstance("", "blog_cates.name", "like", "%"+search.trim()+"%", ") and"));
+            String orderBy = "blogs.created_at desc";
+            itemPerPage = 4;
+            String[] limit = {String.valueOf(Integer.parseInt(page)*itemPerPage-itemPerPage), String.valueOf(itemPerPage)};
+            blogs = this.blogServiceInterface.getBlogs(conditions, orderBy, limit);
+
+            return new ResponseEntity<List<Map<String, Object>>>(blogs, HttpStatus.OK);
+        } catch (Exception e) {
+            obj.put("code", 400);
+            obj.put("message", e.getMessage());
+            blogs.add(obj);
+            return new ResponseEntity<List<Map<String, Object>>>(blogs, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> onValidationError(ConstraintViolationException e) {
+        Map<String, Object> errors = new HashMap<String,Object>();
+        errors.put("code", 400);
+        errors.put("message", e.getMessage().split(": ")[1]);
+        return new ResponseEntity<Map<String, Object>>(errors, HttpStatus.BAD_REQUEST);
+    }
+
 }

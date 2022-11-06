@@ -2,12 +2,14 @@ package com.futech.entertainment.packages.users.controllers.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,20 +50,31 @@ public class AuthenticationController {
     }
 
     @PostMapping("/user/authenticate")
-	public ResponseEntity<Map<String, Object>> authentication(@Valid @RequestBody SignInMapper signInMapper) {
+	public ResponseEntity<Map<String, Object>> authentication(@Valid @RequestBody SignInMapper signInMapper, BindingResult bindingResult) {
         Map<String, Object> results = new HashMap<String, Object>();
         try {
+            if(bindingResult.hasErrors()){
+                var errors = bindingResult.getAllErrors().stream().map(error -> error.getDefaultMessage()).collect(Collectors.toList());
+                results.put("code", 400);
+                results.put("message", errors.get(0));
+                return new ResponseEntity<Map<String, Object>>(results, HttpStatus.OK);
+            }
             var phone = signInMapper.getPhone();
-            String[] selects = {"users.id as user_id, users.*, "+
+            var password = signInMapper.getplain_password();
+            String[] selects = {"users.*, "+
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
             "user_profiles.birth, user_profiles.gender"};
             var user = this.userServiceInterface.getUserByPhone(selects, phone);
-            results = this.userServiceInterface.authenticate(user);
+            var hashPassword = user.get("hash_password").toString();
+            results = this.userServiceInterface.verifyPassword(password, hashPassword);
+            var code = Integer.parseInt(results.get("code").toString());
+            if(code == 200){
+                results = this.userServiceInterface.authenticate(user);
+            }
             return new ResponseEntity<Map<String, Object>>(results, HttpStatus.OK);
         } catch (Exception e) {
-            e.printStackTrace();
             results.put("code", 500);
-            results.put("msg", e.getMessage());
+            results.put("message", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(results, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

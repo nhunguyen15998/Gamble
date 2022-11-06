@@ -2,15 +2,12 @@ package com.futech.entertainment.packages.users.controllers.web;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +37,6 @@ public class AuthController {
     private UserServiceInterface userServiceInterface;
     @Autowired 
     private EmailServiceInterface emailServiceInterface;
-    @Autowired
-    private Timer timer;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

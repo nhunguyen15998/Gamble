@@ -38,13 +38,13 @@ public class UsersController {
     private UserProfileServiceInterface userProfileService;
     
     @GetMapping("/get-user")
-	public ResponseEntity<Map<String, Object>> getUser(@Authentication @RequestHeader Map<String, String> headers) {
+	public ResponseEntity<Map<String, Object>> getUser(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers) {
         Map<String, Object> user = new HashMap<String,Object>();
         try {
             var verifiedToken = headers.get("auth").toString();
-            String[] selects = {"users.id as user_id, users.phone, users.email, users.status, "+
+            String[] selects = {"users.id, users.phone, users.email, users.status, users.created_at, "+ "user_wallets.cur_amount," +
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
-            "user_profiles.birth, user_profiles.gender"};
+            "user_profiles.birth, user_profiles.gender, user_profiles.wallpaper"};
             user = this.userServiceInterface.getUserByToken(selects, verifiedToken);
             if(user != null){
                 return new ResponseEntity<Map<String, Object>>(user, HttpStatus.OK);

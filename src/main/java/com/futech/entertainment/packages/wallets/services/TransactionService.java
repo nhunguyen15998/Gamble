@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
+import com.futech.entertainment.packages.core.utils.JoinCondition;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.wallets.modelMappers.TransactionMapper;
 import com.futech.entertainment.packages.wallets.models.Transaction;
@@ -21,7 +22,7 @@ public class TransactionService extends BaseService<Transaction> implements Tran
     public Map<String, Object> getTransaction(String sender, String code){
         try {
             List<DataMapper> conditions = new ArrayList<DataMapper>();
-            conditions.add(DataMapper.getInstance("", "code", "=", code, ""));
+            conditions.add(DataMapper.getInstance("", "code", "=", code, "and"));
             conditions.add(DataMapper.getInstance("", "sender", "=", sender, ""));
             var transaction = this.getFirstBy(null, conditions, null);
             return transaction;
@@ -31,11 +32,44 @@ public class TransactionService extends BaseService<Transaction> implements Tran
         }
     }
 
-    public List<Map<String, Object>> getTransaction(String userId){
+    public List<Map<String, Object>> getTransactions(String userId){
         try {
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "sender", "=", userId, ""));
             var transactions = this.getAll(null, conditions, null, null, null, null);
+            return transactions;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    //api
+    public Map<String, Object> getTransactionById(String[] select, List<DataMapper> conditions){
+        try {
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("left join", "transaction_withdraws", DataMapper.getInstance("", "transaction_withdraws.transaction_id", "=", "transactions.id", "")));
+            joins.add(JoinCondition.getInstance("left join", "user_profiles", DataMapper.getInstance("", "user_profiles.user_id", "=", "transactions.sender", "")));
+            joins.add(JoinCondition.getInstance("left join", "user_profiles up", DataMapper.getInstance("", "up.user_id", "=", "transactions.receiver", "")));
+            var transactions = this.getFirstBy(select, conditions, joins);
+            return transactions;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<Map<String, Object>> getTransactionsByUserId(String[] select, String currentUserId, String[] limit){
+        try {
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "transactions.receiver", "=", currentUserId, ""));
+            conditions.add(DataMapper.getInstance("or", "transactions.sender", "=", currentUserId, ""));
+            List<JoinCondition> joins = new ArrayList<JoinCondition>();
+            joins.add(JoinCondition.getInstance("join", "users", DataMapper.getInstance("", "users.id", "=", currentUserId, "")));
+            joins.add(JoinCondition.getInstance("join", "user_profiles", DataMapper.getInstance("", "user_profiles.user_id", "=", "transactions.sender", "")));
+            joins.add(JoinCondition.getInstance("left join", "user_profiles up", DataMapper.getInstance("", "up.user_id", "=", "transactions.receiver", "")));
+            String orderBy = "transactions.created_at desc";
+            var transactions = this.getAll(select, conditions, joins, null, orderBy, limit);
             return transactions;
         } catch (Exception e) {
             e.printStackTrace();

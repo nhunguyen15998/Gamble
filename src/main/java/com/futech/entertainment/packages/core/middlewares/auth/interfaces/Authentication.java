@@ -16,7 +16,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 public @interface Authentication {
     
-    String message() default "Invalid token";
+    String message() default "";
 
     boolean required() default true;
 

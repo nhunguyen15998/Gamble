@@ -13,7 +13,7 @@ public class UserProfile extends BaseModel {
 
     private String table = "user_profiles";
 
-    private String[] columns = { "id", "user_id", "first_name", "last_name", "birth", "thumbnail", "gender" };
+    private String[] columns = { "id", "user_id", "first_name", "last_name", "birth", "thumbnail", "gender", "wallpaper" };
 
     public String getTable() {
         return this.table;
@@ -28,6 +28,7 @@ public class UserProfile extends BaseModel {
     private String first_name;
     private String last_name;
     private String thumbnail;
+    private String wallpaper;
     private LocalDate birth;
     private int gender;
 
@@ -64,6 +65,13 @@ public class UserProfile extends BaseModel {
     }
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getWallpaper() {
+        return wallpaper;
+    }
+    public void setWallpaper(String wallpaper) {
+        this.wallpaper = wallpaper;
     }
 
     public LocalDate getBirth() {

@@ -92,7 +92,16 @@ public class ConfigsController {
 
             //verify pass
             var phone = session.getAttribute("phone").toString();
-            obj = this.userServiceInterface.verifyPassword(password, phone);
+            String[] selects = {"users.*, "+
+            "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
+            "user_profiles.birth, user_profiles.gender"};
+            var user = this.userServiceInterface.getUserByPhone(selects, phone);
+            if(user == null){
+                obj.put("code", 404);
+                obj.put("message", "Not found");
+                return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
+            }
+            obj = this.userServiceInterface.verifyPassword(password, user.get("hash_password").toString());
             if(Integer.parseInt(obj.get("code").toString()) != 200){
                 return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
             }
