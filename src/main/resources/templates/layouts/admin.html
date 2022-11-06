@@ -1596,10 +1596,12 @@
                                                         <i class="dropdown-icon fe fe-lock">
 
                             </i> Lockscreen </a>
-                                                    <a class="dropdown-item" href="login.html">
-                                                        <i class="dropdown-icon fe fe-alert-circle">
-
-                            </i> Sign out </a>
+                                        <form th:action="@{/user/sign-out}" method="post">
+                                            <button class="dropdown-item" type="submit">
+                                                <i class="dropdown-icon fe fe-alert-circle"></i>Sign out
+                                            </button>
+                                        </form>
+                                                  
                                                 </div>
                                             </div>
                                         </div>
@@ -1661,7 +1663,7 @@
                                     </a>
                                     <ul class="slide-menu">
                                         <li>
-                                            <a href="cards.html" class="slide-item">Wheels</a>
+                                            <a href="/admin/games/all" class="slide-item">Get all games</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -1690,7 +1692,7 @@
                                 </li>
                                 <li class="slide">
                                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-users"></i>
+                                        <i class="side-menu__icon fa fa-delicious"></i>
                                         <span class="side-menu__label"> Blog Categories</span>
                                         <i class="angle fe fe-chevron-right"> </i>
                                     </a>
@@ -1713,7 +1715,7 @@
                                 </li>
                                 <li class="slide">
                                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-users"></i>
+                                        <i class="side-menu__icon fa fa-newspaper-o"></i>
                                         <span class="side-menu__label"> Blog</span>
                                         <i class="angle fe fe-chevron-right"> </i>
                                     </a>
@@ -1735,10 +1737,9 @@
                                     </ul>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="/admin/transactions/all">
                                         <i class="side-menu__icon fa fa-hourglass-2">  </i>
                                         <span class="side-menu__label">Transactions</span>
-                                        <!-- <i class="angle fe fe-chevron-right"> </i> -->
                                     </a>
                                 </li>
                                
@@ -3509,7 +3510,7 @@
 
     <div class="jvectormap-tip">
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" integrity="sha512-CryKbMe7sjSCDPl18jtJI5DR5jtkUWxPXWaLCst6QjH8wxDexfRJic2WRmRXmstr2Y8SxDDWuBO6CQC6IE4KTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
 

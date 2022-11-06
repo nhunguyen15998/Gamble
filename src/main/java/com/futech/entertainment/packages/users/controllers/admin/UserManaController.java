@@ -3,6 +3,7 @@ package com.futech.entertainment.packages.users.controllers.admin;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.catalina.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +38,7 @@ import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.UserService;
@@ -44,6 +47,7 @@ import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
 public class UserManaController {
+    public static int userType;
     @Autowired
     private UserServiceInterface userServiceiInterface;
     @ModelAttribute("statusList")
@@ -66,7 +70,9 @@ public class UserManaController {
 
 
     @GetMapping("/admin/users/all")
-    public String ViewUser(Model mdl,@RequestParam int type){
+    public String ViewUser(Model mdl,@RequestParam int type, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("users",LoadData(1,"", 10,type) );
         mdl.addAttribute("is_player",true);
         mdl.addAttribute("is_admin",type);
@@ -75,7 +81,9 @@ public class UserManaController {
     } 
 
     @GetMapping("/admin/users/create")
-    public String showCreateForm(Model mdl){
+    public String showCreateForm(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("userMapper", new UserMapper());
         mdl.addAttribute("formType", 0);
         return "users/administrator/create-update";
@@ -84,6 +92,8 @@ public class UserManaController {
     public String showMyProfile( Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
             return "users/administrator/my-profile";
         } catch(Exception ex){
@@ -93,17 +103,22 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/create")
-    public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model)  throws IOException
+    public String CreateUser(@Valid @ModelAttribute("userMapper") UserMapper userMapper,BindingResult bindingResult,RedirectAttributes redirAttrs, @RequestParam("pathImg") MultipartFile multipartFile, Model model, @RequestParam String imgViewer)  throws IOException
     {
         try {
+
             if(!userMapper.getPlain_password().trim().equals(userMapper.getConfirm_password().trim())){
                 bindingResult.addError(new FieldError("userMapper", "confirm_password", "Passwords do not match"));
             } 
-            if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
-                bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
+            if(userMapper.getBirth().isEmpty()) 
+            bindingResult.addError(new FieldError("userMapper", "birth", "Birth is required."));
+
+            else if(LocalDate.parse(userMapper.getBirth()).getYear()<Year.now().getValue()-100||LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+                bindingResult.addError(new FieldError("userMapper", "birth", "Invalid year need more than 18 years old"));
 
             }
             if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) userMapper.setThumbnail(imgViewer);
                 model.addAttribute("userMapper", userMapper);
                 model.addAttribute("formType", 0);
                 return "users/administrator/create-update";
@@ -112,7 +127,7 @@ public class UserManaController {
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }
+            }else  userMapper.setThumbnail(null);
             //userMapper.setIs_admin(true);
             boolean sent = this.userServiceiInterface.createUser(userMapper);
             if(sent){
@@ -127,12 +142,15 @@ public class UserManaController {
         }
     }
     @GetMapping("/admin/users/update")
-    public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts)
+    public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             model.addAttribute("userMapper", getUserMapperByID(id));
             model.addAttribute("formType", 1);
             model.addAttribute("userType", type);
+            userType=type;
             return "users/administrator/create-update";
         } catch(Exception ex){
             atts.addFlashAttribute("error", ex.getMessage());
@@ -141,23 +159,30 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
         try {
-            if(userMapper.getBirth().plusYears(18).isAfter(LocalDate.now())){
-                bindingResult.addError(new FieldError("userMapper", "birth", "not 18"));
+            if(userMapper.getBirth().isEmpty()) 
+            bindingResult.addError(new FieldError("userMapper", "birth", "Birth is required."));
+
+            else if(LocalDate.parse(userMapper.getBirth()).getYear()<Year.now().getValue()-100||LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+                bindingResult.addError(new FieldError("userMapper", "birth", "Invalid year need more than 18 years old"));
 
             }
-            if(bindingResult.hasErrors()&& bindingResult.getErrorCount()!=4){
+            if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) userMapper.setThumbnail(imgViewer);
                 model.addAttribute("oldData", userMapper);
-                model.addAttribute("formType", 0);
+                model.addAttribute("formType", 1);
+                model.addAttribute("userType", userType);
+
                 return "users/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
-                FileUploadUtil.deleteFile(getUserMapperByID(userMapper.getUser_id()).getThumbnail());
+                var tn = getUserMapperByID(userMapper.getUser_id()).getThumbnail();
+                if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }
+            }else  userMapper.setThumbnail(null);
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
                 atts.addFlashAttribute("successMsg", "Successfully update user");
@@ -181,7 +206,7 @@ public class UserManaController {
             mapper.setLast_name(u.get("last_name").toString());
             mapper.setPhone(u.get("phone").toString());
             mapper.setEmail(u.get("email").toString());
-            mapper.setBirth(LocalDate.parse(u.get("birth").toString().subSequence(0, 10)));
+            mapper.setBirth(u.get("birth").toString().substring(0, 10));
             mapper.setGender(Integer.parseInt(u.get("gender").toString()));
             mapper.setThumbnail(u.get("thumbnail")==null?"":u.get("thumbnail").toString());
             mapper.setStatus(Integer.parseInt(u.get("status").toString()));
@@ -189,14 +214,36 @@ public class UserManaController {
             return mapper;
     }
     @PostMapping("/admin/users/my-profile/update-password")
-    public String updatePassword(@ModelAttribute("userMapper") UserMapper userMapper){
-return"";
+    public ResponseEntity<Map<String, Object>>  updatePassword(@RequestBody UserUpdateMapper userMapper, HttpSession session){
+        Map<String, Object> items = new HashMap<String,Object>();
+        userMapper.setUser_id(Integer.parseInt(session.getAttribute("user_id").toString()));
+        userMapper.setUser_profile_id(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
+           
+        if(!userServiceiInterface.checkPassword(userMapper)) items.put("current", "Current password is not correct");
+        if(userServiceiInterface.checkPassword(userMapper)&&userMapper.getNew_password().length()>=6&&userMapper.getNew_password().length()<=15&&userMapper.getCurrent_password().equals(userMapper.getNew_password()))items.put("newPass", "The new password must be different from the current password.");
+        if(userMapper.getNew_password().length()<6||userMapper.getNew_password().length()>15) items.put("newPass", "Password must range from 6 to 15");
+        if(!userMapper.getConfirm_password().equals(userMapper.getNew_password())) items.put("confirm", "Does not match the new password");
+        
+        if(userMapper.getCurrent_password().isBlank()) items.put("current", "Current password is required.");
+        if(userMapper.getNew_password().isBlank()) items.put("newPass", "New password is required.");
+        if(items.size()>0) items.put("code",400);
+        else userServiceiInterface.updateUserUserProfile(userMapper);
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
     }
     @PostMapping("/admin/users/my-profile/update-infomation")
-    public ResponseEntity<Map<String, Object>> updateInfomation(@Valid @RequestBody UserMapper userMapper){
+    public ResponseEntity<Map<String, Object>> updateInfomation(@Valid @RequestBody UserUpdateMapper userMapper, HttpSession session){
         Map<String, Object> items = new HashMap<String,Object>();
     try{
-      
+        if(LocalDate.parse(userMapper.getBirth()).plusYears(18).isAfter(LocalDate.now())){
+            items.put("birth", "need more than 18 years old");
+            items.put("code",400);
+        }
+        if(items.size()>0)
+        return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
+
+        
+        userMapper.setUser_id(Integer.parseInt(session.getAttribute("user_id").toString()));
+        userMapper.setUser_profile_id(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
         boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
         return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
 

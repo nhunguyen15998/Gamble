@@ -9,6 +9,7 @@ public class BlogCateMapper {
     @NotBlank(message = "Name is required")
     private String name;
     @IsExisted(message = "Slug already exists")
+    @NotBlank(message = "Url slug is required")
     private String url_slug;
     private Integer status;  
     

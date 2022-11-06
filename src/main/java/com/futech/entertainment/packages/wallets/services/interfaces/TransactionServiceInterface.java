@@ -15,4 +15,5 @@ public interface TransactionServiceInterface extends BaseServiceInterface<Transa
     public Map<String, Object> getTransactionById(String[] select, List<DataMapper> conditions);
     public Transaction createTransaction(TransactionMapper transactionMapper);
     public Transaction createTransaction(Transaction transactionMapper);
+    public Map<String, Object> getTransactionByCode(String code);
 }

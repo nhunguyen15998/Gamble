@@ -43,8 +43,8 @@
                     <div class="mt-2">
                     <h6 class="">
                    Total Users</h6>
-                  <h2 class="mb-0 number-font">
-                   44,278</h2>
+                  <h2 class="mb-0 number-font"  th:text="${#numbers.formatDecimal(countPlayers, 1, 'DEFAULT', 0, 'DEFAULT')}">
+                   </h2>
                   </div>
                   <div class="ms-auto">
                     <div class="chart-wrapper mt-1">
@@ -82,9 +82,9 @@
                     <div class="d-flex">
                     <div class="mt-2">
                     <h6 class="">
-                   Total Profit</h6>
-                  <h2 class="mb-0 number-font">
-                   67,987</h2>
+                   Total Plays</h6>
+                  <h2 class="mb-0 number-font" th:text="${#numbers.formatDecimal(countPlays, 1, 'DEFAULT', 0, 'DEFAULT')}">
+                   </h2>
                   </div>
                   <div class="ms-auto">
                     <div class="chart-wrapper mt-1">
@@ -121,9 +121,9 @@
                     <div class="card-body">
                     <div class="d-flex">
                     <div class="mt-2">
-                    <h6 class="">
-                   Total Expenses</h6>
-                  <h2 class="mb-0 number-font">
+                    <h6 style="width: 10vw;">
+                   Total amount deposited</h6>
+                  <h2 class="mb-0 number-font" th:text="${'$'+#numbers.formatDecimal(sumAmount, 1, 'COMMA', 2, 'POINT')}">
                    $76,965</h2>
                   </div>
                   <div class="ms-auto">
@@ -2673,3 +2673,5 @@
         </body>
         <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
 </body>
+<script>
+</script>

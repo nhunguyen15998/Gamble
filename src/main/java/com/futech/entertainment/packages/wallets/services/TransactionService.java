@@ -32,6 +32,25 @@ public class TransactionService extends BaseService<Transaction> implements Tran
         }
     }
 
+    public Map<String, Object> getTransactionByCode(String code){
+        try {
+            String[] selects = {"transactions.*, p.first_name, p.last_name, u.is_admin, w.account_name, w.account_number, w.bank, w.amount as 'wAmount', w.notes as 'wNotes'"};
+            List<DataMapper> conditions = new ArrayList<DataMapper>();
+            conditions.add(DataMapper.getInstance("", "code", "=", code, ""));
+
+            List<JoinCondition> lsJoin = new ArrayList<JoinCondition>();
+            lsJoin.add(JoinCondition.getInstance("left join", "users u ", DataMapper.getInstance("", "u.id", "=", "transactions.sender", "")));
+            lsJoin.add(JoinCondition.getInstance("left join", "user_profiles p ", DataMapper.getInstance("", "u.id", "=", "p.user_id", "")));
+            lsJoin.add(JoinCondition.getInstance("left join", "transaction_withdraws w ", DataMapper.getInstance("", "w.transaction_id", "=", "transactions.id", "")));
+           
+            var transaction = this.getFirstBy(selects, conditions, lsJoin);
+            return transaction;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public List<Map<String, Object>> getTransactions(String userId){
         try {
             List<DataMapper> conditions = new ArrayList<DataMapper>();

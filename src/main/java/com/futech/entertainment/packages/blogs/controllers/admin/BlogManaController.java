@@ -1,9 +1,6 @@
 package com.futech.entertainment.packages.blogs.controllers.admin;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,12 +32,6 @@ import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.FileUploadUtil;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
-import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
-import com.futech.entertainment.packages.users.models.User;
-import com.futech.entertainment.packages.users.models.UserProfile;
-import com.futech.entertainment.packages.users.services.UserService;
-import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
-import com.rabbitmq.client.AMQP.Confirm.Select;
 
 @Controller
 public class BlogManaController {
@@ -72,14 +62,18 @@ public class BlogManaController {
     }
 
     @GetMapping("/admin/blogs/all")
-    public String ViewUser(Model mdl){
+    public String ViewBlogs(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "blogs/administrator/all-blogs";
     } 
 
     @GetMapping("/admin/blogs/create")
-    public String showCreateForm(Model mdl){
+    public String showCreateForm(Model mdl, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         mdl.addAttribute("blogMapper", new BlogMapper());
         mdl.addAttribute("blogCateList",getBlogCateList(0));
         mdl.addAttribute("formType", 0);
@@ -87,12 +81,16 @@ public class BlogManaController {
     }
 
     @PostMapping("/admin/blogs/create")
-    public String CreateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String CreateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
     
         try {
-            if(multipartFile.getOriginalFilename().isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
+            
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            blogMapper.setAuthor_id(Integer.parseInt(session.getAttribute("user_id").toString()));
+            if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
             
             if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) blogMapper.setThumbnail(imgViewer);
                 model.addAttribute("blogMapper", blogMapper);
                 model.addAttribute("formType", 0);
                 model.addAttribute("blogCateList", getBlogCateList(0));
@@ -101,11 +99,9 @@ public class BlogManaController {
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                blogMapper.setThumbnail(fileName);
+                blogMapper.setThumbnail("/images/blogs/" +fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/blogs/", fileName, multipartFile);
             }
-            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
-            blogMapper.setAuthor_id(Integer.parseInt(session.getAttribute("user_id").toString()));
             boolean sent = this.blogServiceInterface.createBlog(blogMapper);
             if(sent){
                 redirAttrs.addFlashAttribute("successMsg", String.format("Saved successfully!"));
@@ -119,9 +115,11 @@ public class BlogManaController {
         }
     }
     @GetMapping("/admin/blogs/update")
-    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts)
+    public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
             BlogMapper temp= getBlogMapperByID(id);
             model.addAttribute("blogMapper",temp);
             model.addAttribute("formType", 1);
@@ -134,31 +132,35 @@ public class BlogManaController {
         }
     }
     @PostMapping("/admin/blogs/update")
-    public String updateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,Model model, BindingResult bindingResult, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile)  throws IOException {
+    public String updateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
         try {
             
+            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
+           
             if(bindingResult.hasErrors()){
+                if(!imgViewer.isBlank()) blogMapper.setThumbnail(imgViewer);
                 model.addAttribute("oldData", blogMapper);
-                atts.addAttribute("formType", 0);
-                atts.addAttribute("blogCateList", getBlogCateList(blogMapper.getId()));
+                redirAttrs.addAttribute("formType", 0);
+                model.addAttribute("blogCateList", getBlogCateList(blogMapper.getId()));
 
                 return "blogs/administrator/create-update";
             }
             if(!multipartFile.getOriginalFilename().isEmpty()){
                 FileUploadUtil.deleteFile(getBlogMapperByID(blogMapper.getId()).getThumbnail());
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                blogMapper.setThumbnail(fileName);
+                blogMapper.setThumbnail("/images/blogs/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/blogs/", fileName, multipartFile);
             }
 
             boolean updated = this.blogServiceInterface.updateBlog(blogMapper);
             if(updated){
-                atts.addFlashAttribute("successMsg", "Successfully update blog");
+                redirAttrs.addFlashAttribute("successMsg", "Successfully update blog");
             } else {
-                atts.addFlashAttribute("errorMsg", "Cannot update blog");
+                redirAttrs.addFlashAttribute("errorMsg", "Cannot update blog");
             }
         } catch(Exception ex) {
-            atts.addFlashAttribute("error", ex.getMessage());
+            redirAttrs.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/admin/blogs/all";
     }

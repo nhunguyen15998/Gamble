@@ -2,8 +2,6 @@ package com.futech.entertainment.packages.contacts.modelMappers;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.NotBlank;
-
 public class ContactSentMapper {
     
     

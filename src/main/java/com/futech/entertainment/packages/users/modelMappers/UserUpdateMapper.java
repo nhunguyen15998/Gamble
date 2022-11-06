@@ -1,24 +1,11 @@
 package com.futech.entertainment.packages.users.modelMappers;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import org.apache.tomcat.jni.Local;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Email;
-import com.futech.entertainment.packages.core.middlewares.validations.interfaces.IsExisted;
-import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Phone;
 import com.futech.entertainment.packages.core.middlewares.validations.interfaces.Size;
 
-public class UserMapper {
+public class UserUpdateMapper {
     private Integer user_id;
     private Integer user_profile_id;
 
@@ -29,55 +16,31 @@ public class UserMapper {
     @NotBlank(message = "Last name is required")
     private String last_name;
 
-    @IsExisted(message = "User is already existed")
-    @NotBlank(message = "Phone is required")
-    @Phone(message = "Invalid phone format")
     private String phone;
     
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
-    
+
+    @NotBlank(message = "Birth is required")
     private String birth;
 
     private Integer gender;
     private String thumbnail;
     private Integer status;
     
-    @NotBlank(message = "Password is required")
-    @Size(min = 6, max = 15, message = "Password must range from 6 to 15")
-    private String plain_password;
-
+    private String current_password;
+    private String new_password;
     
-
-    @NotBlank(message = "Password confirmation is required")
     private String confirm_password;
     
 
     // private boolean is_admin;
     
 
-    public UserMapper() {
+    public UserUpdateMapper() {
     }
     
-
-    // public UserMapper(Integer user_id,Integer user_pf_id, String first_name,
-    //        String last_name, String phone,String email,
-    //        LocalDate birth, Integer gender, String thumbnail, Integer status, Boolean is_admin) {
-    //     this.user_id = user_id;
-    //     this.first_name = first_name;
-    //     this.last_name = last_name;
-    //     this.phone = phone;
-    //     this.email = email;
-    //     this.birth = birth;
-    //     this.gender = gender;
-    //     this.thumbnail = thumbnail;
-    //     this.status = status;
-    //     this.is_admin = is_admin;
-    //     this.user_profile_id=user_pf_id;
-    // }
-
-
 
     public Integer getUser_id() {
         return user_id;
@@ -119,7 +82,13 @@ public class UserMapper {
         this.email = email;
     }
 
-  
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
 
     public Integer getGender() {
         return gender;
@@ -151,13 +120,7 @@ public class UserMapper {
     // public void setIs_admin(Boolean is_admin) {
     //     this.is_admin = is_admin;
     // }
-    public String getPlain_password() {
-        return plain_password;
-    }
-
-    public void setPlain_password(String plain_password) {
-        this.plain_password = plain_password;
-    }
+   
     public String getConfirm_password() {
         return confirm_password;
     }
@@ -175,17 +138,27 @@ public class UserMapper {
     }
 
 
-    public String getBirth() {
-        return birth;
-    }
-
-
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
-
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+
+    public String getCurrent_password() {
+        return current_password;
+    }
+
+
+    public void setCurrent_password(String current_password) {
+        this.current_password = current_password;
+    }
+
+
+    public String getNew_password() {
+        return new_password;
+    }
+
+
+    public void setNew_password(String new_password) {
+        this.new_password = new_password;
     }
 }

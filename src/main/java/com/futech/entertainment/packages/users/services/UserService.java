@@ -30,6 +30,7 @@ import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
+import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
 import com.futech.entertainment.packages.users.models.User;
 import com.futech.entertainment.packages.users.models.UserProfile;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
@@ -211,7 +212,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
             userProfile.setThumbnail(userMapper.getThumbnail());
-            userProfile.setBirth(userMapper.getBirth());
+            userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
             userProfile.setGender(userMapper.getGender());
             this.userProfileServiceInterface.create(userProfile);
             return true;
@@ -253,26 +254,30 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         }
         return false;
     }
-    public boolean updateUserUserProfile(UserMapper userMapper){
+    public boolean updateUserUserProfile(UserUpdateMapper userMapper){
         try {
             User user = new User();
             user.setId(userMapper.getUser_id());
-            user.setEmail(userMapper.getEmail());
-            if(userMapper.getPlain_password()!=null) user.setplain_password(userMapper.getPlain_password());
+            if(userMapper.getEmail()!=null) user.setEmail(userMapper.getEmail());
             if(userMapper.getStatus()!=null) user.setStatus(userMapper.getStatus());
-            //user.setIs_admin(userMapper.isIs_admin());
+            if(userMapper.getNew_password()!=null)  {user.setplain_password(userMapper.getNew_password()); user.sethash_password(passwordEncoder.encode(userMapper.getNew_password()));}
             var updatedUser = this.update(user);
+            
+            var updatedUserProfile = true;
 
+            if(userMapper.getNew_password()==null){
             UserProfile userProfile = new UserProfile();
             userProfile.setId(userMapper.getUser_profile_id());
             userProfile.setUserId(userMapper.getUser_id());
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
-            userProfile.setBirth(userMapper.getBirth());
-            if(userMapper.getThumbnail()!=null) userProfile.setThumbnail(userMapper.getThumbnail());
+            userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
+            userProfile.setThumbnail(userMapper.getThumbnail());
             userProfile.setGender(userMapper.getGender());
-            var updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
+            updatedUserProfile = this.userProfileServiceInterface.updateUserProfile(userProfile);
 
+            }
+            
             if(updatedUser && updatedUserProfile){
                 return true;
             }
@@ -282,7 +287,16 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         return false;
     }
     //end crud
-
+    public boolean checkPassword(UserUpdateMapper userMapper){
+        String[] selects = {"users.hash_password"};
+        var user = this.getUserById(selects, userMapper.getUser_id());
+        if(user!=null ){
+            if(!passwordEncoder.matches(userMapper.getCurrent_password(), user.get("hash_password").toString()))
+            return false;
+        }
+        return true;
+        
+    }
     //verify password
     public Map<String, Object> verifyPassword(String password, String hashPassword){
         Map<String, Object> obj = new HashMap<String, Object>();

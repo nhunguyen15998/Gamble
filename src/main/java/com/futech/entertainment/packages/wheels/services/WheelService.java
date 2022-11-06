@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
+import com.futech.entertainment.packages.games.modelMappers.WheelMapper;
 import com.futech.entertainment.packages.games.models.Game;
 import com.futech.entertainment.packages.games.models.GameHistoryUser;
 import com.futech.entertainment.packages.games.services.interfaces.GameHistoryServiceInterface;
@@ -214,5 +215,21 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public boolean updateWheel(WheelMapper wheelMapper){
+        try {
+            Game upGame = new Game();
+            upGame.setId(wheelMapper.getId());
+            upGame.setConfigs(wheelMapper.getConfigs());
+            upGame.setStatus(wheelMapper.getStatus());
+            var updated = this.update(upGame);
+
+            if(updated){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

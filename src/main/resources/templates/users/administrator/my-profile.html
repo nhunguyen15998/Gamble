@@ -36,7 +36,7 @@
                                     <div class="card-header">
                                         <div class="card-title">Edit Password</div>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body pt-5 pb-2" >
                                         <div class="text-center chat-image mb-5">
                                             <div class="avatar avatar-xxl chat-profile mb-3 brround" style="margin-left:0.7vw ;">
                                                 <a class="" href="profile.html"><img alt="avatar" th:src="${session.thumbnail}==null?'/images/defaults/no-user.jpeg':${session.thumbnail}"  >
@@ -48,24 +48,33 @@
                                                 <p class="text-muted mt-0 mb-0 pt-0 fs-13">Admin</p>
                                             </div>
                                         </div>
-                                        <div class="form-group">
+                                  <div class="alert" id="msgPassword" style="display: none;"></div>
+
+                                        <div class="form-group mb-0">
+                                          
                                             <label class="form-label">Current Password</label>
-                                            <div class="wrap-input100 validate-input input-group" id="Password-toggle">
-                                                <span class="input-group-text bg-white text-muted togglePassword" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
-                                                <input class="input100 form-control" type="password" placeholder="Current Password" autocomplete="current-password"> </div>
-                                            </div>
-                                        <div class="form-group">
+                                            <div class="wrap-input100 validate-input input-group mb-0"  id="Password-toggle">
+                                                <span class="input-group-text bg-white text-muted togglePassword mb-0" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
+                                                <input class="input100 form-control mb-0" type="password" placeholder="Current Password"  name="current_password" autocomplete="current-password"> </div>
+                                                <small th:class="text-danger" id="current_password_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                          
+                                              </div>
+                                        <div class="form-group mb-0"  style="margin-top: -1vh">
                                             <label class="form-label">New Password</label>
-                                            <div class="wrap-input100 validate-input input-group" id="Password-toggle1">
-                                                <span class="input-group-text bg-white text-muted togglePassword" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
-                                                <input class="input100 form-control" type="password" placeholder="New Password" autocomplete="new-password"> </div>
-                                        </div>
-                                        <div class="form-group">
+                                            <div class="wrap-input100 validate-input input-group mb-0" id="Password-toggle1">
+                                                <span class="input-group-text bg-white text-muted togglePassword mb-0" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
+                                                <input class="input100 form-control mb-0" type="password" placeholder="New Password"  name="new_password" autocomplete="new-password"> </div>
+                                                <small th:class="text-danger" id="new_password_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                          
+                                              </div>
+                                        <div class="form-group mb-0"  style="margin-top: -1vh">
                                             <label class="form-label">Confirm Password</label>
-                                            <div class="wrap-input100 validate-input input-group" id="Password-toggle2">
-                                                <span class="input-group-text bg-white text-muted togglePassword" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
-                                                <input class="input100 form-control" type="password" placeholder="Confirm Password" autocomplete="new-password"> </div>
-                                        </div>
+                                            <div class="wrap-input100 validate-input input-group mb-0" id="Password-toggle2">
+                                                <span class="input-group-text bg-white text-muted togglePassword mb-0" style="cursor: pointer;"> <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i> </span>
+                                                <input class="input100 form-control mb-0" type="password" placeholder="Confirm Password" name="confirm_password" autocomplete="new-password"> </div>
+                                                <small th:class="text-danger" id="confirm_password_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
+                                          
+                                              </div>
                                     </div>
                                     <div class="card-footer text-end"> <span id="save-password" class="btn btn-primary">Update</span></div>
                                 </div>
@@ -78,43 +87,45 @@
                                     <div class="card-header">
                                         <h3 class="card-title">Edit Profile</h3> </div>
                                     <div class="card-body">
+                                  <div class="alert" id="msgInfo" style="display: none;"></div>
+
                                         <div class="row">
                                             <div class="col-lg-6 col-md-12">
-                                                <div class="form-group">
+                                                <div class="form-group mb-0">
                                                     <label for="exampleInputname">First Name</label>
                                                     <input type="text" class="form-control" id="exampleInputname" name="first_name" th:value="${userMapper.first_name}" placeholder="First Name"> </div>
                                                     <small th:class="text-danger" id="first_name_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
                                           
                                                   </div>
                                             <div class="col-lg-6 col-md-12">
-                                                <div class="form-group">
+                                                <div class="form-group mb-0">
                                                     <label for="exampleInputname1">Last Name</label>
                                                     <input type="text" class="form-control" id="exampleInputname1" placeholder="Enter Last Name" name="last_name" th:value="${userMapper.last_name}"> </div>
                                                     <small th:class="text-danger" id="last_name_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
                                             
                                                   </div>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mb-0">
                                             <label for="exampleInputEmail1">Email address</label>
                                             <input type="email" class="form-control" id="exampleInputEmail1" name="email" th:value="${userMapper.email}" placeholder="Email address"> </div>
                                             <small th:class="text-danger" id="email_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
                                         
-                                        <div class="form-group">
+                                        <div class="form-group mb-0">
                                             <label for="exampleInputnumber">Contact Number</label>
                                             <input type="number" disabled class="form-control" id="exampleInputnumber" placeholder="Contact number" name="phone" th:value="${userMapper.phone}"> </div>
-                                            <div class="form-group"> 
+                                            <div class="form-group mb-0"> 
                                               <label for="validationCustom04">Gender</label>
-                                              <select class="form-control select2"  name="gender" id="validationCustom04">
+                                              <select class="form-control select2"  name="gender" id="genderSelect">
                                                 <option th:each="stt : ${genderList}" 
                                                         th:value="${stt.key}" 
                                                         th:selected="(${oldData!=null}?${oldData.gender}==${stt.key}:false) OR ${userMapper.gender}==${stt.key}"
                                                         th:text="${stt.value}" style="background-color:#8677d3;" ></option>
                                               </select>
                                           </div>
-                                          <div class="form-group"> 
+                                          <div class="form-group mb-0"> 
                                             <label for="birth">Birth</label>
                                           
-                                            <input type="date" class="form-control" name="birth" id="birth" style="color: white;" th:value="${userMapper.birth}" > 
+                                            <input type="date" class="form-control"  name="birth" id="birth" style="color: white;" th:value="${userMapper.birth}" > 
                                             <small th:class="text-danger" id="birth_err" style="font-size:14px;padding:0 5px;border-radius: 5px;"></small>
 
                                         </div>
@@ -508,7 +519,7 @@
         "last_name": $('input[name="last_name"]').val(),
         "email": $('input[name="email"]').val(),
         "birth": $('input[name="birth"]').val().replace("T",""),
-        "gender": $('input[name="gender"]').val()
+        "gender":$('#genderSelect').val()
     }
     $.ajax({
         url: '/admin/users/my-profile/update-infomation',
@@ -517,18 +528,77 @@
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         success: function(response){
+          console.log(response)
             $('#first_name_err').text("")
             $('#last_name_err').text("")
             $('#email_err').text("")
             $('#birth_err').text("")
+            if(response.code==400){
+              $('#birth_err').text(response.birth)
+              $("#msgInfo").addClass('alert-warning');
+              $("#msgInfo").html('Please check the input data !');
+            }else{
+              $("#msgInfo").addClass('alert-success');
+              $("#msgInfo").html('Saved successfully !');
+            }
         },
         error: function(data){
             console.log(data)
             data.responseJSON.errors.forEach(err => {
                 $(`#${err.field}_err`).text(err.defaultMessage ?? "")
+                $("#msgInfo").addClass('alert-warning');
+                $("#msgInfo").html('Please check the input data !');
             })
         }
     })
+    $("#msgInfo").removeClass("alert-warning");
+    $("#msgInfo").removeClass("alert-success");
+    $("#msgInfo").html('');
+    $("#msgInfo").css("display", "block");
+    $("#msgInfo").delay(4000).fadeOut(300);
+})
+$('#save-password').on('click', () => {
+    let data = {
+        "current_password": $('input[name="current_password"]').val(),
+        "confirm_password": $('input[name="confirm_password"]').val(),
+        "new_password": $('input[name="new_password"]').val()
+    }
+    $.ajax({
+        url: '/admin/users/my-profile/update-password',
+        type: 'post',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(response){
+        
+          
+          $(`#current_password_err`).text(response.current ?? "")
+          $(`#new_password_err`).text(response.newPass ?? "")
+          $(`#confirm_password_err`).text(response.confirm ?? "")
+          
+          if(response.code==null){
+            $("#msgPassword").addClass('alert-success');
+            $("#msgPassword").html('Saved successfully !');
+            $('input[name="current_password"]').val("");
+            $('input[name="confirm_password"]').val("");
+            $('input[name="new_password"]').val("")
+
+          }else{
+           
+            $("#msgPassword").addClass('alert-warning');
+            $("#msgPassword").html('Please check the input data !');
+          }
+         
+        },
+        error: function(data){
+           
+        }
+    })
+    $("#msgPassword").removeClass("alert-warning");
+    $("#msgPassword").removeClass("alert-success");
+    $("#msgPassword").html('');
+    $("#msgPassword").css("display", "block");
+    $("#msgPassword").delay(4000).fadeOut(300);
 })
   $(".togglePassword").click(function(){
     if($(this).find("i").hasClass('zmdi-eye')){
