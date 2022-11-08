@@ -73,6 +73,7 @@ public class PaymentHelpers {
     //vnpay
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static String vnp_Returnurl = "http://localhost:9090/proceed/transaction";
+    public static String vnp_Returnurl_Android = "http://localhost:9090/api/proceed/transaction";
     public static String vnp_TmnCode = "P5FNXKXA";
     public static String vnp_HashSecret = "KRAWJKVNDEQZCDSBOVHUKKGOJIVZNJJT";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";

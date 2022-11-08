@@ -107,11 +107,11 @@ public class VNPayService implements VNPayServiceInterface{
             String queryUrl = query.toString();
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = PaymentHelpers.vnp_PayUrl + "?" + queryUrl;
-            job.put("code", "200");
+            job.put("code", 200);
             job.put("message", "success");
             job.put("data", paymentUrl);
         } catch (Exception e) {
-            job.put("code", "500");
+            job.put("code", 500);
             job.put("message", e.getMessage());
             job.put("data", "");
         }

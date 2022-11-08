@@ -76,7 +76,7 @@ public class UsersController {
 	}
 
     @PostMapping("/update-user")
-    public ResponseEntity<Map<String, Object>> updateUser(@Authentication @RequestHeader Map<String, String> headers, @Valid @RequestBody UserProfileMapper userProfileMapper) {
+    public ResponseEntity<Map<String, Object>> updateUser(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers, @Valid @RequestBody UserProfileMapper userProfileMapper) {
         Map<String, Object> items = new HashMap<String,Object>();
         try {
             var verifiedToken = headers.get("auth").toString();
@@ -92,10 +92,13 @@ public class UsersController {
             var updated = this.userServiceInterface.updateUserUserProfile(userProfileMapper);
 
             if(updated){
-                items.put("name", userProfileMapper.getfirst_name()+" "+userProfileMapper.getlast_name());
+                items.put("code", 200);
+                items.put("message", "successful");
                 return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
             }
-            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.NOT_MODIFIED);
+            items.put("code", 400);
+            items.put("message", "failed");
+            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
         } catch (Exception e) {
             items.put("message", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(items, HttpStatus.BAD_REQUEST);
