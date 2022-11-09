@@ -90,7 +90,6 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                                 req.setAttribute("transactionCode", VNPayTransaction.getCode());
                                 req.setAttribute("amount", VNPayTransaction.getAmount());
                                 obj = this.vnpayServiceInterface.doPost(req);
-                                obj.put("code", 200);
                             }
                             break;
                         case PaymentHelpers.MOMO:
