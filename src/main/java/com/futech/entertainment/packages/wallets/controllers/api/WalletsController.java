@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authentication;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
+import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.wallets.modelMappers.DepositMapper;
 import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProcessServiceInterface;
@@ -58,6 +59,7 @@ public class WalletsController {
             var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
             depositMapper.setSender(Integer.parseInt(currentUserId));
             depositMapper.setType(0);
+            req.setAttribute("vnp_ReturnUrl", PaymentHelpers.vnp_Returnurl_Android);
             obj = this.paymentProcessServiceInterface.depositProcess(depositMapper, req);
             return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
         } catch (Exception e) {
@@ -70,6 +72,7 @@ public class WalletsController {
     public ResponseEntity<Map<String, Object>> returnVnpayDepositResult(HttpServletRequest req){
         Map<String, Object> obj = new HashMap<String, Object>();
         try {
+            // http://localhost:9090/api/proceed/transaction?vnp_Amount=2000000&vnp_BankCode=NCB&vnp_BankTranNo=VNP13874194&vnp_CardType=ATM&vnp_OrderInfo=TransactionTest&vnp_PayDate=20221109122943&vnp_ResponseCode=00&vnp_TmnCode=P5FNXKXA&vnp_TransactionNo=13874194&vnp_TransactionStatus=00&vnp_TxnRef=8b0e89ccb531411&vnp_SecureHash=d6b3799f50ac54d937d03ef7f12a38f13e89a93ab576debbf191f719b9f32a8bfacb1d51610a86f45027aad6e7ffc8f3f44edd910faf0335d2a339897f5d113e
             var jo = this.vnpayServiceInterface.doReturn(req);
             var code = Integer.parseInt(jo.get("code").toString());
             var msg = jo.get("msg").getAsString();

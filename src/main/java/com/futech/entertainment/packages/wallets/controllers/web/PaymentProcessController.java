@@ -52,6 +52,7 @@ public class PaymentProcessController {
             session.setAttribute("depositMethod", depositMapper.getMethod());
             depositMapper.setSender(sender);
             depositMapper.setType(0);
+            req.setAttribute("vnp_ReturnUrl", PaymentHelpers.vnp_Returnurl);
             obj = this.paymentProcessServiceInterface.depositProcess(depositMapper, req);
             return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.ACCEPTED);
         } catch (Exception e) {

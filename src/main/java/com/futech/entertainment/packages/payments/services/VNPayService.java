@@ -53,7 +53,7 @@ public class VNPayService implements VNPayServiceInterface{
             //String vnp_IpAddr = Helpers.getIpAddress(req);
             String vnp_Locale = req.getAttribute("language") != null ? req.getAttribute("language").toString() : null;
             String vnp_OrderInfo = "TransactionTest";//req.getParameter("vnp_OrderInfo");
-            String vnp_ReturnUrl = PaymentHelpers.vnp_Returnurl;
+            String vnp_ReturnUrl = req.getAttribute("vnp_ReturnUrl").toString();
             String vnp_TxnRef = req.getAttribute("transactionCode").toString();
             //-vnp_SecureHash
             
@@ -187,6 +187,9 @@ public class VNPayService implements VNPayServiceInterface{
                     this.userWalletServiceInterface.update(userWallet);
                     job.addProperty("code", 200);
                     job.addProperty("msg", "Transaction successful");
+                } else {
+                    job.addProperty("code", 400);
+                    job.addProperty("msg", "Transaction failed");
                 }
             } else {
                 job.addProperty("code", 400);
