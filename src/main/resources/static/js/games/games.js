@@ -16,3 +16,6 @@ function openGame(url){
 $('#wheel-play').on('click', () => {
     openGame('/games/wheels/authentication')
 })
+$('#baucua-play').on('click', () => {
+    openGame('/games/baucua/authentication')
+})

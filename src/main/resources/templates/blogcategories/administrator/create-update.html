@@ -49,13 +49,13 @@
                                               </div>
                                                 <div class="col-xl-12 mb-3">
                                                     <label for="name" >Name</label>
-                                                    <input type="text" class="form-control" name="name" th:value="${oldData != null}?${oldData.name}:${blogCateMapper.name}" >
+                                                    <input type="text" class="form-control" onInput="showUrlValue(event)" name="name" th:value="${oldData != null}?${oldData.name}:${blogCateMapper.name}" >
                                                     <small th:class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
                                                    
                                                 </div>
                                                 <div class="col-xl-6 mb-3">
                                                     <label for="url_slug" >Url Slug</label>
-                                                    <input type="text" class="form-control" name="url_slug" th:value="${oldData != null}?${oldData.url_slug}:${blogCateMapper.url_slug}" >
+                                                    <input type="text" class="form-control" id="url_slug" name="url_slug" th:value="${oldData != null}?${oldData.url_slug}:${blogCateMapper.url_slug}" >
                                                     <small th:class="text-danger" th:if="${#fields.hasErrors('url_slug')}" th:errors="*{url_slug}" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
                                                    
                                                 </div>
@@ -454,6 +454,10 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
-  
+  function showUrlValue(event)
+{
+    var value = event.target.value;
+    document.getElementById("url_slug").value = value.replaceAll(' ','-');
+}
    
 </script>

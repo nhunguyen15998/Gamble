@@ -1,6 +1,7 @@
 package com.futech.entertainment.packages.wallets.controllers.admin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,13 +13,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
+import com.futech.entertainment.packages.wallets.models.Transaction;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 
 @Controller
@@ -28,6 +32,16 @@ public class TransactionManaController {
     @Autowired
     UserServiceInterface userServiceInterface;
 
+    @ModelAttribute("statusList")
+    public Map<Integer, String> getStatusList() {
+        Map<Integer, String> statusList = new HashMap<Integer, String>();
+        statusList.put(1, "Success");
+        statusList.put(0, "Pending");
+        statusList.put(-1, "Fail");
+
+        return statusList;
+    }
+    
     @GetMapping("/admin/transactions/all")
     public String showAll(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
@@ -36,9 +50,21 @@ public class TransactionManaController {
         mdl.addAttribute("paging", RowEvent(GetCount(-1,-1,-1,Helpers.EMPTY,Helpers.EMPTY),10));
         return "/transactions/administrator/all";
     }
-    
+    @PostMapping("/admin/transactions/update")
+    public String updateStatus(@RequestParam int id,Transaction transaction, RedirectAttributes attrs){
+        boolean check = transactionServiceInterface.updateStatus(id, transaction.getStatus());
+        if(check){
+            attrs.addFlashAttribute("successMsg", "Update status successfully!");
+            return "redirect:/admin/transactions/all";
+        } 
+        attrs.addFlashAttribute("errorMsg", "Update status failed !");
+
+         return "redirect:/admin/transactions/all";
+    }
     @GetMapping("/admin/transactions/view")
-    public String viewTransaction(Model mdl, @RequestParam String code){
+    public String viewTransaction(Model mdl, @RequestParam String code, HttpSession session){
+        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+
         String[] selects = {"first_name, last_name, is_admin"};
         var transation = transactionServiceInterface.getTransactionByCode(code);
         var sender = transation.get("sender")!=null ? userServiceInterface.getUserById(selects, Integer.parseInt(transation.get("sender").toString())):null;

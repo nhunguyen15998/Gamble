@@ -219,6 +219,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
     public boolean updateWheel(WheelMapper wheelMapper){
         try {
             Game upGame = new Game();
+            upGame.setName(wheelMapper.getName());
             upGame.setId(wheelMapper.getId());
             upGame.setConfigs(wheelMapper.getConfigs());
             upGame.setStatus(wheelMapper.getStatus());

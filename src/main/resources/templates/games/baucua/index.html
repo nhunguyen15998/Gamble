@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+th:replace="~{layouts/main-layout :: main-fragment(  
+                                          ~{::title},
+                                          ~{:: #staticCSS},
+                                          ~{::header},
+                                          ~{:: #slider},
+                                          ~{:: #main-content},  
+                                          ~{::footer},
+                                          ~{::#staticJS}
+                                         )}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bau cua</title>
+    <link rel="stylesheet" href="/css/baucua.css">
+</head>
+<body >
+    <div class="preloader hide" id="preloader">
+		<div class="loader loader-1">
+			<div class="loader-outter"></div>
+			<div class="loader-inner"></div>
+		</div>
+	</div>
+    <header class="header" th:replace="~{/fragments/header :: header}"></header>
+    <div id="main-content">
+                <div id="root" style="margin-top:150px;">
+                    <div class="App">
+                        <div class="container-fluid">
+                            <div class="text-center container pb-1">
+                                <p style="font-size: 25px; font-weight: bold;">Bau Cuaaaaaaaa</p>
+                                <div><span style="font-size: 30px; font-weight: bold;">Your money:<span class="text-light"></span>
+                                    <div class="row">
+                                        <button id="vayTien1" class="btn btn-danger mr-2 pb-1 mb-1" style="display: none;"> VAY THÊM TIỀN + 10.000 VNĐ</button>
+                                        <button id="vayTien2" class="btn btn-primary mr-2 pb-1 mb-1" style="display: none;"> VAY THÊM TIỀN + 100.000 VNĐ</button>
+                                        <button id="vayTien3" class="btn btn-success mr-2 pb-1 mb-1" style="display: none;"> VAY THÊM TIỀN + 1.000.000 VNĐ</button>
+                                    </div>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row container m-auto">
+                                <div class="col-8">
+                                    <div class="row">
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/bau.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/cua.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/ga.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/nai.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/ca.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 pb-3">
+                                            <div class=""><img src="/images/baucua/tom.png" alt="" srcset="" class="d-block" style="width: 100%;">
+                                                <div class="pb-3 bg-success w-100 text-center m-auto">
+                                                    <button class="btn btn-danger mt-2">+ </button><span class="p-2" style="font-size: 20px;">0$</span>
+                                                    <button class="btn btn-danger mt-2">-</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="text-center">
+                                        <div class="bg-white mt-2" style="width: 450px; height: 450px; border-radius: 300px;">
+                                            <div class="row">
+                                                <div class="col-10 text-center"><img src="/images/baucua/ga.png" alt="" class="pt-5" style="width: 30%;">
+                                                </div>
+                                                <div class="col-6 text-center"><img src="/images/baucua/cua.png" alt="" class="pt-5" style="width: 50%;">
+                                                </div>
+                                                <div class="col-6 text-center"><img src="/images/baucua/ca.png" alt="" class="pt-5" style="width: 50%;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-auto pt-5">
+                                            <button id="xocBat" class="btn btn-success m-auto" style="display: none;">
+                                                <h1>  MỞ BÁT</h1>
+                                            </button>
+                                            <button id="upBat" class="btn btn-primary  m-auto" style="display: block;">
+                                                <h1>ÚP BÁT</h1>
+                                            </button>
+                                            <button class="btn btn-dark text-light">
+                                                <h3>RESET</h3>
+                                            </button>
+                                        </div>
+                                       
+                                        <div id="moBat" class="image" style="width: 350px; height: 350px; border-radius: 300px; background: red; position: absolute; top: 36px; left: 16%; display: none;">
+                                            <h3 class="text-center">DI CHUỘT VÀO ĐỂ XÓC <br>CLICK ĐỂ MỞ BÁT</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="container">
+                                <h2 class="text-center">LUẬT CHƠI</h2>
+                                <p>Mới vào sẽ có 0 điểm, có 3 chế độ vay tiền, chơi hết tiền thì ấn reset để chơi lại từ đầu</p>
+                                <p>Đặt cược vào các quân trên màn hình: BẦU, TÔM, CUA, CÁ, NAI, GÀ sau đó ấn ÚP BÁT, VÊ CHUỘT nhấn xóc đĩa, vê bao lần xóc bấy nhiêu lần, ấn CLICK hiện ra nút mở MỞ BÁT</p>
+                                <p>QUY TẮC TÍNH ĐIỂM </p>
+                                <p>Ra 3 con giống nhau thì ăn (1 vốn + 3 lời) </p>
+                                <p>Ra 2 con giống nhau thì ăn (1 vốn + 2 lời) </p>
+                                <p>Ra 1 con giống nhau thì ăn (1 vốn + 1 lời) </p>
+                                <p>Không ra con nào thì mất diểm cược</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div id="baucuaResult" class="col-10 container">
+                    <h4 class="text-center mb-3">Game Records</h4>
+                    <table class="table text-white" style="font-size: 12px; max-height: 300px ;">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Result</th>
+                            <th scope="col">Bet</th>
+                            <th scope="col">Received</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Time</th>
+                          </tr>
+                        </thead>
+                        <tbody id="baucua-game-history">
+                
+                          <!-- <tr th:if="${histories != null}" th:each="history, row : ${histories}">
+                            <th scope="row" th:text="${(row.index)+1}"></th>
+                            <td th:text="${history.results}"></td>
+                            <td th:text="${history.bet_amount}"></td>
+                            <td th:switch="${history.status}">
+                              <span th:case="'0'" th:text="Lose"></span>
+                              <span th:case="'1'" th:text="Win"></span>
+                              <span th:case="*" th:text="Drawn"></span>
+                            </td>
+                            <td th:text="${history.created_at}"></td>
+                          </tr> -->
+                      </tbody>
+                    </table>
+                </div>
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
+                <script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                crossorigin="anonymous"
+              ></script>
+              <script src="/js/baucua.js" ></script>
+
+            <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+            
+        <!-- Bonuse Section End -->
+        <section class="contact_section" th:replace="~{/fragments/contact_area :: section}"></section>
+        <div class="subscribe-area subscribe-area2" th:replace="~{/fragments/subscribe_area :: section}"></div>
+    </div>
+    
+    <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
+   
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+<script>
+ jQuery.fn.shake = function (interval, distance, times) {
+                interval = typeof interval == "undefined" ? 120 : interval;
+                distance = typeof distance == "undefined" ? 10 : distance;
+                times = typeof times == "undefined" ? 4 : times;
+                var jTarget = $(this);
+                for (var iter = 0; iter < (times + 1); iter++) {
+                    jTarget.animate({ left: ((iter % 2 == 0 ? distance : distance * -1))+22 }, interval);
+                }
+                return jTarget.animate({ left: 25 }, interval);
+            }
+    $("#moBat").click(function(){
+        $(this).shake();
+
+    })
+</script>

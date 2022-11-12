@@ -52,9 +52,9 @@
                                                 <label>No:</label>      <span th:text="${transaction.code}"></span><br/>
                                                 <label>Type:</label>    <span th:text="${type}"></span><br/>
                                                 <label>Method:</label>  <span th:text="${method}"></span> <br/>
-                                                <label th:text="${(transaction.type==0||transation.type==1) ? 'User :' : 'Sender :'}"></label>  <a style="text-decoration: underline;" th:href="@{/admin/users/update?id={id}(id=${transaction.sender},type=${sender.is_admin?1:0})}" th:text="${sender != null ? (sender.first_name+' '+sender.last_name) : ''}"></a><br/>
+                                                <label th:text="${(transaction.type==0 OR transaction.type==1) ? 'User :' : 'Sender :'}"></label>  <a style="text-decoration: underline;" th:href="@{/admin/users/update?id={id}(id=${transaction.sender},type=${sender.is_admin?1:0})}" th:text="${sender != null ? (sender.first_name+' '+sender.last_name) : ''}"></a><br/>
                                                 <label th:text="${(transaction.type==2) ? 'Receiver :' : 'Error :'}" th:if="${receiver}"></label>  <a style="text-decoration: underline;" th:if="${receiver}" th:href="@{/admin/users/update?id={id}(id=${transaction.receiver},type=${receiver.is_admin?1:0})}" th:text="${receiver != null ? (receiver.first_name+' '+receiver.last_name) : ''}"></a><br th:if="${receiver}"/><br/>
-                                                <label>Amount: </label>  <span th:text="${((transaction.status==1)?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2)?' VND':'')}"></span> <br/>
+                                                <label>Amount: </label>  <span th:text="${((transaction.status==1 OR transaction.type==1 )?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2) AND transaction.type!=1?' VND':'')}"></span> <br/>
                                                 <label  th:if="${receiver}">Received amount: </label>  <span  th:if="${receiver}" th:text="${((transaction.status==1)?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2)?' VND':'')}"></span> <br  th:if="${receiver}"/>
                                                 <label>Title:</label>  <span th:text="${transaction.title}"></span> <br/>
                                                 <label>Note:</label>  <span th:text="${transaction.note}"></span> <br/>
@@ -62,14 +62,25 @@
                                                 <label>From currency:</label>  <span th:text="${transaction.from_currency}"></span> <br/> -->
                                                 <label>Address:</label>  <span th:text="${transaction.bcaddress}"></span> <br/>
                                                 <label>Transaction time:</label>  <span th:text="${#temporals.format(transaction.created_at,'dd-MM-yyyy HH:mm:ss')}"></span> <br/>
-                                                <label>Status:</label>  <span th:text="${transaction.status==1?'Success':(transaction.status==0?'Pending':'Fail')}" class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${transaction.status==1?'text-success':''}" style="font-size:13px"></span> <br/>
-                                            
+                                                <label th:if="${transaction.type==0}">Status:  <span th:text="${transaction.status==1?'Success':(transaction.status==0?'Pending':'Fail')}" class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${transaction.status==1?'text-success':''}" style="font-size:13px"></span></label>
+                                                <div th:if="${transaction.type==1}" class="col-xl-6 p-0">
+                                                  <label for="validationCustom04">Status</label>
+                                                  <form th:action="@{/admin/transactions/update?id={id}(id=${transaction.id})}" th:object="${transaction}" method="post">
+                                                  <select class="form-control select2" name="status" >
+                                                    <option th:each="stt : ${statusList}" 
+                                                    th:value="${stt.key}" 
+                                                    th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${transaction.status}==${stt.key}"
+                                                    th:text="${stt.value}" style="background-color:#8677d3;" ></option> 
+                                                  </select>
+                                                  <button class="btn btn-primary" style="margin:4vh 0 auto 0;" type="submit">Update status</button>
+                                                  </form>
+                                              </div>
                                             </div>
-                                            <div class="col-xl-6 mb-3 pl-3" style="display: table-row;padding-left:1.5vw"  th:if="transaction.type==2">
+                                            <div class="col-xl-6 mb-3 pl-3" style="display: table-row;padding-left:1.5vw"  th:if="${transaction.type==1}">
                                                 <label>Account name:</label>      <span th:text="${transaction.account_name}"></span><br/>
                                                 <label>Account number:</label>    <span th:text="${transaction.account_number}"></span><br/>
                                                 <label>Bank:</label>  <span th:text="${transaction.bank}"></span> <br/>
-                                                <label>Amount:</label>  <span th:text="${transaction.wAmount}"></span> <br/>
+                                                <label>Amount:</label>  <span th:text="${#numbers.formatDecimal(transaction.wAmount, 0, 'COMMA', 6, 'POINT')+' VND'}"></span> <br/>
                                                 <label>Notes:</label>  <span th:text="${transaction.wNotes}"></span> <br/>
                                                
 
@@ -455,6 +466,4 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
-  
-   
 </script>

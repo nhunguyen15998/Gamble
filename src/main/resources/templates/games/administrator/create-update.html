@@ -86,6 +86,7 @@
                                                 </style>
                                                 <div class="col-xl-12 mb-3">
                                                     <label for="configs" >Configs</label>
+                                                    <th:block th:if="${gameMapper.code=='LUCKYWHEEL'}">
                                                     <div class="col-xl-12 round form-control"  style="float:left"id="round1">
                                                     <label for="configs" >Round 1</label> <br/>
                                                     <table class="table">
@@ -117,6 +118,7 @@
                                                       </tr>
                                                       </table>
                                                     </div>
+                                                     </th:block>
                                                     <small th:class="text-danger" id="configs_err" style="font-size:14px;padding:0 5px;border-radius: 5px"></small>
                                                    
                                                 </div>
@@ -505,11 +507,12 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
+  var code = '[[${gameMapper.code}]]'
    $(window).on('load', function(){
-    onLoad();
+    if(code == 'LUCKYWHEEL')  onLoadWheel();
    })
 
-   async function onLoad(){
+   async function onLoadWheel(){
     let response = await $.get('/getSliceArrays', (response) => {
         return response
     }).fail((data) => {
