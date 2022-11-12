@@ -182,7 +182,7 @@ public class UserManaController {
                 String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                 userMapper.setThumbnail("/images/users/"+fileName);
                 FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }else  userMapper.setThumbnail(null);
+            }
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
                 atts.addFlashAttribute("successMsg", "Successfully update user");

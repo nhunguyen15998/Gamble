@@ -95,6 +95,7 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
             upBlog.setStatus(blogMapper.getStatus());
             upBlog.setUrl_slug(blogMapper.getUrl_slug());
             upBlog.setThumbnail(blogMapper.getThumbnail());
+            upBlog.setDescription(blogMapper.getDescription());
             var updated = this.update(upBlog);
 
             if(updated){

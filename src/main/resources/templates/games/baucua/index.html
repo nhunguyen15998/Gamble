@@ -14,7 +14,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bau cua</title>
-    <link rel="stylesheet" href="/css/main.99a38369.css">
+    <link rel="stylesheet" href="/css/baucua.css">
 </head>
 <body >
     <div class="preloader hide" id="preloader">
@@ -135,13 +135,50 @@ th:replace="~{layouts/main-layout :: main-fragment(
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+                <div id="baucuaResult" class="col-10 container">
+                    <h4 class="text-center mb-3">Game Records</h4>
+                    <table class="table text-white" style="font-size: 12px; max-height: 300px ;">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Result</th>
+                            <th scope="col">Bet</th>
+                            <th scope="col">Received</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Time</th>
+                          </tr>
+                        </thead>
+                        <tbody id="baucua-game-history">
+                
+                          <!-- <tr th:if="${histories != null}" th:each="history, row : ${histories}">
+                            <th scope="row" th:text="${(row.index)+1}"></th>
+                            <td th:text="${history.results}"></td>
+                            <td th:text="${history.bet_amount}"></td>
+                            <td th:switch="${history.status}">
+                              <span th:case="'0'" th:text="Lose"></span>
+                              <span th:case="'1'" th:text="Win"></span>
+                              <span th:case="*" th:text="Drawn"></span>
+                            </td>
+                            <td th:text="${history.created_at}"></td>
+                          </tr> -->
+                      </tbody>
+                    </table>
                 </div>
                 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-                <script src="/js/main.a94026f6.js" ></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-           
+                <script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/108/three.min.js'></script>
+                <script
+                src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+                crossorigin="anonymous"
+              ></script>
+              <script src="/js/baucua.js" ></script>
+
             <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
             
         <!-- Bonuse Section End -->
@@ -150,12 +187,24 @@ th:replace="~{layouts/main-layout :: main-fragment(
     </div>
     
     <footer class="footer" id="footer" th:replace="~{/fragments/footer :: footer}"></footer>
-    <style>
-        html{
-            overflow-y: hidden;
-        }
-    </style>
+   
 </body>
 </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 <script>
+ jQuery.fn.shake = function (interval, distance, times) {
+                interval = typeof interval == "undefined" ? 120 : interval;
+                distance = typeof distance == "undefined" ? 10 : distance;
+                times = typeof times == "undefined" ? 4 : times;
+                var jTarget = $(this);
+                for (var iter = 0; iter < (times + 1); iter++) {
+                    jTarget.animate({ left: ((iter % 2 == 0 ? distance : distance * -1))+22 }, interval);
+                }
+                return jTarget.animate({ left: 25 }, interval);
+            }
+    $("#moBat").click(function(){
+        $(this).shake();
+
+    })
 </script>

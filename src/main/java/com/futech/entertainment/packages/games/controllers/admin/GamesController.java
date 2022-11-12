@@ -75,7 +75,7 @@ public class GamesController {
         temp.setId(Integer.parseInt(q.get("id").toString()));
         temp.setCode(code);
         temp.setName(q.get("name").toString());
-        temp.setConfigs(q.get("configs").toString());
+        temp.setConfigs(q.get("configs")!=null?q.get("configs").toString():"");
         temp.setStatus(Integer.parseInt(q.get("status").toString()));
         return temp;
     }

@@ -1,5 +1,14 @@
 /*! For license information please see main.a94026f6.js.LICENSE.txt */
 !function() {
+    var pointBet=1;
+    var totalPointBet=0;
+    var totalPoints=0;
+    var received=0;
+    var sequence=0;
+    var betVal=1;
+    var results = "";
+    var bet = "";
+    var lsReceived = [];
     var e = {
         861: function(e, n, t) {
             "use strict";
@@ -13975,7 +13984,9 @@
                     className: "d-block",
                     style: {
                         width: "100%",
-                        marginBottom:"1vh"
+                        marginBottom:"1vh",
+                        border:"3px solid rgba(255,255,255,0.2)",
+                        borderRadius:"10px"
                     }
                 }), (0,
                 b.jsxs)("div", {
@@ -13983,7 +13994,8 @@
                     style:{
                         backgroundColor:"rgba(255,255,255,0.1)",
                         border:"1px solid #fff",
-                        borderRadius:"10px"
+                        borderRadius:"10px",
+                        fontFamily:'"Josefin Sans", sans-serif'
                     },
                     children: [(0,
                     b.jsx)("button", {
@@ -14072,7 +14084,7 @@
                     alt: "",
                     className: "pt-5",
                     style: {
-                        width: "45%",
+                        width: "130px",
                     }
                 })
             })
@@ -14090,18 +14102,18 @@
                 b.jsx)("div", {
                     className: "mt-2",
                     style: {
-                        width: "450px",
-                        height: "450px",
+                        width: "480px",
+                        height: "480px",
                         borderRadius: "300px",
                         backgroundColor:"rgba(255,255,255,0.3)",
-                        border:"2px solid rgba(255,255,255,0.1)"
+                        border:"13px solid rgba(255,255,255,0.1)"
                     },
                     children: (0,
                     b.jsxs)("div", {
                         className: "row",
                         children: [(0,
                         b.jsx)("div", {
-                            className: "col-9 text-center",
+                            className: "col-9 text-center ml-4",
                             children: (0,
                             b.jsx)(S, {
                                 XucXacItem: r[0]
@@ -14124,7 +14136,7 @@
                     })
                 }), (0,
                 b.jsxs)("div", {
-                    className: "row m-auto pt-5",
+                    className: "row m-auto pt-3",
                     style: {
                         width:"120%"
                     },
@@ -14134,7 +14146,7 @@
                         className: "btn btn-warning mybtn1 m-auto",
                         style: {
                             display: "none",
-                            padding: "3vh 3vw 2vh 3vw"
+                            padding: "2.5vh 2vw 1vh 2vw"
                         },
                         onClick: function() {
                             document.getElementById("moBat").style.display = "none",
@@ -14154,7 +14166,8 @@
                         className: "btn mybtn1 m-auto",
                         style: {
                             display: "block",
-                            padding: "3vh 3vw 2vh 3vw"
+                            padding: "2.5vh 2vw 1vh 2vw"
+
                         },
                         onClick: function() {
                             document.getElementById("moBat").style.display = "block",
@@ -14171,7 +14184,8 @@
                             window.location.reload()
                         },
                         style: {
-                            padding: "3vh 2vw 2vh 2vw"
+                            padding: "2.5vh 2vw 1vh 2vw"
+
                         },
                         children: (0,
                         b.jsx)("h3", {
@@ -14182,15 +14196,16 @@
                 b.jsx)("div", {
                     id: "moBat",
                     style: (n = {
-                        width: "430px",
-                        height: "430px",
+                        width: "465px",
+                        height: "465px",
                         borderRadius: "300px",
                         background: "#80349e",
                         position: "absolute",
-                        top: "10px",
-                        left: "7%"
+                        top: "5px",
+                        left: "5.8%",
+                        cursor:"pointer"
                     },
-                    k(n, "top", "16px"),
+                    k(n, "top", "15px"),
                     k(n, "display", "none"),
                     n),
                     className: "image",
@@ -14203,7 +14218,7 @@
                         className: "text-center",
                         style:(
                             n = {
-                            marginTop:"26vh"
+                            marginTop:"28vh"
                         }),
                         children: ["click to shake", (0,
                         b.jsx)("br", {}), ""]
@@ -14225,72 +14240,99 @@
                     children: (0,
                     b.jsxs)("span", {
                         style: {
-                            fontSize: "25px",
                             fontWeight: "bold"
-                           
                         },
-                        children: ["Your money:", (0,
+                        children: ["Your money:",
+                        (0,
                         b.jsxs)("span", {
                             className: "text-light",
                             children: [" $ ",n.toLocaleString()]
+                            
                         }), (0,
                         b.jsxs)("div", {
                             className: "row",
                             children: [(0,
+                                b.jsx)("span", {
+                                    style: {
+                                        display: "block",
+                                        fontSize:"18px"
+                                    },
+                                    className: " pr-0 pt-1 ml-4 pb-2 mb-2",
+                                    
+                                    children: "Choose bet denominations:"
+                                }),(0,
                             b.jsx)("button", {
-                                id: "vayTien1",
+                                id: "vayTien4",
                                 style: {
                                     display: "block"
                                 },
-                                className: "btn btn-danger mr-2 pb-1 mb-1",
+                                className: "btn btn-outline-warning mr-4 ml-2 pb-1 mb-2",
                                 onClick: function() {
-                                    document.getElementById("vayTien3").style.display = "none",
-                                    document.getElementById("vayTien2").style.display = "none",
-                                    document.getElementById("vayTien1").style.display = "none",
+                                  
                                     t({
                                         type: "TANG_TIEN",
-                                        diemCuoc: n
+                                        diemCuoc: 1
                                     })
+                                    betVal=1;
                                 },
-                                children: " VAY TH\xcaM TI\u1ec0N + 10.000 VN\u0110"
-                            }), (0,
-                            b.jsx)("button", {
-                                id: "vayTien2",
-                                style: {
-                                    display: "block"
-                                },
-                                className: "btn btn-primary mr-2 pb-1 mb-1",
-                                onClick: function() {
-                                    document.getElementById("vayTien3").style.display = "none",
-                                    document.getElementById("vayTien2").style.display = "none",
-                                    document.getElementById("vayTien1").style.display = "none",
-                                    t({
-                                        type: "TANG_TIEN1",
-                                        diemCuoc: n
-                                    })
-                                },
-                                children: " VAY TH\xcaM TI\u1ec0N + 100.000 VN\u0110"
-                            }), (0,
-                            b.jsx)("button", {
-                                id: "vayTien3",
-                                style: {
-                                    display: "block"
-                                },
-                                className: "btn btn-success mr-2 pb-1 mb-1",
-                                onClick: function() {
-                                    document.getElementById("vayTien3").style.display = "none",
-                                    document.getElementById("vayTien2").style.display = "none",
-                                    document.getElementById("vayTien1").style.display = "none",
-                                    t({
-                                        type: "TANG_TIEN2",
-                                        diemCuoc: n
-                                    })
-                                },
-                                children: " VAY TH\xcaM TI\u1ec0N + 1.000.000 VN\u0110"
-                            })]
+                                children: " $1 "
+                            }),(0,
+                                b.jsxs)("div", {
+                                    className: "row",
+                                    children: [(0,
+                                    b.jsx)("button", {
+                                        id: "vayTien1",
+                                        style: {
+                                            display: "block"
+                                        },
+                                        className: "btn btn-outline-success mr-2 pb-1 mb-2",
+                                        onClick: function() {
+                                          
+                                            t({
+                                                type: "TANG_TIEN3",
+                                                diemCuoc: 2
+                                            })
+                                            betVal=2;
+                                        },
+                                        children: " $2 "
+                                    }), (0,
+                                        b.jsx)("button", {
+                                            id: "vayTien2",
+                                            style: {
+                                                display: "block"
+                                            },
+                                            className: "btn btn-outline-primary mr-2 pb-1 mb-2",
+                                            onClick: function() {
+                                            
+                                                t({
+                                                    type: "TANG_TIEN1",
+                                                    diemCuoc: 5
+                                                })
+                                                betVal=5;
+                                            },
+                                            children: " $5 "
+                                        }), (0,
+                                        b.jsx)("button", {
+                                            id: "vayTien3",
+                                            style: {
+                                                display: "block"
+                                            },
+                                            className: "btn btn-outline-danger mr-2 pb-1 mb-2",
+                                            onClick: function() {
+                                            
+                                                t({
+                                                    type: "TANG_TIEN2",
+                                                    diemCuoc: 10
+                                                })
+                                                betVal=10;
+                                            },
+                                            children: " $10 "
+                                        })]
                         })]
+                    })], style:{fontFamily:'"Josefin Sans", sans-serif', fontSize:"27px"},
                     })
                 })]
+                
             })
         }
         function C(e, n) {
@@ -14414,12 +14456,14 @@
                     className: "row container m-auto",
                     children: [(0,
                     b.jsx)("div", {
-                        className: "col-8",
+                        className:"mr-5",
+                        style:{width:"55%"},
                         children: (0,
                         b.jsx)(w, {})
                     }), (0,
                     b.jsx)("div", {
                         className: "col-4",
+                        style:{top:"-5vh"},
                         children: (0,
                         b.jsx)(x, {})
                     })]
@@ -14605,7 +14649,7 @@
                 return (r = r || o.length !== Object.keys(e).length) ? u : e
             }
         }({
-            BauCuaReducer: function() {
+            BauCuaReducer:  function() {
                 var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : Q
                   , n = arguments.length > 1 ? arguments[1] : void 0;
                 switch (n.type) {
@@ -14616,22 +14660,18 @@
                         return e.ma === n.quanCuoc.ma
                     }
                     ));
-                    return -1 != r && (!0 === n.tangGiam && e.tongDiem > 0 && (e.tongDiem -= 5e4,
-                    t[r].diemCuoc += 5e4),
-                    !1 === n.tangGiam && n.quanCuoc.diemCuoc > 0 && (e.tongDiem += 5e4,
-                    t[r].diemCuoc -= 5e4)),
+                    return -1 != r && (!0 === n.tangGiam && e.tongDiem > 0 && (e.tongDiem -= pointBet,
+                    t[r].diemCuoc += pointBet, totalPointBet+= pointBet), 
+                    !1 === n.tangGiam &&  t[r].diemCuoc < betVal && (e.tongDiem += t[r].diemCuoc, totalPointBet-= t[r].diemCuoc ,t[r].diemCuoc = 0),
+                    !1 === n.tangGiam && t[r].diemCuoc > betVal &&  n.quanCuoc.diemCuoc > 0 && (e.tongDiem += pointBet,
+                    t[r].diemCuoc -= pointBet, totalPointBet-= pointBet)),
                     console.log("danhSachDatCuocUpdate", t),
                     e.danhSachCuoc = t,
                     W({}, e);
-                case "TANG_TIEN":
-                    return 0 === n.diemCuoc && (e.tongDiem += 1e4),
-                    W({}, e);
-                case "TANG_TIEN1":
-                    return 0 === n.diemCuoc && (e.tongDiem += 1e5),
-                    W({}, e);
-                case "TANG_TIEN2":
-                    return 0 === n.diemCuoc && (e.tongDiem += 1e6),
-                    W({}, e);
+                    case "TANG_TIEN": case "TANG_TIEN1": case "TANG_TIEN2": case "TANG_TIEN3":
+                        pointBet=n.diemCuoc;
+                        return 0 === n.diemCuoc,
+                        W({}, e);
                 case "XOC_DIA":
                     for (var u = [], a = 0; a < 3; a++) {
                         var o = Math.floor(6 * Math.random())
@@ -14640,21 +14680,44 @@
                     }
                     return e.mangXucXac = u,
                     u.forEach((function(n, t) {
-                        console.log("xxNH", t);
+                        console.log("xxNH", t, n);
+                        //ERROR here
                         var r = e.danhSachCuoc.findIndex((function(e) {
                             return e.ma === n.ma
                         }
                         ));
+                        var item=lsReceived.find(x => x.code === n.ma);
+                        if(item!=null) item.qty+=1;
+                        else{
+                        lsReceived.push({ 
+                            code: n.ma,
+                            qty:1
+                        });
+                      }
+                       
                         -1 !== r && (e.tongDiem += e.danhSachCuoc[r].diemCuoc)
                     }
-                    )),
+                    )),console.log(JSON.stringify(lsReceived)),
+                    e.danhSachCuoc.forEach((function(n,t){
+                        //get bet
+                        if(n.diemCuoc > 0) { bet+="$"+n.diemCuoc+""+n.ma+" "}
+                    })),
+                    console.log("bet:",bet),
                     e.danhSachCuoc.forEach((function(n, t) {
-                        -1 !== u.findIndex((function(e, t) {
-                            return e.ma === n.ma
-                        }
-                        )) && (e.tongDiem += n.diemCuoc)
+                        if( n.diemCuoc>0){
+                            lsReceived.forEach((function(k,j){
+                                    //get result
+                                    if(!results.includes(k.code))
+                                        results+=k.qty+k.code+ (j==lsReceived.length-1?"":", ");
+
+                                    
+                                    if(k.code===n.ma) {received+=n.diemCuoc + n.diemCuoc*k.qty; e.tongDiem+=received; totalPoints=e.tongDiem;console.log(k.code+"==="+n.ma+"received:"+received+" == total:"+e.tongDiem);}
+                                    else{ received+=0;  e.tongDiem+=0; totalPoints=e.tongDiem;console.log("received:"+received+" == total:"+e.tongDiem);}
+                                
+                            }));
+                       }
                     }
-                    )),
+                    )),SaveResults(totalPointBet, totalPoints,received,bet,results),lsReceived=[],totalPointBet=0, totalPoints=0,received=0,results="",bet="",
                     e.danhSachCuoc = e.danhSachCuoc.map((function(e, n) {
                         return W(W({}, e), {}, {
                             diemCuoc: 0
@@ -14663,6 +14726,7 @@
                     )),
                     W({}, e);
                 default:
+                    e.tongDiem=getBalance();
                     return W({}, e)
                 }
             }
@@ -14782,4 +14846,44 @@
         }), document.getElementById("root")),
         A()
     }()
+     function getBalance(){
+       var q = $.ajax({
+                type: "GET",
+                url: "/getBalance/",
+                async: false,
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    return data;
+    
+                }
+            }).responseText;
+
+            return parseFloat(q);      
+     }
+    
+     function SaveResults(totalPointBet,totalPoint, received,bet,result){
+        if(totalPointBet>0){
+        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(received>0?"Win":"Lose")+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
+        var fdt= new FormData();
+        fdt.append("totalPoint",totalPoint);
+        fdt.append("totalPointBet",totalPointBet);
+        fdt.append("received",received);
+        fdt.append("bet",bet);
+        fdt.append("result",result);
+        $.ajax({
+            type: "POST",
+            url: "/saveResults",
+            data: fdt,
+            async: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("data: "+data)
+
+            }
+        })
+      }
+     }
+     
 }();

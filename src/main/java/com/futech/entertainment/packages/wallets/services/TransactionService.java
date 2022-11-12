@@ -50,6 +50,18 @@ public class TransactionService extends BaseService<Transaction> implements Tran
             return null;
         }
     }
+    public boolean updateStatus(int id, int status){
+        try {
+            Transaction trans = new Transaction();
+            trans.setId(id);
+            trans.setStatus(status);
+            this.update(trans);
+            return true;
+        } catch (Exception e) {
+            // TODO: handle exception
+            return false;
+        }
+    }
 
     public List<Map<String, Object>> getTransactions(String userId){
         try {
