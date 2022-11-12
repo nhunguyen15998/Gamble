@@ -26,11 +26,16 @@ import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authen
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
+import com.futech.entertainment.packages.settings.services.interfaces.UserConfigServiceInterface;
+import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.wallets.modelMappers.DepositMapper;
+import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBankMapper;
 import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProcessServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Validated
 @RestController
@@ -47,6 +52,8 @@ public class WalletsController {
     private PaymentProcessServiceInterface paymentProcessServiceInterface;
     @Autowired
     private VNPayServiceInterface vnpayServiceInterface;
+    @Autowired
+    private UserConfigServiceInterface userConfigServiceInterface;
 
     //deposit
     @PostMapping("/depositProcess")
@@ -86,7 +93,66 @@ public class WalletsController {
     }
 
     //withdraw
+    @PostMapping("/withdrawBankProccess")
+    public ResponseEntity<Map<String, Object>> withdrawBankProccess(
+            @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+            @Valid @RequestBody WithdrawBankMapper withdrawBankMapper) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            var verifiedToken = headers.get("auth").toString();
+            var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
+            //check setting
+            var userConfigString = userConfigServiceInterface.getClientConfigs(currentUserId).get("config_string").toString();
+            var withdrawPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "withdraw_password");
 
+            var sender = Integer.parseInt(currentUserId);
+            withdrawBankMapper.setSender(sender);
+            withdrawBankMapper.setType(PaymentHelpers.WITHDRAW);
+            withdrawBankMapper.setMethod(PaymentHelpers.BANK);
+            item = this.paymentProcessServiceInterface.withdrawBankProccess(withdrawBankMapper, withdrawPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // @PostMapping("/withdrawBankProccessWithPassword")
+    // public ResponseEntity<Map<String, Object>> withdrawBankProccessWithPassword(@RequestParam String data, HttpSession session) {
+    //     Map<String, Object> item = new HashMap<String,Object>();
+    //     try {
+    //         JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+    //         var password = jo.get("require_password").getAsString();
+    //         var withdraw = jo.get("withdrawBank").getAsJsonObject();
+
+    //         //verify pass
+    //         var phone = session.getAttribute("phone").toString();
+    //         item = this.userServiceInterface.verifyPassword(password, phone);
+    //         if(Integer.parseInt(item.get("code").toString()) != 200){
+    //             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+    //         }
+    //         item.clear();
+
+    //         var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+    //         WithdrawBankMapper withdrawBankMapper = new WithdrawBankMapper();
+    //         withdrawBankMapper.setAccount_name(withdraw.get("account_name").getAsString());
+    //         withdrawBankMapper.setAccount_number(withdraw.get("account_number").getAsString());
+    //         withdrawBankMapper.setBank(withdraw.get("bank").getAsString());
+    //         withdrawBankMapper.setBank_amount(withdraw.get("bank_amount").getAsString());
+    //         withdrawBankMapper.setNotes(withdraw.get("notes").getAsString());
+    //         withdrawBankMapper.setSender(sender);
+    //         withdrawBankMapper.setType(PaymentHelpers.WITHDRAW);
+    //         withdrawBankMapper.setMethod(PaymentHelpers.BANK);
+    //         item = this.paymentProcessServiceInterface.withdrawBankProccess(withdrawBankMapper, ConfigHelpers.IS_OFF);
+    //         return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+    //     } catch (Exception e) {
+    //         Map<String, Object> err = new HashMap<String,Object>();
+    //         err.put("message", e.getMessage());
+    //         return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+    //     }
+    // }
+    
     //transfer
 
 

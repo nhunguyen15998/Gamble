@@ -8,7 +8,7 @@ public class ConfigHelpers {
 
     public static final int TYPE_USER_GENERAL_SETTINGS = 1;
     public static final String USER_DEFAULT_GENERAL_CONFIGS = 
-        "{\"change_password\":0,\"withdraw_password\":0,\"transfer_password\":0}";
+        "{\"change_password\":0,\"withdraw_password\":0,\"transfer_password\":0,\"setting_password\":0}";
         //insert into user_configs(user_id, type, config_string) values(4, 1, '{"change_password":0,"withdraw_password":0,"transfer_password":0}');
     public static final int TYPE_ADMIN_SETTINGS = 2;   
 
