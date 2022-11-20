@@ -14264,11 +14264,12 @@
                             b.jsx)("button", {
                                 id: "vayTien4",
                                 style: {
-                                    display: "block"
+                                    display: "block",
+                                    background: "rgba(255, 0, 0,0.4)"
                                 },
-                                className: "btn btn-outline-warning mr-4 ml-2 pb-1 mb-2",
+                                className: "btn btn-betVal btn-outline-warning mr-4 ml-2 pb-1 mb-2",
                                 onClick: function() {
-                                  
+                                    activeBtn("vayTien4");
                                     t({
                                         type: "TANG_TIEN",
                                         diemCuoc: 1
@@ -14285,9 +14286,9 @@
                                         style: {
                                             display: "block"
                                         },
-                                        className: "btn btn-outline-success mr-2 pb-1 mb-2",
+                                        className: "btn btn-betVal btn-outline-success mr-2 pb-1 mb-2",
                                         onClick: function() {
-                                          
+                                            activeBtn("vayTien1");
                                             t({
                                                 type: "TANG_TIEN3",
                                                 diemCuoc: 2
@@ -14301,9 +14302,9 @@
                                             style: {
                                                 display: "block"
                                             },
-                                            className: "btn btn-outline-primary mr-2 pb-1 mb-2",
+                                            className: "btn btn-5 btn-betVal btn-outline-primary mr-2 pb-1 mb-2",
                                             onClick: function() {
-                                            
+                                                activeBtn("vayTien2");
                                                 t({
                                                     type: "TANG_TIEN1",
                                                     diemCuoc: 5
@@ -14317,9 +14318,9 @@
                                             style: {
                                                 display: "block"
                                             },
-                                            className: "btn btn-outline-danger mr-2 pb-1 mb-2",
+                                            className: "btn btn-betVal btn-outline-danger mr-2 pb-1 mb-2",
                                             onClick: function() {
-                                            
+                                                activeBtn("vayTien3");
                                                 t({
                                                     type: "TANG_TIEN2",
                                                     diemCuoc: 10
@@ -14660,11 +14661,11 @@
                         return e.ma === n.quanCuoc.ma
                     }
                     ));
-                    return -1 != r && (!0 === n.tangGiam && e.tongDiem > 0 && (e.tongDiem -= pointBet,
-                    t[r].diemCuoc += pointBet, totalPointBet+= pointBet), 
-                    !1 === n.tangGiam &&  t[r].diemCuoc < betVal && (e.tongDiem += t[r].diemCuoc, totalPointBet-= t[r].diemCuoc ,t[r].diemCuoc = 0),
-                    !1 === n.tangGiam && t[r].diemCuoc > betVal &&  n.quanCuoc.diemCuoc > 0 && (e.tongDiem += pointBet,
-                    t[r].diemCuoc -= pointBet, totalPointBet-= pointBet)),
+                    return -1 != r && 
+                    (!0 === n.tangGiam && e.tongDiem > 0 && (e.tongDiem -= pointBet,t[r].diemCuoc += pointBet, totalPointBet+= pointBet), 
+                    !1 === n.tangGiam &&  t[r].diemCuoc <= betVal && (e.tongDiem += t[r].diemCuoc, totalPointBet-= t[r].diemCuoc ,t[r].diemCuoc = 0),
+                    !1 === n.tangGiam && t[r].diemCuoc > betVal &&  n.quanCuoc.diemCuoc > 0 && (e.tongDiem += pointBet,t[r].diemCuoc -= pointBet, totalPointBet-= pointBet)
+                    ),
                     console.log("danhSachDatCuocUpdate", t),
                     e.danhSachCuoc = t,
                     W({}, e);
@@ -14846,6 +14847,16 @@
         }), document.getElementById("root")),
         A()
     }()
+    function  activeBtn(ele){
+       
+       
+        ls = document.getElementsByClassName("btn-betVal");
+        for(var i =0; i<=ls.length;i++){
+            $(ls[i]).css("background","")
+
+        }
+        $("#"+ele).css("background","rgba(255, 0, 0,0.4)");
+    }
      function getBalance(){
        var q = $.ajax({
                 type: "GET",
@@ -14864,7 +14875,7 @@
     
      function SaveResults(totalPointBet,totalPoint, received,bet,result){
         if(totalPointBet>0){
-        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(received>0?"Win":"Lose")+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
+        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(totalPointBet<=received?"Win":"Lose")+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
         var fdt= new FormData();
         fdt.append("totalPoint",totalPoint);
         fdt.append("totalPointBet",totalPointBet);

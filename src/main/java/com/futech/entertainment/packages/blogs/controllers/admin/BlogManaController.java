@@ -62,9 +62,8 @@ public class BlogManaController {
     }
 
     @GetMapping("/admin/blogs/all")
-    public String ViewBlogs(Model mdl, HttpSession session){
+    public String ViewBlogs(Model mdl, HttpSession session, RedirectAttributes attr){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
-
         mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "blogs/administrator/all-blogs";
@@ -140,8 +139,8 @@ public class BlogManaController {
            
             if(bindingResult.hasErrors()){
                 if(!imgViewer.isBlank()) blogMapper.setThumbnail(imgViewer);
-                model.addAttribute("oldData", blogMapper);
-                redirAttrs.addAttribute("formType", 0);
+                model.addAttribute("blogMapper", blogMapper);
+                redirAttrs.addAttribute("formType", 1);
                 model.addAttribute("blogCateList", getBlogCateList(blogMapper.getId()));
 
                 return "blogs/administrator/create-update";
@@ -163,6 +162,20 @@ public class BlogManaController {
             redirAttrs.addFlashAttribute("error", ex.getMessage());
         }
         return "redirect:/admin/blogs/all";
+    }
+    @PostMapping("/admin/blogs/delete")
+    public @ResponseBody int Delete(@RequestParam int id,HttpSession session){
+        try {
+            BlogMapper blog = getBlogMapperByID(id);
+            if(blog!=null) {
+                if(getBlogMapperByID(blog.getId()).getThumbnail()!=null) FileUploadUtil.deleteFile(getBlogMapperByID(blog.getId()).getThumbnail());
+                blogServiceInterface.delete(id);
+            }
+           return 1;
+
+        } catch (Exception e) {
+          return 0;
+        }
     }
     public BlogMapper getBlogMapperByID(int id){
         String[] selects = {"blogs.id,title,blogs.url_slug, content,description,blogs.thumbnail, author_id,blog_cate_id, DATE_FORMAT(blogs.created_at,'%d-%m-%Y %H:%i') as created_at, blogs.status,"

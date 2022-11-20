@@ -572,7 +572,38 @@
       $("#msg").css("display", "block");
       $("#msg").delay(4000).fadeOut(300);
   }
+  if(localStorage.getItem('sts-bc').length>0){
+      var boo = localStorage.getItem('sts-bc');
+      $("#msg").html(boo==1?'Deleted successfully!':'Deleted failed. There are blog(s) that use this blog cate.');
+      $("#msg").addClass(boo==1?'alert-success':(boo==0?'alert-danger':''));
+      $("#msg").css("display", "block");
+     localStorage.removeItem('sts-bc')
+    }
+    
+    $("#msg").delay(6000).fadeOut(300);
   })
+  $('body').delegate('.btn-delete','click', function () {
+       if(window.confirm('Are you sure to make this change?')){
+        var formDT = new FormData()
+        formDT.append("id",$(this).attr("id").replace("obj-",""))
+        $.ajax({
+              type: "POST",
+              url: "/admin/blog-categories/delete",
+              data: formDT,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                localStorage.setItem('sts-bc', data);
+                window.location.href="/admin/blog-categories/all"
+              },
+              error: function(data){
+                alert(data);
+                window.location.href="/admin/blog-categories/all"
+
+              }
+       })
+      }
+    })
   function ClearFilter() {
         $("#search-by-cond").val("");
         $("#take-record").val(10);
@@ -659,7 +690,8 @@
                           +'</div> </div> </td><td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
                           +'</td>  <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/blog-categories/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
-                          +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
+                          +'<span class="fe fe-edit fs-14">  </span> </a> <span class="btn text-danger btn-sm btn-delete" id="obj-'+data[i].id+'" data-bs-original-title="Delete">'
+                          +'<span class="fe fe-trash-2 fs-14" style="pointer-events:none"> </span> </span> </div> </td> </tr>')
                             row = row + 1;
     
     

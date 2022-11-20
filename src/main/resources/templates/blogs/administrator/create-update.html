@@ -45,7 +45,7 @@
                                             <div class="form-row">
                                               <div class="col-xl-6 mb-3" style="display: none;">
                                                 <input type="text" class="form-control" name="id" th:value="${oldData != null}?${oldData.id}:${blogMapper.id}" />
-                                                <input type="text" id="imgViewerThumb" name ="imgViewer" th:value="(${formType}==0 OR ${blogMapper.thumbnail}==null)?'':${blogMapper.thumbnail}"/>
+                                                <input type="text" id="imgViewerThumb" name ="imgViewer" th:value="( ${blogMapper.thumbnail}==null)?'':${blogMapper.thumbnail}"/>
 
                                               </div>
                                               <div class="col-xl-12 mb-3">
@@ -107,9 +107,9 @@
                                                   <div style="position: relative;display:table-row; height: 100%; min-height: 200px;width: 100%; background: none; float: left;padding:0 ">
                                                     <div id="viewer" th:styleappend="${#fields.hasErrors('thumbnail')==true}?'border: 2px dashed #ff373791':'border: 2px dashed #ffffff30'" style="border-radius: 6px; min-height:100px;height:inherit;padding-top:10px;">
                                                       <div style="margin-bottom:10px;text-align: center;" id="contenttext">Click or drag to upload thumbnail</div>
-                                                      <img id="imgViewer"   style="border:none; width:93%;height:auto;margin:0 1vw 3vh 1vw;border-radius:20px;" th:src="(${formType}==0 OR ${blogMapper.thumbnail}==null)?'/images/defaults/noimage.png':${blogMapper.thumbnail}"/>
+                                                      <img id="imgViewer"   style="border:none; width:93%;height:auto;margin:0 1vw 3vh 1vw;border-radius:20px;" th:src="(${blogMapper.thumbnail}==null)?'/images/defaults/noimage.png':${blogMapper.thumbnail}"/>
                                                       </div>
-                                                      <input type="file" id="ip-thumbnail" name="pathImg"   onchange="ReadImage(this)" th:src="${oldData != null}?${oldData.thumbnail}:''"  class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
+                                                      <input type="file" id="ip-thumbnail" name="pathImg"   onchange="ReadImage(this)" th:src="${blogMapper != null}?${blogMapper.thumbnail}:''"  class="main-post error_input" accept="image/bmp,image/gif,image/jpeg,image/png,image/tiff,image/webp" aria-hidden="true" tabindex="-1" style="cursor: pointer; opacity: 0;
                                                       position: absolute;height: 90%; width:100%; left: 0px; top: 0px; font-size: 0px;">
                                                   </div>
                                                   <div  style="width:100%;text-align:center;height: auto;float: left;margin-top:-12px;display:table-row;cursor: pointer;position: relative;">
@@ -506,6 +506,7 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
+
        function ReadImage(input) {
                 document.getElementById("trashimg").style.removeProperty("display");
                 if (input.files && input.files[0]) {
@@ -514,6 +515,7 @@
                     reader.onload = function (e) {
 
                         $('#imgViewer').attr('src', e.target.result);
+                        console.log($('#imgViewer').attr('src'));
                         $("#imgViewerThumb").val(e.target.result);
                         
 
