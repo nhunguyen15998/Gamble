@@ -32,6 +32,7 @@ import com.futech.entertainment.packages.wheels.services.interfaces.WheelService
 import com.futech.entertainment.packages.wheels.utils.WheelHelpers;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 
 @Service
 public class WheelService extends BaseService<Game> implements WheelServiceInterface{
@@ -48,19 +49,14 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
     public Map<String, Object> getGameWheelConfigs(Map<String, Object> wheel){
         Map<String, Object> obj = new HashMap<String,Object>();
         try {
-            var configs = wheel.get("configs").toString().split("\\\\");
-            for (int i = 0; i < configs.length; i++) {
-                JsonObject jo = JsonParser.parseString(configs[i]).getAsJsonObject();
-                var labels = jo.get("labels").getAsJsonArray();
-                var backgroundColors = jo.get("backgroundColors").getAsJsonArray();
-                var textColors = jo.get("textColors").getAsJsonArray();
-                WheelHelpers.toStringArray(labels);
-                String[] labelArray = WheelHelpers.toStringArray(labels);
-                String[] backgroundColorArray = WheelHelpers.toStringArray(backgroundColors);
-                String[] textColorArray = WheelHelpers.toStringArray(textColors);
-                obj.put("slices"+(i+1), labelArray);
-                obj.put("colors"+(i+1), backgroundColorArray);
-                obj.put("textColors"+(i+1), textColorArray);
+            var j = JsonParser.parseString(wheel.get("configs").toString()).getAsJsonArray();
+            for(int i = 0; i < j.size(); i++){
+                var labels = j.get(i).getAsJsonObject().get("labels").getAsJsonArray();
+                var backgroundColors = j.get(i).getAsJsonObject().get("backgroundColors").getAsJsonArray();
+                var textColors = j.get(i).getAsJsonObject().get("textColors").getAsJsonArray();
+                obj.put("slices"+(i+1), WheelHelpers.toStringArray(labels));
+                obj.put("colors"+(i+1), WheelHelpers.toStringArray(backgroundColors));
+                obj.put("textColors"+(i+1), WheelHelpers.toStringArray(textColors));
             }
             obj.put("code", 200);
         } catch (Exception e) {
@@ -73,9 +69,10 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
     public Map<String, Object> createGameWheelUserHistory(String betAmount, int userId, boolean isPartialBet){
         Map<String, Object> obj = new HashMap<String,Object>();
         try {
-            if(betAmount == null || betAmount.toString().trim() == ""){
+            if(betAmount == null || betAmount.trim() == "" || betAmount.equals("")){
                 obj.put("code", 400);
                 obj.put("message", "You must bet first!");  
+                return obj;
             }
             if(!betAmount.trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
@@ -95,16 +92,17 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
             conditions.add(DataMapper.getInstance("", "user_id", "=", String.valueOf(userId), ""));
             var userWallet = this.userWalletServiceInterface.getFirstBy(null, conditions, null);
             var userAmount = Double.parseDouble(userWallet.get("cur_amount").toString());
-            if(bet > userAmount){
-                obj.put("code", 400);
-                obj.put("message", "Bet amount exceeds available amount");
-                return obj;
-            }
-
+            
             var betamount = Double.parseDouble(betAmount);
             if(!isPartialBet){
                 bet = userAmount;
                 betamount = userAmount;
+            }
+
+            if(bet > userAmount){
+                obj.put("code", 400);
+                obj.put("message", "Bet amount exceeds available amount");
+                return obj;
             }
 
             //get configs
@@ -134,7 +132,12 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                     results += String.format(",%s", large);
                     obj.put("lg", lg);
                     obj.put("medium", medium);
+                    obj.put("large", large);
+                } else {
+                    obj.put("medium", medium);
                 }
+            } else {
+                obj.put("small", small);
             }
 
             //create game history
@@ -149,6 +152,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                 gameHistoryUser.setStatus(status);
                 gameHistoryUser.setReceived_amount(bet);
                 this.gameHistoryUserServiceInterface.create(gameHistoryUser);
+                obj.put("amount", Math.abs(betamount - bet));
                 switch (status) {
                     case 0:
                         obj.put("status", 0);

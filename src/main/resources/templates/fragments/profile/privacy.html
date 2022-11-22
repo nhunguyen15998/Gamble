@@ -62,35 +62,37 @@
                     </a>
                 </div>
                 <div class="mt-4 collapse" id="changePassword">
-                    <div class="d-flex flex-column">
-                        <div class="align-items-center form-group justify-content-center mb-4 row">
-                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Current password</label>
-                            <div class="d-flex flex-column w-50">
-                                <input type="text" class="profile-input" placeholder="Current password">
-                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
+                    <form action="" method="">
+                        <div class="d-flex flex-column">
+                            <div class="align-items-center form-group justify-content-center mb-4 row">
+                                <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Current password</label>
+                                <div class="d-flex flex-column w-50">
+                                    <input type="password" class="profile-input" placeholder="Current password" name="old_password">
+                                    <small class="text-danger" style="margin-left: 20px" id="old_password_err"></small>
+                                </div>
+                            </div>
+                            <div class="align-items-center form-group justify-content-center mb-4 row">
+                                <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">New password</label>
+                                <div class="d-flex flex-column w-50">
+                                    <input type="password" class="profile-input" placeholder="New password" name="new_password">
+                                    <small class="text-danger" style="margin-left: 20px" id="new_password_err"></small>
+                                </div>
+                            </div>
+                            <div class="align-items-center form-group justify-content-center mb-4 row">
+                                <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Confirm new password</label>
+                                <div class="d-flex flex-column w-50">
+                                    <input type="password" class="profile-input" placeholder="Confirm new password" name="confirm_new_password">
+                                    <small class="text-danger" style="margin-left: 20px" id="confirm_new_password_err"></small>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mb-3 mt-5">
+                                <div class="d-flex justify-content-between" style="width: 45%;">
+                                    <button type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-change-password-save">Save</button>
+                                    <button type="button" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-change-password-cancel">Cancel</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="align-items-center form-group justify-content-center mb-4 row">
-                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">New password</label>
-                            <div class="d-flex flex-column w-50">
-                                <input type="text" class="profile-input" placeholder="New password">
-                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
-                            </div>
-                        </div>
-                        <div class="align-items-center form-group justify-content-center mb-4 row">
-                            <label class="col-3 mb-0 mr-4 text-right" style="font-size: 15px;">Confirm new password</label>
-                            <div class="d-flex flex-column w-50">
-                                <input type="text" class="profile-input" placeholder="Confirm new password">
-                                <small class="text-danger" style="margin-left: 20px" id="first_name_err"></small>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end mb-3 mt-5">
-                            <div class="d-flex justify-content-between" style="width: 45%;">
-                                <button type="button" class="btn text-white" style="background-color: #fa009f;border-radius: 50px;padding: 12px;width: 47%;" id="btn-change-password-save">Save</button>
-                                <button type="submit" class="btn text-white" style="background-color: #54068f;border-radius: 50px;padding: 12px;width: 47%;">Cancel</button>
-                            </div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
   

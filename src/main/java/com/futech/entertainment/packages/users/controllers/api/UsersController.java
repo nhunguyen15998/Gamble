@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authentication;
+import com.futech.entertainment.packages.users.modelMappers.ChangePasswordMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.services.interfaces.UserProfileServiceInterface;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
@@ -128,6 +129,25 @@ public class UsersController {
             Map<String, Object> err = new HashMap<String,Object>();
             err.put("message", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //change pass
+    @PostMapping("user/change-password")
+    public ResponseEntity<Map<String, Object>> changePassword(
+                @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+                @Valid @RequestBody ChangePasswordMapper changePasswordMapper){
+        Map<String, Object> items = new HashMap<String,Object>();
+        try {
+            var verifiedToken = headers.get("auth").toString();
+            var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
+            changePasswordMapper.setUser_id(Integer.parseInt(currentUserId));
+            items = this.userServiceInterface.changePassword(changePasswordMapper);
+            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
+        } catch (Exception e) {
+            items.put("code", 500);
+            items.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(items, HttpStatus.BAD_REQUEST);
         }
     }
 

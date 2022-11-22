@@ -146,16 +146,7 @@ public class AuthController {
     @PostMapping("/user/sign-out")
     public String postSignOut(HttpSession session){
         try {
-            session.removeAttribute("firstName");
-            session.removeAttribute("lastName");
-            session.removeAttribute("thumbnail");
-            session.removeAttribute("phone");
-            session.removeAttribute("user_id");
-            session.removeAttribute("user_profile_id");
-            session.removeAttribute("is_admin");
-            session.removeAttribute("user_config_id");
-            session.removeAttribute("user_config_string");
-            session.removeAttribute("createdAt");
+            this.userServiceInterface.sessionClear(session);
             return "redirect:/user/sign-in";
         } catch (Exception e) {
             e.printStackTrace();

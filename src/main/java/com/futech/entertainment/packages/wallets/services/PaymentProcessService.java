@@ -198,7 +198,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             var user = withdrawBankMapper.getSender();
             if(!withdrawBankMapper.getBank_amount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
-                obj.put("amount", "Invalid format");
+                obj.put("amount", "Invalid amount format");
                 return obj;
             }
             var amount = Double.parseDouble(withdrawBankMapper.getBank_amount());
@@ -282,7 +282,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             var user = withdrawBitcoinMapper.getSender();
             if(!withdrawBitcoinMapper.getBitcoin_amount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
-                obj.put("amount", "Invalid format");
+                obj.put("amount", "Invalid amount format");
                 return obj;
             }
             var amount = Double.parseDouble(withdrawBitcoinMapper.getBitcoin_amount());
@@ -323,11 +323,12 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             if(withdrawPassword == ConfigHelpers.IS_ON){
                 obj.put("code", 406);
                 obj.put("message", "Please fill in your password first");
+                obj.put("amount", "Please fill in your password first");
                 return obj;
             }
             transaction.setexchange_rate(exchangeRate);
             //no need to exchange to USD
-            transaction.setAmount(amount);
+            transaction.setAmount(amount*exchangeRate);
             transaction.setfrom_currency(fromCurrency);
             this.transactionServiceInterface.createTransaction(transaction);
 
@@ -370,7 +371,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
 
             if(!transferMapper.getAmount().trim().matches("^[+]?[0-9]*([.][0-9]*)?$")){
                 obj.put("code", 400);
-                obj.put("amount", "Invalid format");
+                obj.put("amount", "Invalid amount format");
                 return obj;
             }
             var amount = Double.parseDouble(transferMapper.getAmount());

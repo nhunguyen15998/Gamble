@@ -3,11 +3,11 @@ package com.futech.entertainment.packages.users.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +27,7 @@ import com.futech.entertainment.packages.core.utils.JoinCondition;
 import com.futech.entertainment.packages.settings.models.UserConfig;
 import com.futech.entertainment.packages.settings.services.interfaces.UserConfigServiceInterface;
 import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
+import com.futech.entertainment.packages.users.modelMappers.ChangePasswordMapper;
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
@@ -297,6 +298,57 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         return true;
         
     }
+
+    //change password
+    public Map<String, Object> changePassword(ChangePasswordMapper changePasswordMapper){
+        Map<String, Object> obj = new HashMap<String, Object>();
+        try {
+            var userId = changePasswordMapper.getUser_id();
+            var currentPassword = changePasswordMapper.getOld_password().trim();
+            var newPassword = changePasswordMapper.getNew_password().trim();
+            var newConfirmationPassword = changePasswordMapper.getConfirm_new_password().trim();
+
+            //check if old password match
+            String[] selects = {"users.hash_password"};
+            var user = this.getUserById(selects, userId);
+            if(user == null){
+                obj.put("code", 404);
+                obj.put("message", "Invalid user");
+                return obj;
+            }
+            var checkPass = this.verifyPassword(currentPassword, user.get("hash_password").toString());
+            if(Integer.parseInt(checkPass.get("code").toString()) != 200){
+                return checkPass;
+            }
+
+            //check if confirm pass match
+            if(!newPassword.equals(newConfirmationPassword)){
+                obj.put("code", 400);
+                obj.put("message", "Passwords do not match");
+                return obj;
+            }
+
+            //update user
+            User updateUser = new User();
+            updateUser.setId(changePasswordMapper.getUser_id());
+            updateUser.setplain_password(changePasswordMapper.getNew_password());
+            updateUser.sethash_password(passwordEncoder.encode(changePasswordMapper.getNew_password()));
+            var updatedUser = this.update(updateUser);
+            if(updatedUser){
+                obj.put("code", 200);
+                obj.put("message", "OK");
+            } else {
+                obj.put("code", 400);
+                obj.put("message", "Failed");
+            }
+            return obj;
+        } catch (Exception e) {
+            obj.put("code", 500);
+            obj.put("message", e.getMessage());
+            return obj;
+        }
+    }
+
     //verify password
     public Map<String, Object> verifyPassword(String password, String hashPassword){
         Map<String, Object> obj = new HashMap<String, Object>();
@@ -309,7 +361,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             }
             if(!passwordEncoder.matches(password, hashPassword)){
                 obj.put("code", 400);
-                obj.put("message", "Invalid password");
+                obj.put("message", "Invalid current password");
                 return obj;
             }
             obj.put("code", 200);
@@ -391,6 +443,23 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void sessionClear(HttpSession session){
+        try {
+            session.removeAttribute("firstName");
+            session.removeAttribute("lastName");
+            session.removeAttribute("thumbnail");
+            session.removeAttribute("phone");
+            session.removeAttribute("user_id");
+            session.removeAttribute("user_profile_id");
+            session.removeAttribute("is_admin");
+            session.removeAttribute("user_config_id");
+            session.removeAttribute("user_config_string");
+            session.removeAttribute("createdAt");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

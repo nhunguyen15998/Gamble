@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +24,7 @@ import com.futech.entertainment.packages.users.services.interfaces.UserServiceIn
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+@Validated
 @RestController
 @RequestMapping(path="/api") 
 public class AuthenticationController {
@@ -33,18 +37,25 @@ public class AuthenticationController {
         Gson gson = new Gson();
         JsonObject job = new JsonObject();
         try {
+            var password = signUpMapper.getplain_password();
+            var confirmedPassword = signUpMapper.getconfirm_password();
+            if(!password.equals(confirmedPassword)){
+                job.addProperty("code", 400);
+                job.addProperty("message", "Password do not match");
+                return ResponseEntity.ok(gson.toJson(job));
+            }
             var created = this.userServiceInterface.createUserSignUp(signUpMapper);
             if(created){
                 job.addProperty("code", 200);
-                job.addProperty("msg", "user created");
+                job.addProperty("message", "user created");
                 return ResponseEntity.ok(gson.toJson(job));
             }
             job.addProperty("code", 400);
-            job.addProperty("msg", "cannot create user");
+            job.addProperty("message", "cannot create user");
         } catch (Exception e) {
             e.printStackTrace();
             job.addProperty("code", 500);
-            job.addProperty("msg", e.getMessage());
+            job.addProperty("message", e.getMessage());
         }
         return ResponseEntity.ok(gson.toJson(job));
     }
@@ -77,5 +88,13 @@ public class AuthenticationController {
             results.put("message", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(results, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> onValidationError(ConstraintViolationException e) {
+        Map<String, Object> errors = new HashMap<String,Object>();
+        errors.put("code", 400);
+        errors.put("message", e.getMessage().split(": ")[1]);
+        return new ResponseEntity<Map<String, Object>>(errors, HttpStatus.BAD_REQUEST);
     }
 }

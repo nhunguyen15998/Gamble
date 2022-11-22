@@ -2,13 +2,15 @@ package com.futech.entertainment.packages.users.services.interfaces;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.futech.entertainment.packages.core.services.interfaces.BaseServiceInterface;
+import com.futech.entertainment.packages.users.modelMappers.ChangePasswordMapper;
 import com.futech.entertainment.packages.users.modelMappers.SignUpMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
 import com.futech.entertainment.packages.users.models.User;
-import com.futech.entertainment.packages.users.models.UserProfile;
 
 public interface UserServiceInterface extends BaseServiceInterface<User> {
    public boolean createUserSignUp(SignUpMapper signUpMapper);
@@ -24,9 +26,12 @@ public interface UserServiceInterface extends BaseServiceInterface<User> {
    public boolean updateUserUserProfile(UserUpdateMapper userMapper);
    public boolean checkPassword(UserUpdateMapper userMapper);
 
-   public Map<String, Object> verifyPassword(String password, String phone);
+   public Map<String, Object> verifyPassword(String password, String hashPass);
+   public Map<String, Object> changePassword(ChangePasswordMapper changePasswordMapper);
 
    public Map<String, Object> authenticate(Map<String, Object> user);
    public String verifyToken(Map<String, String> headers);
    public Map<String, Object> getUserByToken(String[] selects, String token);
+
+   public void sessionClear(HttpSession session);
 }

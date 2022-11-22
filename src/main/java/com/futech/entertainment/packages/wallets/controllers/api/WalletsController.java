@@ -24,18 +24,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authentication;
 import com.futech.entertainment.packages.core.utils.DataMapper;
+import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
+import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
 import com.futech.entertainment.packages.settings.services.interfaces.UserConfigServiceInterface;
 import com.futech.entertainment.packages.settings.utils.ConfigHelpers;
 import com.futech.entertainment.packages.users.services.interfaces.UserServiceInterface;
 import com.futech.entertainment.packages.wallets.modelMappers.DepositMapper;
+import com.futech.entertainment.packages.wallets.modelMappers.TransferMapper;
 import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBankMapper;
+import com.futech.entertainment.packages.wallets.modelMappers.WithdrawBitcoinMapper;
 import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProcessServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @Validated
 @RestController
@@ -54,6 +58,29 @@ public class WalletsController {
     private VNPayServiceInterface vnpayServiceInterface;
     @Autowired
     private UserConfigServiceInterface userConfigServiceInterface;
+    @Autowired
+    private ConfigServiceInterface configServiceInterface;
+
+    //get exchange rate
+    @GetMapping("/getExRateAndBalance")
+    public ResponseEntity<String> getExchangeRate(
+            @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+            @RequestParam Map<String, Object> name
+    ){
+        Gson gson = new Gson();
+        try {
+            var verifiedToken = headers.get("auth").toString();
+            var balance = this.userServiceInterface.getUserByToken(new String[]{"user_wallets.cur_amount"}, verifiedToken).get("cur_amount").toString();
+            var exchangeRate = this.configServiceInterface.getConfigStringElement(0, name.get("name").toString(), "rate").getAsString();
+            JsonObject obj = new JsonObject();
+            obj.addProperty("balance", Double.parseDouble(balance));
+            obj.addProperty("exchangeRate", Double.parseDouble(exchangeRate));
+            return ResponseEntity.ok(gson.toJson(obj));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.ok(gson.toJson(e.getMessage()));
+        }
+    } 
 
     //deposit
     @PostMapping("/depositProcess")
@@ -152,8 +179,74 @@ public class WalletsController {
     //         return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
     //     }
     // }
+
+    @GetMapping("/generateBCAddress")
+    public ResponseEntity<Map<String, String>> generateBCAddress(
+                @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers){
+        Map<String, String> item = new HashMap<String,String>();
+        try {
+            var transactionCode = Helpers.randomStringWithLength(15);
+            var address = "abc1345";//this.bitcoinServiceInterface.getAddress(transactionCode);
+            item.put("bcaddress", address);
+            item.put("transactionCode", transactionCode);
+            return new ResponseEntity<Map<String, String>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<Map<String, String>>(item, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/withdrawBitcoinProccess")
+    public ResponseEntity<Map<String, Object>> withdrawBitcoinProccess(
+                @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+                @Valid @RequestBody WithdrawBitcoinMapper withdrawBitcoinMapper) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            var verifiedToken = headers.get("auth").toString();
+            var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
+            //check setting
+            var userConfigString = userConfigServiceInterface.getClientConfigs(currentUserId).get("config_string").toString();
+            var withdrawPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "withdraw_password");
+
+            var sender = Integer.parseInt(currentUserId);
+            withdrawBitcoinMapper.setSender(sender);
+            withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
+            withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
+            item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, withdrawPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
     
     //transfer
+    @PostMapping("/transferProccess")
+    public ResponseEntity<Map<String, Object>> transferProccess(
+                @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+                @Valid @RequestBody TransferMapper transferMapper) {
+        Map<String, Object> item = new HashMap<String,Object>();
+        try {
+            var verifiedToken = headers.get("auth").toString();
+            var currentUser = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id, users.phone"}, verifiedToken);
+            var currentUserId = currentUser.get("user_id").toString();
+            var currentUserPhone = currentUser.get("phone").toString();
+            //check setting
+            var userConfigString = userConfigServiceInterface.getClientConfigs(currentUserId).get("config_string").toString();
+            var transferPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "transfer_password");
+
+            var sender = Integer.parseInt(currentUserId);
+            transferMapper.setSender(sender);
+            transferMapper.setType(PaymentHelpers.TRANSFER);
+            item = this.paymentProcessServiceInterface.transferProccess(transferMapper, currentUserPhone, transferPassword);
+            return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
+        } catch (Exception e) {
+            Map<String, Object> err = new HashMap<String,Object>();
+            err.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(err, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 
     //transaction
