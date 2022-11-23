@@ -323,7 +323,6 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             if(withdrawPassword == ConfigHelpers.IS_ON){
                 obj.put("code", 406);
                 obj.put("message", "Please fill in your password first");
-                obj.put("amount", "Please fill in your password first");
                 return obj;
             }
             transaction.setexchange_rate(exchangeRate);

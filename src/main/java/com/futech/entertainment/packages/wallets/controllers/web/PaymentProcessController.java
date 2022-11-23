@@ -153,7 +153,10 @@ public class PaymentProcessController {
 
             //verify pass
             var phone = session.getAttribute("phone").toString();
-            item = this.userServiceInterface.verifyPassword(password, phone);
+            var currentUser = this.userServiceInterface.getUserByPhone(new String[]{"users.id as user_id, users.hash_password"}, phone);
+            var hashPassword = currentUser.get("hash_password").toString();
+
+            item = this.userServiceInterface.verifyPassword(password, hashPassword);
             if(Integer.parseInt(item.get("code").toString()) != 200){
                 return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
             }
@@ -210,7 +213,10 @@ public class PaymentProcessController {
 
             //verify pass
             var phone = session.getAttribute("phone").toString();
-            item = this.userServiceInterface.verifyPassword(password, phone);
+            var currentUser = this.userServiceInterface.getUserByPhone(new String[]{"users.id as user_id, users.hash_password"}, phone);
+            var hashPassword = currentUser.get("hash_password").toString();
+
+            item = this.userServiceInterface.verifyPassword(password, hashPassword);
             if(Integer.parseInt(item.get("code").toString()) != 200){
                 return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
             }
@@ -266,7 +272,10 @@ public class PaymentProcessController {
 
             //verify pass
             var phone = session.getAttribute("phone").toString();
-            item = this.userServiceInterface.verifyPassword(password, phone);
+            var currentUser = this.userServiceInterface.getUserByPhone(new String[]{"users.id as user_id, users.hash_password"}, phone);
+            var hashPassword = currentUser.get("hash_password").toString();
+
+            item = this.userServiceInterface.verifyPassword(password, hashPassword);
             if(Integer.parseInt(item.get("code").toString()) != 200){
                 return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
             }

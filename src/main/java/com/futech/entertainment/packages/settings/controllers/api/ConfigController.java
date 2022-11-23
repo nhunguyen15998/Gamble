@@ -72,9 +72,9 @@ public class ConfigController {
             var verifiedToken = headers.get("auth").toString();
             var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
             var userConfigs = this.userConfigServiceInterface.getClientConfigs(currentUserId);
-            // var userConfigString = userConfigs.get("config_string").toString();
+            var userConfigString = userConfigs.get("config_string").toString();
             var userConfigId = Integer.parseInt(userConfigs.get("id").toString());
-            var settingPassword = ConfigHelpers.getSettingValueByKey(configs, "setting_password");
+            var settingPassword = ConfigHelpers.getSettingValueByKey(userConfigString, "setting_password");
             if(settingPassword == ConfigHelpers.IS_ON){
                 obj.put("code", 406);
                 obj.put("message", "Please fill in your password first");
@@ -96,56 +96,47 @@ public class ConfigController {
         }
     } 
 
-    // @PostMapping("/user/configs/updateWithPassword")
-    // public ResponseEntity<Map<String, Object>> saveConfigsWithPassword(
-    //         @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
-    //         @RequestParam String data
-    // ){
-    //     Map<String, Object> obj = new HashMap<String, Object>();
-    //     try {
-    //         JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
-    //         var password = jo.get("require_password").getAsString();
-    //         var configs = jo.get("configs").toString();
+    @PostMapping("/user/configs/updateWithPassword")
+    public ResponseEntity<Map<String, Object>> saveConfigsWithPassword(
+            @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,
+            @RequestBody String data
+    ){
+        Map<String, Object> obj = new HashMap<String, Object>();
+        try {
+            JsonObject jo = JsonParser.parseString(data).getAsJsonObject();
+            var password = jo.get("require_password").getAsString();
+            jo.remove("require_password");
 
-    //         var verifiedToken = headers.get("auth").toString();
-    //         var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
-    //         var userConfigs = this.userConfigServiceInterface.getClientConfigs(currentUserId);
-    //         var userConfigString = userConfigs.get("config_string").toString();
-    //         var userConfigId = Integer.parseInt(userConfigs.get("id").toString());
+            //verify pass
+            var verifiedToken = headers.get("auth").toString();
+            var currentUser = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id, users.hash_password"}, verifiedToken);
+            var currentUserId = currentUser.get("user_id").toString();
+            var hashPassword = currentUser.get("hash_password").toString();
+            obj = this.userServiceInterface.verifyPassword(password, hashPassword);
 
-    //         //verify pass
-    //         var phone = session.getAttribute("phone").toString();
-    //         String[] selects = {"users.*, "+
-    //         "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
-    //         "user_profiles.birth, user_profiles.gender"};
-    //         var user = this.userServiceInterface.getUserByPhone(selects, phone);
-    //         if(user == null){
-    //             obj.put("code", 404);
-    //             obj.put("message", "Not found");
-    //             return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
-    //         }
-    //         obj = this.userServiceInterface.verifyPassword(password, user.get("hash_password").toString());
-    //         if(Integer.parseInt(obj.get("code").toString()) != 200){
-    //             return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
-    //         }
-    //         obj.clear();
+            if(Integer.parseInt(obj.get("code").toString()) != 200){
+                return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
+            }
+            obj.clear();
 
-    //         var savedConfigs = this.userConfigServiceInterface.updateClientConfigs(userConfigId, configs);
-    //         if(savedConfigs){
-    //             obj.put("code", 200);
-    //             obj.put("message", "Successfully updated configs");
-    //             session.setAttribute("user_config_string", configs);
-    //             return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
-    //         }
-    //         obj.put("code", 304);
-    //         obj.put("message", "Fail to update configs");
-    //         return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
-    //     } catch (Exception e) {
-    //         obj.put("code", 500);
-    //         obj.put("message", e.getMessage());
-    //         return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
-    //     }
-    // }
+            var userConfigs = this.userConfigServiceInterface.getClientConfigs(currentUserId);
+            var userConfigId = Integer.parseInt(userConfigs.get("id").toString());
+
+            var savedConfigs = this.userConfigServiceInterface.updateClientConfigs(userConfigId, jo.toString());
+            if(savedConfigs){
+                obj.put("code", 200);
+                obj.put("message", "Successfully updated configs");
+                return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
+            }
+            obj.put("code", 304);
+            obj.put("message", "Fail to update configs");
+            return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.OK);
+        } catch (Exception e) {
+            obj.put("code", 500);
+            obj.put("message", e.getMessage());
+            return new ResponseEntity<Map<String, Object>>(obj, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Map<String, Object>> onValidationError(ConstraintViolationException e) {
