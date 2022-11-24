@@ -47,10 +47,7 @@ public class UsersController {
             "user_profiles.id as user_profile_id, user_profiles.first_name, user_profiles.last_name, user_profiles.thumbnail, "+
             "user_profiles.birth, user_profiles.gender, user_profiles.wallpaper"};
             user = this.userServiceInterface.getUserByToken(selects, verifiedToken);
-            if(user != null){
-                return new ResponseEntity<Map<String, Object>>(user, HttpStatus.OK);
-            }
-            return new ResponseEntity<Map<String, Object>>(user, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<Map<String, Object>>(user, HttpStatus.OK);
         } catch (Exception e) {
             user.put("message", e.getMessage());
             return new ResponseEntity<Map<String, Object>>(user, HttpStatus.BAD_REQUEST);

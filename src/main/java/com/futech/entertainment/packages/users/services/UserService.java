@@ -3,6 +3,8 @@ package com.futech.entertainment.packages.users.services;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -383,22 +385,22 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
                 return results;
             }
             //create token
-            // Calendar calendar = Calendar.getInstance();
-            // calendar.add(Calendar.MONTH, 3);
-            // Date expireDate = calendar.getTime();
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MINUTE, 30);
+            Date expireDate = calendar.getTime();
             
-            // Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            // String token = JWT.create()
-            //                   .withIssuer("auth0")
-            //                   .withClaim("phone", user.get("phone").toString())
-            //                   .withExpiresAt(expireDate)
-            //                   .sign(algorithm);
+            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
+            String token = JWT.create()
+                              .withIssuer("auth0")
+                              .withClaim("phone", user.get("phone").toString())
+                              .withExpiresAt(expireDate)
+                              .sign(algorithm);
             //save token
-            //this.userTokenServiceInterface.createToken(Integer.parseInt(user.get("id").toString()), token);
+            this.userTokenServiceInterface.createToken(Integer.parseInt(user.get("id").toString()), token);
             
             results.put("code", 200);
             results.put("user", user);
-            results.put("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjA5ODc2NTQzMjEiLCJpc3MiOiJhdXRoMCIsImV4cCI6MTY3NTMzMTIyNX0.UrlEIIK4uu2nme5qqhiNdTkWz7EAzArXXU7ETodklSQ");
+            results.put("token", token);//"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjA5ODc2NTQzMjEiLCJpc3MiOiJhdXRoMCIsImV4cCI6MTY3NTMzMTIyNX0.UrlEIIK4uu2nme5qqhiNdTkWz7EAzArXXU7ETodklSQ");
             results.put("message", "user authenticated");
         } catch (Exception e) {
             results.put("code", 500);
