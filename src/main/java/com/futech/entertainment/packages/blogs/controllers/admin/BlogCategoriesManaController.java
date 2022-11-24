@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.futech.entertainment.packages.blogs.modelMappers.BlogCateMapper;
+import com.futech.entertainment.packages.blogs.models.BlogCate;
 import com.futech.entertainment.packages.blogs.services.interfaces.BlogCateServiceInterface;
+import com.futech.entertainment.packages.blogs.services.interfaces.BlogServiceInterface;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 
@@ -30,6 +32,8 @@ import com.futech.entertainment.packages.core.utils.Helpers;
 public class BlogCategoriesManaController {
  @Autowired
  BlogCateServiceInterface blogCateServiceInterface;
+ @Autowired
+ BlogServiceInterface blogServiceInterface;
     @ModelAttribute("statusList")
     public Map<Integer, String> getStatusList() {
         Map<Integer, String> statusList = new HashMap<Integer, String>();
@@ -125,6 +129,21 @@ public class BlogCategoriesManaController {
                 Integer.parseInt(u.get("status").toString())
             );
             return mapper;
+    }
+    @PostMapping("/admin/blog-categories/delete")
+    public @ResponseBody int Delete(@RequestParam int id,HttpSession session){
+        try {
+            if(id>0) {
+                List<DataMapper> lsCond = new ArrayList<DataMapper>();
+                lsCond.add(DataMapper.getInstance("", "blog_cate_id", "=", ""+id, ""));
+                int count = blogServiceInterface.getAll(null, lsCond, null, null, null, null).size();
+                if(count == 0) blogCateServiceInterface.delete(id);
+                return count > 0 ?  0 : 1;
+            }
+          return 0;
+        } catch (Exception e) {
+          return 0;
+        }
     }
  //Pagination
  @PostMapping("/admin/blog-caterogies/all/LoadDataBlogCate")

@@ -76,6 +76,7 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
             newBlog.setStatus(blogMapper.getStatus());
             newBlog.setUrl_slug(blogMapper.getUrl_slug());
             newBlog.setCreated_at(LocalDateTime.now());
+            newBlog.setDescription(blogMapper.getDescription());
             newBlog.setThumbnail(blogMapper.getThumbnail());
 
             this.create(newBlog);

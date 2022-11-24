@@ -60,16 +60,16 @@ public class BauCuaController {
     @PostMapping("/saveResults")
     public @ResponseBody Boolean SaveResults( Double totalPointBet,Double totalPoint, Double received, String bet, String result, HttpSession session){
       try {
-        var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));
-        var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received>0?1:0));
-        if(bHistory!=null && createUserHistory ){
-            var old = userWalletServiceInterface.getWalletByUser(session.getAttribute("user_id").toString());
-            UserWallet u = new UserWallet();
-            u.setId(Integer.parseInt(old.get("id").toString()));
-            u.setpre_amount(Double.parseDouble(old.get("cur_amount").toString()));
-            u.setcur_amount(totalPoint);
-            userWalletServiceInterface.update(u);
-        }
+        // var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));
+        // var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received>0?1:0));
+        // if(bHistory!=null && createUserHistory ){
+        //     var old = userWalletServiceInterface.getWalletByUser(session.getAttribute("user_id").toString());
+        //     UserWallet u = new UserWallet();
+        //     u.setId(Integer.parseInt(old.get("id").toString()));
+        //     u.setpre_amount(Double.parseDouble(old.get("cur_amount").toString()));
+        //     u.setcur_amount(totalPoint);
+        //     userWalletServiceInterface.update(u);
+        // }
         System.out.println("\nbet:"+totalPointBet+" ====== received:"+received+"====== total:"+totalPoint+"\nbetObject:"+bet+"===== result:"+result);
         return true;
       } catch (Exception e) {

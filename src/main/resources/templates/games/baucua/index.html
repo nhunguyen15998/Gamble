@@ -137,9 +137,30 @@ th:replace="~{layouts/main-layout :: main-fragment(
                     </div>
                     
                 </div>
-                <div id="baucuaResult" class="col-10 container">
+                <style>
+                    #baucuaResult::-webkit-scrollbar {
+                    width: 10px;
+                    }
+
+                    /* Track */
+                    #baucuaResult::-webkit-scrollbar-track {
+                    background: #a344b97c; 
+                    }
+                    
+                    /* Handle */
+                    #baucuaResult::-webkit-scrollbar-thumb {
+                    background: rgb(136, 6, 172); 
+                    }
+
+                    /* Handle on hover */
+                    #baucuaResult::-webkit-scrollbar-thumb:hover {
+                    background: rgb(77, 11, 122); 
+                    }
+                  
+                </style>
+                <div id="baucuaResult" class="col-10 container" style="font-size: 12px;height: 500px;overflow-y: auto;">
                     <h4 class="text-center mb-3">Game Records</h4>
-                    <table class="table text-white" style="font-size: 12px; max-height: 300px ;">
+                    <table class="table text-white">
                         <thead>
                           <tr>
                             <th scope="col">#</th>
