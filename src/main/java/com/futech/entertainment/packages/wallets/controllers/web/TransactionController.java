@@ -66,6 +66,28 @@ public class TransactionController {
         return ResponseEntity.ok(gson.toJson(obj));
     } 
 
+    @PostMapping("/updateTransaction/{code}")
+    public ResponseEntity<String> updateTransactionByCode(@PathVariable String code, HttpSession session){
+        Gson gson = new Gson();
+        JsonObject obj = new JsonObject();
+        try {
+            var sender = session.getAttribute("user_id").toString();
+            var transaction = this.transactionServiceInterface.getTransaction(sender, code);
+            if(transaction != null){
+                var dbStatus = Integer.parseInt(transaction.get("status").toString());
+                var updated = dbStatus == 0 ? this.transactionServiceInterface.updateStatus(Integer.parseInt(transaction.get("id").toString()), 2) : false;
+                obj.addProperty("code", 200);
+                obj.addProperty("message", updated);
+            } else {
+                obj.addProperty("code", 400);
+                obj.addProperty("message", "Invalid transaction");
+            }
+        } catch (Exception e) {
+            obj.addProperty("code", 500);
+        }
+        return ResponseEntity.ok(gson.toJson(obj));
+    } 
+
     @GetMapping("/users/transactions")
     public ResponseEntity<List<Map<String, Object>>> getUserTransactions(HttpSession session) {
         List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();

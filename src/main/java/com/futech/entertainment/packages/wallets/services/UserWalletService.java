@@ -104,7 +104,7 @@ public class UserWalletService extends BaseService<UserWallet> implements UserWa
             }
             var transactionAmount = Double.parseDouble(transaction.get("amount").toString());
             var bitcoinExchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "BITCOIN", "rate").getAsString());
-            var receivedAmount = Double.parseDouble(json.get("amount").getAsString())*bitcoinExchangeRate;
+            var receivedAmount = Double.parseDouble(json.get("amount").getAsString());
             //req: 10000 > send: 2000
             if(transactionAmount > receivedAmount){
                 obj.addProperty("code", 400);
@@ -115,7 +115,7 @@ public class UserWalletService extends BaseService<UserWallet> implements UserWa
             if(transactionAmount <= receivedAmount){
                 var trans = new Transaction();
                 trans.setId(Integer.parseInt(transaction.get("id").toString()));
-                trans.setreceived_amount(receivedAmount);
+                trans.setreceived_amount(receivedAmount*bitcoinExchangeRate);
                 trans.setTxid(json.get("txid").getAsString());
                 trans.setStatus(PaymentHelpers.SUCCESS);
                 this.transactionServiceInterface.update(trans);

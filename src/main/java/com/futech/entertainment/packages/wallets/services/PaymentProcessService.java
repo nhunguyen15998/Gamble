@@ -118,7 +118,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                             var bitcoinExchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "BITCOIN", "rate").getAsString());
                             transaction.setexchange_rate(bitcoinExchangeRate);
                             transaction.setfrom_currency("BITCOIN");
-                            transaction.setAmount(Double.parseDouble(deposit)*bitcoinExchangeRate);
+                            transaction.setAmount(Double.parseDouble(deposit));
                             var bcaddress = "abc123";//bitcoinServiceInterface.getAddress(transactionCode);
                             transaction.setBcaddress(bcaddress);
                             var bitcoinTransaction = this.transactionServiceInterface.createTransaction(transaction);

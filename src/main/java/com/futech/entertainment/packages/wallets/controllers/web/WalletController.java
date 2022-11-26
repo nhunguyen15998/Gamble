@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.PaymentProcessServiceInterface;
+import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -32,6 +33,8 @@ public class WalletController {
     private PaymentProcessServiceInterface paymentProcessServiceInterface;
     @Autowired
     private UserWalletServiceInterface userWalletServiceInterface;
+    @Autowired
+    private TransactionServiceInterface transactionServiceInterface;
 
     public WalletController() {}
 
@@ -56,8 +59,15 @@ public class WalletController {
             redirAttrs.addFlashAttribute("errorMsg", "Sign in first");
             return "redirect:/user/sign-in";
         }
+        //get amount
+        var transaction = this.transactionServiceInterface.getTransactionByCode(transactionCode);
+        if(Integer.parseInt(transaction.get("status").toString()) != 0){
+            return "redirect:/results/error";
+        }
+        var transactionAmount = Double.parseDouble(transaction.get("amount").toString());
         model.addAttribute("bcaddress", bcaddress);
         model.addAttribute("transactionCode", transactionCode);
+        model.addAttribute("transactionAmount", String.format("%,.6f", transactionAmount));
         return "wallets/bitcoin";
     }
     @GetMapping("user/my-wallet/deposit/bitcoin/callback/{trid}")
