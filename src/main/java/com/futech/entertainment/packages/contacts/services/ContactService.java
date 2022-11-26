@@ -68,6 +68,12 @@ public class ContactService extends BaseService<Contact> implements ContactServi
         }
         return false;
     }
+    public int getCountPending(){
+        List<DataMapper> conditions = new ArrayList<DataMapper>();
+        conditions.add(DataMapper.getInstance("", "status", "=", "0", ""));
+        return this.getCount(null, conditions, null);
+           
+    }
     public ContactSentMapper getContactByCaseNumber(String caseNumber){
         try {           
             String[] selects = {"id", "name", "email", "message", "reply", "created_at", "status","case_number"};

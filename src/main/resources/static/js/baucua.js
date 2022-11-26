@@ -14673,9 +14673,9 @@
                         pointBet=n.diemCuoc;
                         return 0 === n.diemCuoc,
                         W({}, e);
-                case "XOC_DIA":
+                case "XOC_DIA": //random
                     for (var u = [], a = 0; a < 3; a++) {
-                        var o = Math.floor(6 * Math.random())
+                        var o = Math.floor(6 * Math.random()+0.1)
                           , i = e.danhSachCuoc[o];
                         u.push(i)
                     }
@@ -14875,7 +14875,8 @@
     
      function SaveResults(totalPointBet,totalPoint, received,bet,result){
         if(totalPointBet>0){
-        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(totalPointBet<=received?"Win":"Lose")+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
+            var difference=received-totalPointBet;
+        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(difference==0?"Break even":(difference<0?"Lose -$"+ -difference:"Win +$"+difference))+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
         var fdt= new FormData();
         fdt.append("totalPoint",totalPoint);
         fdt.append("totalPointBet",totalPointBet);

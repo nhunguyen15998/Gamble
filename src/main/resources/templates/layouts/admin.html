@@ -11,8 +11,7 @@
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="/assets/images/brand/favicon.ico">
     <!-- TITLE -->
-    <title>
-        WE | Administration</title>
+    <title th:text="${session.title}"></title>
     <!-- BOOTSTRAP CSS -->
     <link id="style" href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- STYLE CSS -->
@@ -1663,7 +1662,12 @@
                                     </a>
                                     <ul class="slide-menu">
                                         <li>
-                                            <a href="/admin/games/all" class="slide-item">Get all games</a>
+                                            <a href="/admin/games/all" class="slide-item">All games</a>
+                                        </li>
+                                    </ul>
+                                    <ul class="slide-menu">
+                                        <li>
+                                            <a href="/admin/games/statistical" class="slide-item">Statistical</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -1743,584 +1747,34 @@
                                     </a>
                                 </li>
                                
-                                <li class="slide">
+                                <!-- <li class="slide">
                                     <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
                                         <i class="side-menu__icon fa fa-drivers-license-o">  </i>
                                         <span class="side-menu__label">Wallets</span>
-                                        <!-- <i class="angle fe fe-chevron-right"> </i> -->
                                     </a>
-                                </li>
+                                </li> -->
                                 <li class="slide">
                                     <a class="side-menu__item" data-bs-toggle="slide" href="/admin/contacts/all">
                                         <i class="side-menu__icon fa fa-envelope-open-o">  </i>
                                         <span class="side-menu__label">Contact</span>
+                                        <span class="badge bg-pink side-badge" id="contact-count"></span>
                                         <!-- <i class="angle fe fe-chevron-right"> </i> -->
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="side-menu__item has-link" href="landing-page.html" target="_blank">
-                                        <i class="side-menu__icon fe fe-zap"> </i>
-                                        <span class="side-menu__label">
-                              Landing Page</span>
-                                        <span class="badge bg-green br-5 side-badge blink-text pb-1">
-                              New</span>
-                                    </a>
-                                </li>
+                               
                                 <li class="sub-category">
                                     <h3>
-                              Pre-build Pages</h3>
+                              Statistical</h3>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-layers">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Pages</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
+                                    <a class="side-menu__item" data-bs-toggle="slide" href="/admin/games/statistical">
+                                        <i class="side-menu__icon fa fa-line-chart">  </i>
+                                        <span class="side-menu__label">Statistics by game</span>
+                                        <!-- <i class="angle fe fe-chevron-right"> </i> -->
                                     </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Pages</a>
-                                        </li>
-                                        <li>
-                                            <a href="profile.html" class="slide-item">
-                                Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="editprofile.html" class="slide-item">
-                                Edit Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="notify-list.html" class="slide-item">
-                                Notifications List</a>
-                                        </li>
-                                        <li>
-                                            <a href="email-compose.html" class="slide-item">
-                                Mail-Compose</a>
-                                        </li>
-                                        <li>
-                                            <a href="email-inbox.html" class="slide-item">
-                                Mail-Inbox</a>
-                                        </li>
-                                        <li>
-                                            <a href="email-read.html" class="slide-item">
-                                Mail-Read</a>
-                                        </li>
-                                        <li>
-                                            <a href="gallery.html" class="slide-item">
-                                Gallery</a>
-                                        </li>
-                                        <li class="sub-slide">
-                                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                                <span class="sub-side-menu__label">
-                              Forms</span>
-                                                <i class="sub-angle fe fe-chevron-right">
-
-                            </i>
-                                            </a>
-                                            <ul class="sub-slide-menu">
-                                                <li>
-                                                    <a href="form-elements.html" class="sub-slide-item">
-                                Form Elements</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-layouts.html" class="sub-slide-item">
-                                Form Layouts</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-advanced.html" class="sub-slide-item">
-                                Form Advanced</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-editor.html" class="sub-slide-item">
-                                Form Editor</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-wizard.html" class="sub-slide-item">
-                                Form Wizard</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-validation.html" class="sub-slide-item">
-                                Form Validation</a>
-                                                </li>
-                                                <li>
-                                                    <a href="form-input-spinners.html" class="sub-slide-item">
-                                Form Input Spinners</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-slide">
-                                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                                <span class="sub-side-menu__label">
-                              Tables</span>
-                                                <i class="sub-angle fe fe-chevron-right">
-
-                            </i>
-                                            </a>
-                                            <ul class="sub-slide-menu">
-                                                <li>
-                                                    <a href="tables.html" class="sub-slide-item">
-                              Default table</a>
-                                                </li>
-                                                <li>
-                                                    <a href="datatable.html" class="sub-slide-item">
-                                Data Tables</a>
-                                                </li>
-                                                <li>
-                                                    <a href="edit-table.html" class="sub-slide-item">
-                                Edit Tables</a>
-                                                </li>
-                                                <li>
-                                                    <a href="extension-tables.html" class="sub-slide-item">
-                                Extension Tables</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="sub-slide">
-                                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                                <span class="sub-side-menu__label">
-                              Extension</span>
-                                                <i class="sub-angle fe fe-chevron-right">
-
-                            </i>
-                                            </a>
-                                            <ul class="sub-slide-menu">
-                                                <li>
-                                                    <a href="about.html" class="sub-slide-item">
-                                About Company</a>
-                                                </li>
-                                                <li>
-                                                    <a href="services.html" class="sub-slide-item">
-                                Services</a>
-                                                </li>
-                                                <li>
-                                                    <a href="faq.html" class="sub-slide-item">
-                                FAQS</a>
-                                                </li>
-                                                <li>
-                                                    <a href="terms.html" class="sub-slide-item">
-                                Terms</a>
-                                                </li>
-                                                <li>
-                                                    <a href="invoice.html" class="sub-slide-item">
-                                Invoice</a>
-                                                </li>
-                                                <li>
-                                                    <a href="pricing.html" class="sub-slide-item">
-                                Pricing Tables</a>
-                                                </li>
-                                                <li>
-                                                    <a href="settings.html" class="sub-slide-item">
-                                Settings</a>
-                                                </li>
-                                                <li>
-                                                    <a href="blog.html" class="sub-slide-item">
-                                Blog</a>
-                                                </li>
-                                                <li>
-                                                    <a href="blog-details.html" class="sub-slide-item">
-                                Blog Details</a>
-                                                </li>
-                                                <li>
-                                                    <a href="blog-post.html" class="sub-slide-item">
-                                Blog Post</a>
-                                                </li>
-                                                <li>
-                                                    <a href="empty.html" class="sub-slide-item">
-                                Empty Page</a>
-                                                </li>
-                                                <li>
-                                                    <a href="construction.html" class="sub-slide-item">
-                                Under Construction</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="switcher-1.html" class="slide-item">
-                                Switcher</a>
-                                        </li>
-                                    </ul>
                                 </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-shopping-bag">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              E-Commerce</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              E-Commerce</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop.html" class="slide-item">
-                                Shop</a>
-                                        </li>
-                                        <li>
-                                            <a href="shop-description.html" class="slide-item">
-                                Product Details</a>
-                                        </li>
-                                        <li>
-                                            <a href="cart.html" class="slide-item">
-                                Shopping Cart</a>
-                                        </li>
-                                        <li>
-                                            <a href="add-product.html" class="slide-item">
-                                Add Product</a>
-                                        </li>
-                                        <li>
-                                            <a href="wishlist.html" class="slide-item">
-                                Wishlist</a>
-                                        </li>
-                                        <li>
-                                            <a href="checkout.html" class="slide-item">
-                                Checkout</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-folder">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              File Manager</span>
-                                        <span class="badge bg-pink side-badge">
-                              4</span>
-                                        <i class="angle fe fe-chevron-right hor-angle">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              File Manager</a>
-                                        </li>
-                                        <li>
-                                            <a href="file-manager.html" class="slide-item">
-                                File Manager</a>
-                                        </li>
-                                        <li>
-                                            <a href="filemanager-list.html" class="slide-item">
-                                File Manager List</a>
-                                        </li>
-                                        <li>
-                                            <a href="filemanager-details.html" class="slide-item">
-                                File Details</a>
-                                        </li>
-                                        <li>
-                                            <a href="file-attachments.html" class="slide-item">
-                                File Attachments</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="sub-category">
-                                    <h3>
-                              Misc Pages</h3>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-users">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Authentication</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Authentication</a>
-                                        </li>
-                                        <li>
-                                            <a href="login.html" class="slide-item">
-                                Login</a>
-                                        </li>
-                                        <li>
-                                            <a href="register.html" class="slide-item">
-                                Register</a>
-                                        </li>
-                                        <li>
-                                            <a href="forgot-password.html" class="slide-item">
-                                Forgot Password</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="slide-item">
-                                Lock screen</a>
-                                        </li>
-                                        <li class="sub-slide">
-                                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                                <span class="sub-side-menu__label">
-                              Error Pages</span>
-                                                <i class="sub-angle fe fe-chevron-right">
-
-                            </i>
-                                            </a>
-                                            <ul class="sub-slide-menu">
-                                                <li>
-                                                    <a href="400.html" class="sub-slide-item">
-                                400</a>
-                                                </li>
-                                                <li>
-                                                    <a href="401.html" class="sub-slide-item">
-                                401</a>
-                                                </li>
-                                                <li>
-                                                    <a href="403.html" class="sub-slide-item">
-                                403</a>
-                                                </li>
-                                                <li>
-                                                    <a href="404.html" class="sub-slide-item">
-                                404</a>
-                                                </li>
-                                                <li>
-                                                    <a href="500.html" class="sub-slide-item">
-                                500</a>
-                                                </li>
-                                                <li>
-                                                    <a href="503.html" class="sub-slide-item">
-                                503</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-cpu">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Submenu items</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Submenu items</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" class="slide-item">
-                              Submenu-1</a>
-                                        </li>
-                                        <li class="sub-slide">
-                                            <a class="sub-side-menu__item" data-bs-toggle="sub-slide" href="javascript:void(0)">
-                                                <span class="sub-side-menu__label">
-                              Submenu-2</span>
-                                                <i class="sub-angle fe fe-chevron-right">
-
-                            </i>
-                                            </a>
-                                            <ul class="sub-slide-menu">
-                                                <li>
-                                                    <a class="sub-slide-item" href="javascript:void(0)">
-                              Submenu-2.1</a>
-                                                </li>
-                                                <li>
-                                                    <a class="sub-slide-item" href="javascript:void(0)">
-                              Submenu-2.2</a>
-                                                </li>
-                                                <li class="sub-slide2">
-                                                    <a class="sub-side-menu__item2" href="javascript:void(0)" data-bs-toggle="sub-slide2">
-                                                        <span class="sub-side-menu__label2">
-                              Submenu-2.3</span>
-                                                        <i class="sub-angle2 fe fe-chevron-right">
-
-                            </i>
-                                                    </a>
-                                                    <ul class="sub-slide-menu2">
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="sub-slide-item2">
-                              Submenu-2.3.1</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="sub-slide-item2">
-                              Submenu-2.3.2</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:void(0)" class="sub-slide-item2">
-                              Submenu-2.3.3</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li>
-                                                    <a class="sub-slide-item" href="javascript:void(0)">
-                              Submenu-2.4</a>
-                                                </li>
-                                                <li>
-                                                    <a class="sub-slide-item" href="javascript:void(0)">
-                              Submenu-2.5</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="sub-category">
-                                    <h3>
-                              General</h3>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-map-pin">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Maps</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Maps</a>
-                                        </li>
-                                        <li>
-                                            <a href="maps1.html" class="slide-item">
-                              Leaflet Maps</a>
-                                        </li>
-                                        <li>
-                                            <a href="maps2.html" class="slide-item">
-                              Mapel Maps</a>
-                                        </li>
-                                        <li>
-                                            <a href="maps.html" class="slide-item">
-                              Vector Maps</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-bar-chart-2">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Charts</span>
-                                        <span class="badge bg-secondary side-badge">
-                              6</span>
-                                        <i class="angle fe fe-chevron-right hor-angle">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-chartist.html" class="slide-item">
-                              Chart Js</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-flot.html" class="slide-item">
-                                Flot Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-echart.html" class="slide-item">
-                                ECharts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-morris.html" class="slide-item">
-                                Morris Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-nvd3.html" class="slide-item">
-                                Nvd3 Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="charts.html" class="slide-item">
-                                C3 Bar Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-line.html" class="slide-item">
-                                C3 Line Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-donut.html" class="slide-item">
-                                C3 Donut Charts</a>
-                                        </li>
-                                        <li>
-                                            <a href="chart-pie.html" class="slide-item">
-                                C3 Pie charts</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-bs-toggle="slide" href="javascript:void(0)">
-                                        <i class="side-menu__icon fe fe-wind">
-
-                            </i>
-                                        <span class="side-menu__label">
-                              Icons</span>
-                                        <i class="angle fe fe-chevron-right">
-
-                            </i>
-                                    </a>
-                                    <ul class="slide-menu">
-                                        <li class="side-menu-label1">
-                                            <a href="javascript:void(0)">
-                              Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons.html" class="slide-item">
-                                Font Awesome</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons2.html" class="slide-item">
-                                Material Design Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons3.html" class="slide-item">
-                                Simple Line Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons4.html" class="slide-item">
-                                Feather Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons5.html" class="slide-item">
-                                Ionic Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons6.html" class="slide-item">
-                                Flag Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons7.html" class="slide-item">
-                                pe7 Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons8.html" class="slide-item">
-                                Themify Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons9.html" class="slide-item">
-                              Typicons Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons10.html" class="slide-item">
-                              Weather Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="icons11.html" class="slide-item">
-                              Bootstrap Icons</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                               
+                                
                             <div class="slide-right" id="slide-right">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
                                     <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z">
@@ -3166,16 +2620,35 @@
             <!-- Country-selector modal-->
             <!-- FOOTER -->
             <footer class="footer" th:fragment="footer">
+                
+                <script src="/assets/js/jquery.min.js"></script>
+                <script>
+                   $(window).on('load',function(){
+                    $.ajax({
+                                type: "POST",
+                                url: "/admin/contacts/getCountPending",
+                                async:false,
+                                processData: false,
+                                contentType: false,
+                                success: function (data) {
+                                    $("#contact-count").html(data>0?data:"");
+                                }
+                                
+                        })
+                    })
+                </script>
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 text-center">
                             Copyright © <span id="year">
           2022</span>
-                            <a href="javascript:void(0)">
-          Sash</a> . Designed with <span class="fa fa-heart text-danger">
+                            <a href="/"> <span class="fa fa-heart text-danger">
 
-          </span> by <a href="javascript:void(0)">
-            Spruko </a> All rights reserved. </div>
+                            </span>
+          Game Entertainment</a> <span class="fa fa-heart text-danger">
+
+          </span>  <a href="javascript:void(0)">
+             </a> All rights reserved. </div>
                     </div>
                 </div>
             </footer>

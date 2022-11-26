@@ -23,9 +23,11 @@ public class FileUploadUtil {
     }
     
     public static void deleteFile(String filename) throws IOException {
+        if(!filename.isBlank()){
         Path fileToDeletePath = Paths.get("src/main/resources/static"+filename);
         if (Files.exists(fileToDeletePath)) {
              Files.delete(fileToDeletePath);
         }
+    }
     }
 }

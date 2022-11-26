@@ -107,6 +107,14 @@ public class BlogService extends BaseService<Blog> implements BlogServiceInterfa
         }
         return false;
     }
+    public boolean checkUrlSlug(String url, int bID){
+        List<DataMapper> conditions = new ArrayList<DataMapper>();
+        if(bID>0)
+        conditions.add(DataMapper.getInstance("", "blogs.id", "<>", String.valueOf(bID), " and"));
+        conditions.add(DataMapper.getInstance("", "url_slug", "=", url.replaceAll(" ", ""), ""));
+        if(this.getAll(null, conditions, null, null, null, null).size()>0) return false;
+        return true;
+    }
     //end crud
     public Map<String, Object> getBlogById(String[] selects, int id){
         try {           

@@ -79,7 +79,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
                             <option th:each="cate, row : ${cates}" 
                                     th:value="${cate.id}" 
                                     th:selected="${cate.url_slug == currentCate ?: cate.id == 1}"
-                                    th:text="${cate.name}">
+                                    th:text="${cate.name}" style="background-color:#8677d3; opacity: 0.2;">
                             </option>
                         </select>
                     </div>

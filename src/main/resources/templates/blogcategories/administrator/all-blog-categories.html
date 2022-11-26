@@ -1,5 +1,6 @@
 <htmllang="en" xmlns:th="http://www.thymeleaf.org"  >
 <head th:replace="layouts/admin :: importLibs">
+
 </head>
 <body class="app sidebar-mini ltr transparent-mode bg-img1" data-new-gr-c-s-check-loaded="14.1071.0" data-gr-ext-installed="" >
   <div class="horizontalMenucontainer">
@@ -572,7 +573,7 @@
       $("#msg").css("display", "block");
       $("#msg").delay(4000).fadeOut(300);
   }
-  if(localStorage.getItem('sts-bc').length>0){
+  if(localStorage.getItem('sts-bc')!=null&&localStorage.getItem('sts-bc').length>0){
       var boo = localStorage.getItem('sts-bc');
       $("#msg").html(boo==1?'Deleted successfully!':'Deleted failed. There are blog(s) that use this blog cate.');
       $("#msg").addClass(boo==1?'alert-success':(boo==0?'alert-danger':''));

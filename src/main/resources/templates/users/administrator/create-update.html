@@ -118,7 +118,7 @@
 
                                                 </div>
 
-                                                <div class="col-xl-4 mb-3" th:if="(${session.user_id}==${userMapper.user_id}) OR ${formType==0}">
+                                                <div class="col-xl-4 mb-3" th:if="${formType==0 OR userType==0}">
                                                     <label for="validationCustom04">Status</label>
                                                     <select class="form-control select2" name="status" id="validationCustom04">
                                                       <option th:each="stt : ${statusList}" 

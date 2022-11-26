@@ -2,7 +2,9 @@ package com.futech.entertainment.packages.baucua.controllers.web;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,8 @@ import com.futech.entertainment.packages.baucua.modelMappers.BauCuaHistory;
 import com.futech.entertainment.packages.baucua.modelMappers.BauCuaUserHistory;
 import com.futech.entertainment.packages.baucua.services.interfaces.BauCuaHistoryServiceInterface;
 import com.futech.entertainment.packages.baucua.services.interfaces.BauCuaUserHistoryServiceInterface;
+import com.futech.entertainment.packages.core.utils.DataMapper;
+import com.futech.entertainment.packages.games.services.GameHistoryUserService;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
 import com.futech.entertainment.packages.wheels.services.interfaces.WheelServiceInterface;
@@ -38,7 +42,7 @@ public class BauCuaController {
     private WheelServiceInterface wheelServiceInterface;
     @Autowired
     private UserWalletServiceInterface userWalletServiceInterface;
-    
+    @Autowired GameHistoryUserService gameHistoryUserService;
     @PostMapping("/games/baucua/authentication")
     public ResponseEntity<Map<String, Object>> wheelGame(Model model, HttpSession session){
         Map<String, Object> obj = new HashMap<String,Object>();
@@ -60,16 +64,19 @@ public class BauCuaController {
     @PostMapping("/saveResults")
     public @ResponseBody Boolean SaveResults( Double totalPointBet,Double totalPoint, Double received, String bet, String result, HttpSession session){
       try {
-        // var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));
-        // var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received>0?1:0));
-        // if(bHistory!=null && createUserHistory ){
-        //     var old = userWalletServiceInterface.getWalletByUser(session.getAttribute("user_id").toString());
-        //     UserWallet u = new UserWallet();
-        //     u.setId(Integer.parseInt(old.get("id").toString()));
-        //     u.setpre_amount(Double.parseDouble(old.get("cur_amount").toString()));
-        //     u.setcur_amount(totalPoint);
-        //     userWalletServiceInterface.update(u);
-        // }
+        var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));                            // 0 break even=== 1 win === -1 lose
+        var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received-totalPointBet==0?0:(received-totalPointBet<0?-1:1)));
+       List<DataMapper> cond = new ArrayList<DataMapper>();
+       cond.add(DataMapper.getInstance("", "h.created_at", ">=", "2022-11-22", ""));
+        gameHistoryUserService.getGameHistoryByEachUser(cond);
+        if(bHistory!=null && createUserHistory ){
+            var old = userWalletServiceInterface.getWalletByUser(session.getAttribute("user_id").toString());
+            UserWallet u = new UserWallet();
+            u.setId(Integer.parseInt(old.get("id").toString()));
+            u.setpre_amount(Double.parseDouble(old.get("cur_amount").toString()));
+            u.setcur_amount(totalPoint);
+            userWalletServiceInterface.update(u);
+        }
         System.out.println("\nbet:"+totalPointBet+" ====== received:"+received+"====== total:"+totalPoint+"\nbetObject:"+bet+"===== result:"+result);
         return true;
       } catch (Exception e) {

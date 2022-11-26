@@ -15,4 +15,5 @@ public interface BlogServiceInterface extends BaseServiceInterface<Blog> {
     public Map<String, Object> getBlogById(String[] selects, int id);
     public boolean createBlog(BlogMapper blogMapper);
     public boolean updateBlog(BlogMapper blogMapper);
+    public boolean checkUrlSlug(String url, int bID);
 }

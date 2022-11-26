@@ -588,9 +588,9 @@
 
       function checkValue(ele){
         var str=$(ele).val();
-        var double =(parseFloat((str.replace('X','')))||parseFloat((str.replace('+','')))||parseFloat((str.replace('÷',''))));
+        var double =(parseFloat((str.replace('X','')))||parseFloat((str.replace('+','')))||parseFloat((str.replace('/',''))));
         var dot = (!str.includes('0')||(str.includes('.0'))||(str.includes('0')&&str.length==2))?true:(str.includes('0.'))
-          if(!(((str.includes("+")||str.includes("÷")||str.includes("X"))&&double&&dot)||str=="NEXT")){
+          if(!(((str.includes("+")||str.includes("/")||str.includes("X"))&&double&&dot)||str=="NEXT")){
             $(ele).parent().find('label').html('Value is incorrect');
           }else{
             $(ele).parent().find('label').html('');

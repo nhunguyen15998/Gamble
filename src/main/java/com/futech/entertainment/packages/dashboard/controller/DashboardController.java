@@ -32,6 +32,8 @@ public class DashboardController {
     @GetMapping("/admin/dashboard")
     public String Admin(HttpSession session, Model model){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "Dashboard");
+
         //Total player compared to last month
         // List<DataMapper> lsCond = new ArrayList<DataMapper>();
         // lsCond.add(DataMapper.getInstance("", "created_at", ">=",LocalDate.now().minusMonths(1).toString(), null));

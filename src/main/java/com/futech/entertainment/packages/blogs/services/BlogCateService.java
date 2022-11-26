@@ -57,6 +57,7 @@ public class BlogCateService extends BaseService<BlogCate> implements BlogCateSe
             BlogCate upBlogCate = new BlogCate();
             upBlogCate.setId(blogCateMapper.getId());
             upBlogCate.setName(blogCateMapper.getName());
+            upBlogCate.setUrl_slug(blogCateMapper.getUrl_slug());
             upBlogCate.setStatus(blogCateMapper.getStatus());
             var updated = this.update(upBlogCate);
 
@@ -67,6 +68,14 @@ public class BlogCateService extends BaseService<BlogCate> implements BlogCateSe
             e.printStackTrace();
         }
         return false;
+    }
+    public boolean checkUrlSlug(String url, int bID){
+        List<DataMapper> conditions = new ArrayList<DataMapper>();
+        if(bID>0)
+        conditions.add(DataMapper.getInstance("", "blog_cates.id", "<>", String.valueOf(bID), " and"));
+        conditions.add(DataMapper.getInstance("", "url_slug", "=", url.replaceAll(" ", ""), ""));
+        if(this.getAll(null, conditions, null, null, null, null).size()>0) return false;
+        return true;
     }
     //end crud
     public Map<String, Object> getBlogCateById(String[] selects, int id){

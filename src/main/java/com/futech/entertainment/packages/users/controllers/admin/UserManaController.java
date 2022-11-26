@@ -72,7 +72,7 @@ public class UserManaController {
     @GetMapping("/admin/users/all")
     public String ViewUser(Model mdl,@RequestParam int type, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
-
+        session.setAttribute("title", "All | Users");
         mdl.addAttribute("users",LoadData(1,"", 10,type) );
         mdl.addAttribute("is_player",true);
         mdl.addAttribute("is_admin",type);
@@ -83,6 +83,7 @@ public class UserManaController {
     @GetMapping("/admin/users/create")
     public String showCreateForm(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "Create | Users");
 
         mdl.addAttribute("userMapper", new UserMapper());
         mdl.addAttribute("formType", 0);
@@ -93,6 +94,7 @@ public class UserManaController {
     {
         try{
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            session.setAttribute("title", "My profile | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
             return "users/administrator/my-profile";
@@ -146,6 +148,7 @@ public class UserManaController {
     {
         try{
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            session.setAttribute("title", "Update | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(id));
             model.addAttribute("formType", 1);
