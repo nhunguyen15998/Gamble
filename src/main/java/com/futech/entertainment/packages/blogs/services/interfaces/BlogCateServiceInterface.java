@@ -14,5 +14,5 @@ public interface BlogCateServiceInterface extends BaseServiceInterface<BlogCate>
     public boolean createBlog(BlogCateMapper blogCateMapper);
     public  Map<String, Object> getBlogCateById(String[] selects, int id);
     public boolean updateBlogCate(BlogCateMapper blogCateMapper);
-   
+    public boolean checkUrlSlug(String url, int bID);
 }

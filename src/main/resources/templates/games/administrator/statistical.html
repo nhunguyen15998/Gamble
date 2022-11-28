@@ -1,5 +1,9 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <htmllang="en" xmlns:th="http://www.thymeleaf.org"  >
 <head th:replace="layouts/admin :: importLibs">
+  
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body class="app sidebar-mini ltr transparent-mode bg-img1" data-new-gr-c-s-check-loaded="14.1071.0" data-gr-ext-installed="">
   <div class="horizontalMenucontainer">
@@ -20,7 +24,7 @@
                         <!-- PAGE-HEADER -->
                     <div class="page-header">
                         <h1 class="page-title">
-                    Blogs</h1>
+                    Games</h1>
                     <div>
                         <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -28,7 +32,7 @@
                     Home</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page">
-                    Blogs</li>
+                    Games</li>
                     </ol>
                     </div>
                     </div>
@@ -37,7 +41,7 @@
                         <div class="col-12 col-sm-12">
                         <div class="card">
                         <div class="card-header">
-                        <h3 class="card-title mb-0">Information
+                        <h3 class="card-title mb-0">Statistical
                        </h3>
                       </div>
                        <div class="card-body pt-4">
@@ -46,12 +50,12 @@
                         <div class="panel panel-primary">
                         <div class="tab-menu-heading border-0 p-0">
                         <div class="tabs-menu1">
-                       <div class="alert" id="msg" style="display: none; margin-bottom: 3vh;"  th:text="${successMsg}?:${errorMsg}" th:classappend="${successMsg}?'alert-success':(${errorMsg}?'alert-danger':'')"></div>
+                       <div class="alert" id="msg" style="display: none;"  th:text="${successMsg}?:${errorMsg}" th:classappend="${successMsg}?'alert-success':(${errorMsg}?'alert-danger':'')"></div>
                         <!-- Tabs -->
                        
                       </div>
                       </div>
-                       <div class="panel-body tabs-menu-body border-0 pt-0">
+                       <div class="panel-body tabs-menu-body border-0 p-0">
                         <div class="tab-content">
                         <div class="tab-pane active">
                         <div class="table-responsive">
@@ -59,107 +63,73 @@
                        <div class="row">
                        <div class="col-sm-12 col-md-6">
                        <div class="dataTables_length" id="data-table_length">
-                       <label>
-                       Show <select class="form-select" style="width:60px;font-size:15px;padding:0 5px; text-align:center" id="take-record">
-                            <option value="10" style="background-color:#8677d3; opacity: 0.2;">10</option>
-                            <option value="20" style="background-color:#8677d3; opacity: 0.2;">20</option>
-                            <option value="40" style="background-color:#8677d3; opacity: 0.2;">40</option>
-                            <option value="100" style="background-color:#8677d3; opacity: 0.2;">100</option>
-                     </select>
-                        entries</label>
-                       
+                        <label>
+                          Game: <select class="form-select" style="width:100px;font-size:15px;padding:0 5px; text-align:center" id="take-game">
+                               <option value="-1" style="background-color:#8677d3; opacity: 0.2;">All</option>
+                               <option value="1" style="background-color:#8677d3; opacity: 0.2;">Lucky Wheel</option>
+                               <option value="2" style="background-color:#8677d3; opacity: 0.2;">Bau Cua</option>
+                        </select>
+                          </label>
+                        <label style="margin-left:1.5vw ;">
+                            From: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-from"/></label>
+                          <label style="margin-left:1.5vw ;">
+                            To: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-to"/></label>
+
                      </div>
                      
                     </div>
                       <div class="col-sm-12 col-md-6">
                        <div id="data-table_filter" class="dataTables_filter">
-                        <label style="width:450px">
-                         <input type="text" class="form-control" style="width: 75%;float:right;" placeholder="Search by title, url slug, author name,..." id="search-by-cond" aria-controls="data-table">
-                         <span style="width:11%;float:right" onclick="ClearFilter();"><li  class="icons-list-item" style="height:70%;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
+                        
+                        <label style="width:100%">
+                          <span style="width:10%;float:left;" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;padding:10px;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
                          
-                         <span style="width:11%;float:right;height:50px;" >
-                          <li class="icons-list-item" style="height:80%;cursor: pointer;" onclick="window.location.href='/admin/blogs/create'"><i class="fa fa-plus" style="pointer-events: none;"></i></li>
-                           </span> 
+                         <input type="text" class="form-control" style="width: 50%;float:left;" placeholder="Search by username" id="search-by-cond" aria-controls="data-table">
+                         <label style="width: 20%;float:left;margin-left: 1vw;">
+                          Sort by: <select class="form-select" style="font-size:15px;padding:0 5px; text-align:center" id="take-sort">
+                               <option value="1" style="background-color:#8677d3; opacity: 0.2;">Win -> Lose</option>
+                               <option value="0" style="background-color:#8677d3; opacity: 0.2;">Lose -> Win</option>
+                        </select>
+                          </label>
                         </label>
-                     </div>
-                     </div>
-                     </div>
-                      <div class="row">
-                       <div class="col-sm-12">
-                       <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
-                        <thead class="border-top">
-                       <tr role="row">
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 15.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
-                        #</th>
-                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
-                        Title</th>
-                       <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Date: activate to sort column ascending" style="width: 89.2px;">
-                        Blog category</th>
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Amount" style="width: 99.7875px;">
-                        Created time</th>
-                       <th class="bg-transparent border-bottom-0 sorting_disabled" rowspan="1" colspan="1" aria-label=" Payment Mode" style="width: 139.038px;">
-                        Author</th>
-                       <th class="bg-transparent border-bottom-0 sorting" style="width: 67.7375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">
-                       Status</th>
-                       <th class="bg-transparent border-bottom-0 sorting" style="width: 51.6375px;" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">
-                       Action</th>
-                     </tr>
-                      </thead>
-                        <tbody>
-                        <!-- <tr th:each="b, row : ${blogs}" class="border-bottom odd table-item">
-                          <td class="text-center">
-                            <div class="mt-0 mt-sm-2 d-block">
-                            <h6 class="mb-0 fs-14 fw-semibold" th:text="${(row.index)+1}">
-                            </h6>
-                          </div>
-                      </td>
-                       <td>
-                        <div class="d-flex">
+                        
                       
-                        <div class="ms-3 mt-0 mt-sm-2 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.title}"></h6>
-                      </div>
-                      </div>
-                      </td>
-                       
-                       <td>
-                       <span class="mt-sm-2 d-block" th:text="${b.blogCate}">1</span>
-                     </td>
-                       <td>
-                       <span class="fw-semibold mt-sm-2 d-block" th:text="${b.created_at}"></span>
-                      </td>
-                       <td>
-                        <div class="d-flex">
-                        <div class="mt-0 mt-sm-3 d-block">
-                        <h6 class="mb-0 fs-14 fw-semibold" th:text="${b.author_name}"></h6>
-                      </div>
-                      </div>
-                      </td>
-                       <td>
-                        <div class="mt-sm-1 d-block">
-                        <span class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${b.status==1?'text-success':''}" th:text="${b.status==1?'Activated':'Deactivated'}">
-                       </span>
-                      </div>
-                      </td>
-                       <td>
-                        <div class="g-2">
-                        <a th:href="@{'/admin/blogs/update?id='+${b.id}}" class="btn text-primary btn-sm" data-bs-original-title="Edit">
-                       <span class="fe fe-edit fs-14">
-       
-                      </span>
-                     </a>
-                     <span class="btn text-danger btn-sm" data-bs-original-title="Delete">
-                      <span class="fe fe-trash-2 fs-14">
-                      </span>
-                    </span>
-                      </div>
-                      </td>
-                     </tr> -->
-                        </tbody>
-                       </table>
+                     </div>
+                     </div>
+                     </div>
+                     
+                      <div class="card-body p-0">
+                       <div class="col-xl-8 mb-3 p-0 pt-1" style="float:left;min-height:500px;height: auto;">
+                        <label>Total profit: <span  class="badge  rounded-pill p-2 px-3" id="totalProfit" style="font-size:13px"></span></label>
+
+                        <div id="chartContainer" style="height: inherit; width: 100%;"></div>
+                        
                         </div>
+
+                        <div class="col-xl-4 mb-3 pl-3" style="float:left;min-height:500px;">
+                        <label><span  class="badge bg-success-transparent rounded-pill p-2 px-3 text-error" style="font-size:13px">Top 100 users: </span></label>
+
+                          <div class="col-sm-12 p-0">
+                            <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
+                             <thead class="border-top">
+                            <tr role="row">
+                            <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 15.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
+                             #</th>
+                            <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
+                             user</th>
+                            <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                             Total</th>
+                           
+                          </tr>
+                           </thead>
+                             <tbody>
+                            </tbody>
+                            </table>
+                             </div>
+                     <!-- top user -->
                         </div>
-                        <div class="row">
+                    </div>
+                        <div class="row" style="float: right;">
                           <div class="col-sm-12 col-md-12">
                               <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite"></div>
                           </div>
@@ -168,7 +138,7 @@
                                   <ul class="pagination" id="paginations">
                                     <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span>
                                     </li>
-                                    <th:block th:each="page : ${#numbers.sequence(1, paging==0?1:paging)}">
+                                    <!-- <th:block th:each="page : ${#numbers.sequence(1, paging==0?1:paging)}">
                                      
                                       <li class="paginate_button page-item active" data-page="1" th:if="${page==1}">
                                         <span class="page-link">1</span>
@@ -176,7 +146,7 @@
                                     <li class="paginate_button page-item" th:if="${page!=1}" th:data-page="'page-'+${page}">
                                       <span class="page-link" th:text="${page}"></span>
                                     </li>
-                                    </th:block>
+                                    </th:block> -->
                                     <li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span>
                                     </li>
                                   </ul>
@@ -566,55 +536,210 @@
         <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
 </body>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<script>
-  var pages=1;
+<script src="/js/jquery.canvasjs.min.js"></script>
+<script type="text/javascript">
+    var pages=1;
   var pageControl = parseInt('[[${paging}]]');
-  $(window).on('load',function(){
-    if($('#msg').html().length>0){
-      $("#msg").css("display", "block");
-      $("#msg").delay(6000).fadeOut(300);
-  }
-    if(localStorage.getItem('sts-b')!=null&&localStorage.getItem('sts-b').length>0){
-      var boo = localStorage.getItem('sts-b');
-      $("#msg").html(boo==1?'Deleted successfully!':'Deleted failed');
-      $("#msg").addClass(boo==1?'alert-success':(boo==0?'alert-danger':''));
-      $("#msg").css("display", "block");
-     localStorage.removeItem('sts-b')
-    }
-    
-    $("#msg").delay(6000).fadeOut(300);
-  })
-  function ClearFilter() {
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var firstDay = new Date(y, m, 1);
+var lastDay = new Date(y, m + 1, 0);
+function ClearFilter() {
         $("#search-by-cond").val("");
-        $("#take-record").val(10);
-        SearchFilter(1);
+        $("#take-sort").val(1);
+        $("#take-game").val(-1);
+        $("#take-from").val(moment(firstDay).format("yyyy-MM-DD"));
+        $("#take-to").val(moment(lastDay).format("yyyy-MM-DD"));
+
+        SearchFilter(1, false);
     }
-    $('body').delegate('.btn-delete','click', function () {
-       if(window.confirm('Are you sure to make this change?')){
-        var formDT = new FormData()
-        formDT.append("id",$(this).attr("id").replace("obj-",""))
-        $.ajax({
+  window.onload = function() {
+ $("#take-from").val(moment(firstDay).format("yyyy-MM-DD"));
+ $("#take-to").val(moment(lastDay).format("yyyy-MM-DD"));
+
+  
+ }
+ $("#search-by-cond").on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) 
+          SearchFilter(1,true);
+      });
+ $("#take-from").on('change',function(){
+          SearchFilter(1,false);
+      })
+ $("#take-to").on('change',function(){
+    SearchFilter(1,false);
+      })
+  $("#take-sort").on('change',function(){
+    SearchFilter(1,true);
+  })
+ $("#take-game").on('change',function(){
+    SearchFilter(1,false);
+ })
+function SearchFilter(pages,boo){
+  var game = $("#take-game").val();
+  var from = $("#take-from").val();
+  var to = $("#take-to").val();
+  var sort = $("#take-sort").val();
+  var cond = $("#search-by-cond").val();
+  if(from>to&&from!=''&&to!=''){
+    $("#take-from").val(to)
+    $("#take-to").val(from)
+  }
+  if(from==''&&to==''){
+    from=moment(firstDay).format("yyyy-MM-DD");
+    to=moment(lastDay).format("yyyy-MM-DD");
+  }
+
+  LoadStatis(pages,from, to, game,cond,sort,boo)
+}
+//boo:for load user (true) or render chart (false)
+ function LoadStatis(p,from, to, game,cond,sort, boo){
+   //DATA FOR CHART
+ var ft = new FormData()
+    ft.append("p",p)
+    ft.append("dateFrom",from)
+    ft.append("dateTo",to)
+    ft.append("gameid",game)
+    ft.append("cond",cond)
+    ft.append("sort",sort)
+    ft.append("take",10)
+  //CONFIG CHART
+  if(boo==false){
+  var dataPoints = [];
+  
+ var chart = new CanvasJS.Chart("chartContainer", {
+   animationEnabled: true,
+   zoomEnabled: true,
+   title: {
+     text: "Revenue for the period: "+moment(from).format("DD/MM/yyyy")+ ' to '+moment(to).format("DD/MM/yyyy")
+   },
+   axisX: {
+     crosshair: {
+       enabled: true,
+       snapToDataPoint: true,
+       valueFormatString: "DD MMM"
+     }
+   },
+   axisY: {
+     title: " USD ",
+     crosshair: {
+       enabled: true,
+       snapToDataPoint: true,
+       valueFormatString: "$#,##0.00"
+     }
+   },
+   data: [{
+     type: "line",
+     xValueFormatString: "DD MMM",
+     yValueFormatString: "$#,##0.00",
+     xValueType: "dateTime",
+     dataPoints: dataPoints
+   }]
+ });
+
+    var ls= $.ajax({
               type: "POST",
-              url: "/admin/blogs/delete",
-              data: formDT,
+              url: "/admin/games/getStatis/",
+              data:ft,
+              async: false,
               processData: false,
               contentType: false,
               success: function (data) {
-                localStorage.setItem('sts-b', data);
-                window.location.href="/admin/blogs/all"
-              },
-              error: function(data){
-                localStorage.setItem('sts-b', data);
-
-                window.location.href="/admin/blogs/all"
+               return data;
 
               }
-       })
+    }).responseJSON;
+    var ls1= $.ajax({
+              type: "POST",
+              url: "/admin/games/getStatisTotal/",
+              data:ft,
+              async: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+               return data;
+
+              }
+    }).responseJSON;
+    $("#totalProfit").removeClass('text-success bg-success-transparent')
+    $("#totalProfit").removeClass('text-danger bg-danger-transparent')
+    $("#totalProfit").addClass(ls1[0].y>=0?'text-success bg-success-transparent':'text-danger bg-danger-transparent');
+    $("#totalProfit").html(ls1[0].y==null?'No data':ls1[0].y+" USD");
+    console.log(JSON.stringify(ls1))
+//RENDER CHART
+    if(ls.length>0){
+    for(var i=0; i<ls.length;i++){
+              dataPoints.push({
+                x: new Date(ls[i].x),
+                y: ls[i].y
+              });
+            }
       }
+
+    console.log(JSON.stringify(dataPoints))
+   chart.render();
+    }
+    $.ajax({
+              type: "POST",
+              url: "/admin/games/all/LoadDataStatis",
+              data:ft,
+              async: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                $("#data-table").find('tbody').empty();
+                if(data==null)$("#data-table").append('<tr class="border-bottom odd table-item">No data</tr>') 
+                else {
+                    var row = p == 1 ? 1 : 10 * (p - 1) + 1;
+
+                    for(var i =0; i<data.length;i++){
+                      $("#data-table").append('<tr class="border-bottom odd table-item"><td>'+row+'</td><td><a href="/admin/users/update?id='+data[i].userID+'&&type='+(data[i].userType==false?0:1)+'">'+data[i].userName+'</td><td class="'+(data[i].res>=0?'text-success bg-success-transparent':'')+'">'+(data[i].res>=0?'+ $':'- $')+(data[i].res<0?-data[i].res:data[i].res)+'</td></tr>')
+                        row++;
+                      }
+                    $.ajax({
+                      type: "POST",
+                      url: "/admin/games/GetCountStatis",
+                      data: ft,
+                      processData: false,
+                      contentType: false,
+                      success: function (data) {
+                          var fdt = new FormData();
+                          fdt.append("i", data);
+                          fdt.append("take", 10);
+                          $("#data-table_info").html("Showing "+(10>data?data:10)+" of "+data+" entries")
+
+                          $.ajax({
+                              type: "POST",
+                              url: "/admin/games/all/RowEvent",
+                              data: fdt,
+                              processData: false,
+                              contentType: false,
+                              success: function (dt) {
+                                  var r = document.getElementsByClassName('page-item');
+                                  while (r.length > 0) {
+                                      r[0].parentNode.removeChild(r[0]);
+                                  }
+                                  var strs = "";
+                                  pageControl=dt;
+                                  for (var j = 1; j <= dt; j++) {
+                                          strs += '<li class="paginate_button page-item '+(j == p?'active':'')+'" data-page="page-'+j+'"><span class="page-link">' + j + '</span></li>';
+    
+                                  }
+                                  $("#paginations").append(' <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span></li>' + strs + '<li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span></li>');
+    
+                              }
+                          });
+    
+                      }
+    
+                  });
+              }
+
+              }
     })
-  $('body').delegate('.page-item', 'click', function () {
+ }
+ $('body').delegate('.page-item', 'click', function () {
       var str = $(this).attr("data-page");
       var re = document.getElementsByClassName('page-item');
       for (var i = 0; i < re.length; i++) {
@@ -652,100 +777,7 @@
           }
           $(this).addClass('active');
       }
-      SearchFilter(pages,"");
+      SearchFilter(pages);
 
       });
-      function SearchFilter(page){
-        var cond = $("#search-by-cond").val();
-        var take = $("#take-record").val();
-        if(take<0||take>100) {take=10; $("#take-record").val(1);}
-        LoadData(page, cond, take);
-      }
-      $("#take-record").on('change',function(){
-          SearchFilter(1);
-      })
-      $("#search-by-cond").on('keyup', function (e) {
-      if (e.key === 'Enter' || e.keyCode === 13) 
-          SearchFilter(1);
-      });
-      function LoadData( page, cond,take) {
-      
-      if (page > 0 && page <=pages) {
-         
-          var formDT = new FormData();
-          formDT.append("p", page);
-          formDT.append("cond", cond);
-          formDT.append("take", take);
-          window.history.pushState({}, null, '/admin/blogs/all'+`?page=${page}`)
-          var row = page == 1 ? 1 : take * (page - 1) + 1;
-          $.ajax({
-              type: "POST",
-              url: "/admin/blogs/all/LoadDataBlog",
-              data: formDT,
-              processData: false,
-              contentType: false,
-              success: function (data) {
-                $("#data-table").find('tbody').empty();
-                  for (var i = 0; i < data.length; i++) {
-                        $("#data-table").append('<tr class="border-bottom odd table-item">'
-                          +'<td class="text-center">'
-                          +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
-                          +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].title+'</h6></div></div>'
-                          +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+data[i].blogCate+'</h6>'
-                          +'</div> </div> </td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold" >'+data[i].created_at+'</h6>'
-                          +'</div> </div> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+(data[i].author_name)+'</span>'
-                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Activated':'Deactivated')
-                          +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/blogs/update?id='+data[i].id+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
-                          +'<span class="fe fe-edit fs-14">  </span> </a>  <span class="btn text-danger btn-sm btn-delete" id="obj-'+data[i].id+'" data-bs-original-title="Delete">'
-                          +'<span class="fe fe-trash-2 fs-14" style="pointer-events:none"> </span> </span></div> </td> </tr>');
-                            row = row + 1;
-    
-    
-                          }
-    
-                  var f = new FormData();
-                  f.append("cond", cond);
-
-                  $.ajax({
-                      type: "POST",
-                      url: "/admin/blogs/all/GetCount/",
-                      data: f,
-                      processData: false,
-                      contentType: false,
-                      success: function (data) {
-                          var fdt = new FormData();
-                          fdt.append("i", data);
-                          fdt.append("take", take);
-                          $("#data-table_info").html("Showing "+(take>data?data:take)+" of "+data+" entries")
-
-                          $.ajax({
-                              type: "POST",
-                              url: "/admin/blogs/all/RowEvent/",
-                              data: fdt,
-                              processData: false,
-                              contentType: false,
-                              success: function (dt) {
-                                  var r = document.getElementsByClassName('page-item');
-                                  while (r.length > 0) {
-                                      r[0].parentNode.removeChild(r[0]);
-                                  }
-                                  var strs = "";
-                                  pageControl=dt;
-                                  for (var j = 1; j <= dt; j++) {
-                                          strs += '<li class="paginate_button page-item '+(j == page?'active':'')+'" data-page="page-'+j+'"><span class="page-link">' + j + '</span></li>';
-    
-                                  }
-                                  $("#paginations").append(' <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span></li>' + strs + '<li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span></li>');
-    
-                              }
-                          });
-    
-                      }
-    
-                  });
-              }
-          });
-        }
-      }
-    
-</script>
+    </script>

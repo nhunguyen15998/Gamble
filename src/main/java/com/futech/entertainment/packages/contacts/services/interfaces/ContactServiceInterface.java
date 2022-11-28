@@ -9,4 +9,5 @@ public interface ContactServiceInterface extends BaseServiceInterface<Contact>{
     public Contact clientCreateContact(ContactMapper contactMapper);
     public boolean updateContact( ContactSentMapper contact);
     public ContactSentMapper getContactByCaseNumber(String caseNumber);
+    public int getCountPending();
 }

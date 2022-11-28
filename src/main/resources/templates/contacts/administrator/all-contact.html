@@ -66,8 +66,15 @@
                             <option value="40" style="background-color:#8677d3; opacity: 0.2;">40</option>
                             <option value="100" style="background-color:#8677d3; opacity: 0.2;">100</option>
                      </select>
-                        entries</label>
-                       
+                        entries.</label>
+                        <label style="margin-left:3vw;">
+                          Filter by: <select class="form-select" style="width:100px;font-size:15px;padding:0 5px; text-align:center" id="take-status">
+                               <option value="-1" style="background-color:#8677d3; opacity: 0.2;">All</option>
+                               <option value="0" style="background-color:#8677d3; opacity: 0.2;">Pending</option>
+                               <option value="1" style="background-color:#8677d3; opacity: 0.2;">Read</option>
+                               <option value="2" style="background-color:#8677d3; opacity: 0.2;">Replied</option>
+                        </select>
+                           </label>
                      </div>
                      
                     </div>
@@ -581,6 +588,7 @@
   function ClearFilter() {
         $("#search-by-cond").val("");
         $("#take-record").val(10);
+        $("#take-status").val(-1);
         SearchFilter(1);
     }
   $('body').delegate('.page-item', 'click', function () {
@@ -627,17 +635,21 @@
       function SearchFilter(page){
         var cond = $("#search-by-cond").val();
         var take = $("#take-record").val();
+        var status = $("#take-status").val();
         if(take<0||take>100) {take=10; $("#take-record").val(1);}
-        LoadData(page, cond, take);
+        LoadData(page, cond, take, status);
       }
       $("#take-record").on('change',function(){
+          SearchFilter(1);
+      })
+      $("#take-status").on('change',function(){
           SearchFilter(1);
       })
       $("#search-by-cond").on('keyup', function (e) {
       if (e.key === 'Enter' || e.keyCode === 13) 
           SearchFilter(1);
       });
-      function LoadData( page, cond,take) {
+      function LoadData( page, cond,take, status) {
       
       if (page > 0 && page <=pages) {
           
@@ -645,6 +657,7 @@
           formDT.append("p", page);
           formDT.append("cond", cond);
           formDT.append("take", take);
+          formDT.append("status", status);
           
           var row = page == 1 ? 1 : take * (page - 1) + 1;
           $.ajax({
@@ -663,7 +676,7 @@
                           +'</div> </div> </td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].name+'</h6></div></div>'
                           +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+data[i].email+'</h6>'
                           +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+(data[i].message!=null?(data[i].message.length>13?(data[i].message.substring(0,13)+'...'):data[i].message):"")+'</span> </td><td><span class="fw-semibold mt-sm-2 d-block" style="font-size:13px">'+data[i].created_at+'</span>'
-                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Read':(data[i].status==2?'Replied':'Pending'))
+                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success  bg-success-transparent':(data[i].status==2?'':'text-warning bg-warning-transparent'))+'">'+(data[i].status==1?'Read':(data[i].status==2?'Replied':'Pending'))
                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/contacts/update?caseNumber='+data[i].case_number+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
                           +'<span class="fe fe-edit fs-14">  </span> </a>  </div> </td> </tr>')
                             row = row + 1;
@@ -673,6 +686,7 @@
     
                   var f = new FormData();
                   f.append("cond", cond);
+                  f.append("status", status);
 
                   $.ajax({
                       type: "POST",

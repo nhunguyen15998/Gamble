@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,7 +47,7 @@ public class BlogCategoriesManaController {
     @GetMapping("/admin/blog-categories/all")
     public String ViewBlog(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
-
+        session.setAttribute("title", "All | Blog categories");
         mdl.addAttribute("blogCates",LoadData(1,"", 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(""),10));
         return "blogcategories/administrator/all-blog-categories";
@@ -55,6 +56,7 @@ public class BlogCategoriesManaController {
     @GetMapping("/admin/blog-categories/create")
     public String showCreateForm(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "Create | Blog categories");
 
         mdl.addAttribute("blogCateMapper", new BlogCateMapper());
         mdl.addAttribute("formType", 0);
@@ -65,6 +67,7 @@ public class BlogCategoriesManaController {
     public String CreateUser(@Valid @ModelAttribute("blogCateMapper") BlogCateMapper blogCateMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model)  
     {
         try {
+            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), 0)) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
             
             if(bindingResult.hasErrors()){
                 model.addAttribute("blogCateMapper", blogCateMapper);
@@ -89,6 +92,7 @@ public class BlogCategoriesManaController {
     {
         try{
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            session.setAttribute("title", "Update | Blog categories");
 
             model.addAttribute("blogCateMapper", getBlogCateMapperByID(id));
             model.addAttribute("formType", 1);
@@ -102,6 +106,8 @@ public class BlogCategoriesManaController {
     @PostMapping("/admin/blog-categories/update")
     public String updateUser(@Valid @ModelAttribute("blogCateMapper") BlogCateMapper blogCateMapper, BindingResult bindingResult, RedirectAttributes atts, Model model) {
         try {
+            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), blogCateMapper.getId())) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
+
             if(bindingResult.hasErrors()){
                 model.addAttribute("oldData", blogCateMapper);
                 model.addAttribute("formType", 0);

@@ -64,6 +64,8 @@ public class BlogManaController {
     @GetMapping("/admin/blogs/all")
     public String ViewBlogs(Model mdl, HttpSession session, RedirectAttributes attr){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "All | Blogs");
+
         mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(Helpers.EMPTY),10));
         return "blogs/administrator/all-blogs";
@@ -72,6 +74,7 @@ public class BlogManaController {
     @GetMapping("/admin/blogs/create")
     public String showCreateForm(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "Create | Blogs");
 
         mdl.addAttribute("blogMapper", new BlogMapper());
         mdl.addAttribute("blogCateList",getBlogCateList(0));
@@ -87,7 +90,7 @@ public class BlogManaController {
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
             blogMapper.setAuthor_id(Integer.parseInt(session.getAttribute("user_id").toString()));
             if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
-            
+            if(!blogMapper.getUrl_slug().isBlank()&&!blogServiceInterface.checkUrlSlug(blogMapper.getUrl_slug(), 0)) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
             if(bindingResult.hasErrors()){
                 if(!imgViewer.isBlank()) blogMapper.setThumbnail(imgViewer);
                 model.addAttribute("blogMapper", blogMapper);
@@ -118,6 +121,7 @@ public class BlogManaController {
     {
         try{
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            session.setAttribute("title", "Update | Blogs");
 
             BlogMapper temp= getBlogMapperByID(id);
             model.addAttribute("blogMapper",temp);
@@ -136,6 +140,7 @@ public class BlogManaController {
             
             if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
             if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
+            if(!blogMapper.getUrl_slug().isBlank()&&!blogServiceInterface.checkUrlSlug(blogMapper.getUrl_slug(), blogMapper.getId())) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
            
             if(bindingResult.hasErrors()){
                 if(!imgViewer.isBlank()) blogMapper.setThumbnail(imgViewer);

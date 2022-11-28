@@ -45,6 +45,7 @@ public class TransactionManaController {
     @GetMapping("/admin/transactions/all")
     public String showAll(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        session.setAttribute("title", "All | Transactions");
 
         mdl.addAttribute("transaction",LoadData(1, 10,-1,-1,-1, Helpers.EMPTY, Helpers.EMPTY) );
         mdl.addAttribute("paging", RowEvent(GetCount(-1,-1,-1,Helpers.EMPTY,Helpers.EMPTY),10));
@@ -84,6 +85,7 @@ public class TransactionManaController {
                 methodTrans = "None";
                 break;
         }
+        session.setAttribute("title", typeTrans == "Withdraw"?"Update | Transactions":"View | Transactions");
 
         mdl.addAttribute("transaction", transation);
         mdl.addAttribute("method", methodTrans);
