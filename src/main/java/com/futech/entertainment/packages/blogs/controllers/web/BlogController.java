@@ -51,14 +51,12 @@ public class BlogController {
             
             conditions.clear();
             conditions.add(DataMapper.getInstance("", "blog_cates.url_slug", "=", cate, "and"));
-            var allBlogs = this.blogServiceInterface.countBlogs(conditions);
+            var allBlogs = (double)this.blogServiceInterface.countBlogs(conditions);
             System.out.println("allBlogs: "+allBlogs);
-            var countPages = allBlogs/itemPerPage;
-            System.out.println("countPages: "+countPages);
             if(blogs.size() > 0){
                 model.addAttribute("blogs", blogs);
                 model.addAttribute("itemPerPage", itemPerPage);
-                model.addAttribute("totalPages", (countPages - Math.floor(countPages)) == 0 ? countPages : (Math.floor(countPages) + 1));
+                model.addAttribute("totalPages", (int)Math.ceil(allBlogs/itemPerPage));
             }
             model.addAttribute("currentCate", cate);
             model.addAttribute("articleURL", request.getRequestURL());
