@@ -44,7 +44,7 @@ public class TransactionManaController {
     
     @GetMapping("/admin/transactions/all")
     public String showAll(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Transactions");
 
         mdl.addAttribute("transaction",LoadData(1, 10,-1,-1,-1, Helpers.EMPTY, Helpers.EMPTY) );
@@ -64,7 +64,7 @@ public class TransactionManaController {
     }
     @GetMapping("/admin/transactions/view")
     public String viewTransaction(Model mdl, @RequestParam String code, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
 
         String[] selects = {"first_name, last_name, is_admin"};
         var transation = transactionServiceInterface.getTransactionByCode(code);

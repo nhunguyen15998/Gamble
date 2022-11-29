@@ -138,10 +138,125 @@
                     
                         </div>
                         <!-- ROW CLOSED -->
-                    </div>
-        
-                 <!-- CONTAINER END -->
-                 </div>
+                        <!-- OPEN ROW PLAY HISTORY -->
+                        <div class="row" th:if="${formType==1}">
+                          <div class="col-12 col-sm-12">
+                          <div class="card">
+                          <div class="card-header">
+                          <h3 class="card-title mb-0">Play histories
+                         </h3>
+                        </div>
+                         <div class="card-body pt-4">
+                          <div class="grid-margin">
+                          <div class="">
+                          <div class="panel panel-primary">
+                          <div class="tab-menu-heading border-0 p-0">
+                          <div class="tabs-menu1">
+                         <div class="alert" id="msg" style="display: none;"  th:text="${successMsg}?:${errorMsg}" th:classappend="${successMsg}?'alert-success':(${errorMsg}?'alert-danger':'')"></div>
+                          <!-- Tabs -->
+                         
+                        </div>
+                        </div>
+                         <div class="panel-body tabs-menu-body border-0 p-0">
+                          <div class="tab-content">
+                          <div class="tab-pane active">
+                          <div class="table-responsive">
+                          <div id="data-table_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
+                         <div class="row">
+                         <div class="col-sm-12 col-md-6">
+                         <div class="dataTables_length" id="data-table_length">
+                          <label>
+                            Game: <select class="form-select" style="width:100px;font-size:15px;padding:0 5px; text-align:center" id="take-game">
+                                 <option value="-1" style="background-color:#8677d3; opacity: 0.2;">All</option>
+                                 <option value="1" style="background-color:#8677d3; opacity: 0.2;">Lucky Wheel</option>
+                                 <option value="2" style="background-color:#8677d3; opacity: 0.2;">Bau Cua</option>
+                          </select>
+                            </label>
+                          <label style="margin-left:1.5vw ;">
+                              From: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-from"/></label>
+                            <label style="margin-left:1.5vw ;">
+                              To: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-to"/></label>
+  
+                       </div>
+                       
+                      </div>
+                        <div class="col-sm-12 col-md-6">
+                          <label style="width:100%">
+                            <span style="width:10%;float:left;margin-top:-0.5vh" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;padding:10px;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
+                           
+                          </label>
+                       </div>
+                       </div>
+                       
+                        <div class="card-body p-0">
+  
+                          <div class="col-xl-12 mb-3 p-0" style="float:left;min-height:300px;">
+                            <div class="col-sm-12 p-0">
+                              <table id="data-table" class="table table-bordered text-nowrap mb-0 dataTable no-footer" role="grid" aria-describedby="data-table_info">
+                               <thead class="border-top">
+                              <tr role="row">
+                              <th class="bg-transparent border-bottom-0 sorting_disabled" style="width: 15.725px;" rowspan="1" colspan="1" aria-label="Tracking Id">
+                               #</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Product: activate to sort column ascending" style="width: 159.825px;">
+                               Game</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                               Details</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                              Bet Amount</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                              Received Amount</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                               Status</th>
+                              <th class="bg-transparent border-bottom-0 sorting" tabindex="0" aria-controls="data-table" rowspan="1" colspan="1" aria-label=" Customer: activate to sort column ascending" style="width: 121.825px;">
+                              Time</th>
+                            </tr>
+                             </thead>
+                               <tbody>
+                              </tbody>
+                              </table>
+                               </div>
+                       <!-- top user -->
+                          </div>
+                      </div>
+                          <div class="row" style="float: right;">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="dataTables_info" id="data-table_info" role="status" aria-live="polite"></div>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
+                                <div class="dataTables_paginate paging_simple_numbers" id="data-table_paginate">
+                                    <ul class="pagination" id="paginations">
+                                      <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span>
+                                      </li>
+                                      <th:block th:each="page : ${#numbers.sequence(1, paging==0?1:paging)}">
+                                       
+                                        <li class="paginate_button page-item active" data-page="1" th:if="${page==1}">
+                                          <span class="page-link">1</span>
+                                        </li>
+                                      <li class="paginate_button page-item" th:if="${page!=1}" th:data-page="'page-'+${page}">
+                                        <span class="page-link" th:text="${page}"></span>
+                                      </li>
+                                      </th:block>
+                                      <li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span>
+                                      </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div><!-- ROW-4 END -->
+                          </div>
+                   <!-- CONTAINER END -->
+                  </div>
+                </div>
               </div>
             <!--app-content close-->
             
@@ -506,9 +621,170 @@
         <grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
 </body>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script>
+var pages=1;
+var pageControl = parseInt('[[${paging}]]');
+var userid = parseInt('[[${userMapper.user_id}]]');
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var firstDay = new Date(y, m, 1);
+var lastDay = new Date(y, m + 1, 0);
+function ClearFilter() {
+        $("#take-game").val(-1);
+        $("#take-from").val(moment(firstDay).format("yyyy-MM-DD"));
+        $("#take-to").val(moment(lastDay).format("yyyy-MM-DD"));
+
+        SearchFilter(1);
+    }
+ window.onload = function() {
+ $("#take-from").val(moment(firstDay).format("yyyy-MM-DD"));
+ $("#take-to").val(moment(lastDay).format("yyyy-MM-DD"));
+
+  
+ }
+$("#take-from").on('change',function(){
+          SearchFilter(1);
+      })
+ $("#take-to").on('change',function(){
+    SearchFilter(1);
+      })
+ $("#take-game").on('change',function(){
+    SearchFilter(1);
+ })
+ function SearchFilter(pages){
+      var game = $("#take-game").val();
+      var from = $("#take-from").val();
+      var to = $("#take-to").val();
+      if(from>to&&from!=''&&to!=''){
+        $("#take-from").val(to)
+        $("#take-to").val(from)
+      }
+      if(from==''&&to==''){
+        from=moment(firstDay).format("yyyy-MM-DD");
+        to=moment(lastDay).format("yyyy-MM-DD");
+      }
+
+      LoadStatis(pages,from, to, game)
+}
+function LoadStatis(p,from, to, game,cond,sort, boo){
+   //DATA FOR CHART
+ var ft = new FormData()
+    ft.append("p",p)
+    ft.append("dateFrom",from)
+    ft.append("dateTo",to)
+    ft.append("gameid",game)
+    ft.append("userid",userid)
+ 
+
+    
+    
+    $.ajax({
+              type: "POST",
+              url: "/admin/users/getDataUserHistory",
+              data:ft,
+              async: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                $("#data-table").find('tbody').empty();
+                if(data.length==0){$("#data-table").parent().append('<label class="border-bottom odd table-item container" style="text-align:center">No data</label>'); }
+                else {
+                    var row = p == 1 ? 1 : 12 * (p - 1) + 1;
+
+                    for(var i =0; i<data.length;i++){
+                      var res=((data[i].received_amount-data[i].bet_amount)<0?-(data[i].received_amount-data[i].bet_amount):(data[i].received_amount-data[i].bet_amount));
+                      var status = "Lose -$"+res;
+                      var cls = "text-warning bg-warning-transparent";
+                      if(data[i].status==1) { status = "Win +$"+res;  cls = "text-success bg-success-transparent";}
+                      else if(data[i].status==0){ status = "Break even"; cls = ""}
+                      $("#data-table").append('<tr class="border-bottom odd table-item"><td>'+row+'</td><td>'+data[i].name+'</td><td>'+data[i].results+'</td><td>$ '+data[i].bet_amount+'</td><td> $'+data[i].received_amount+'</td><td class="'+cls+'">'+status +'</td><td>'+data[i].created_at+'</td></tr>')
+                        row++;
+                      }
+                    $.ajax({
+                      type: "POST",
+                      url: "/admin/users/getCountUserHistory",
+                      data: ft,
+                      processData: false,
+                      contentType: false,
+                      success: function (data) {
+                          var fdt = new FormData();
+                          fdt.append("i", data);
+                          fdt.append("take", 12);
+
+                          $.ajax({
+                              type: "POST",
+                              url: "/admin/user/all/RowEvent",
+                              data: fdt,
+                              processData: false,
+                              contentType: false,
+                              success: function (dt) {
+                                  var r = document.getElementsByClassName('page-item');
+                                  while (r.length > 0) {
+                                      r[0].parentNode.removeChild(r[0]);
+                                  }
+                                  var strs = "";
+                                  pageControl=dt;
+                                  for (var j = 1; j <= dt; j++) {
+                                          strs += '<li class="paginate_button page-item '+(j == p?'active':'')+'" data-page="page-'+j+'"><span class="page-link">' + j + '</span></li>';
+    
+                                  }
+                                  $("#paginations").append(' <li class="paginate_button page-item previous" id="data-table_previous" data-page="prev"><span  aria-controls="data-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</span></li>' + strs + '<li class="paginate_button page-item next" id="data-table_next" data-page="next"><span aria-controls="data-table" data-dt-idx="2" tabindex="0" class="page-link">Next</span></li>');
+    
+                              }
+                          });
+    
+                      }
+    
+                  });
+              }
+
+              }
+    })
+  }
+ 
+ $('body').delegate('.page-item', 'click', function () {
+      var str = $(this).attr("data-page");
+      var re = document.getElementsByClassName('page-item');
+      for (var i = 0; i < re.length; i++) {
+            $(re[i]).removeClass('active');
+      }
+
+      if (str == "prev" && pages >= 1) {
+
+          if (pages == 1) {
+              pages = 1;
+              $('[data-page="page-1"]').addClass('active')
+              
+                  return;
+
+          } else {
+              pages -= 1;
+
+          }
+
+      } else if (str == "next" && pages <=pageControl) {
+          if (pages ==pageControl) {
+              pages = pageControl;
+              $('[data-page="page-'+pages+'"]').addClass('active');
+              return;
+          } else {
+              pages += 1;
+          }
+
+
+      }  else {
+          if (pages == parseInt(str.replace("page-", ""))) {
+              pages = -1;
+          } else {
+              pages = parseInt(str.replace("page-", ""));
+          }
+          $(this).addClass('active');
+      }
+      SearchFilter(pages);
+
+      });
+
      function ReadImage(input){
                     document.getElementById("trashimg").style.removeProperty("display");
                 if (input.files && input.files[0]) {

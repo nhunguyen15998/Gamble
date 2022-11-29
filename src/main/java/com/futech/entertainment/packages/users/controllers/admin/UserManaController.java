@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +37,7 @@ import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.FileUploadUtil;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
+import com.futech.entertainment.packages.games.services.interfaces.GameHistoryUserServiceInterface;
 import com.futech.entertainment.packages.users.modelMappers.UserMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserProfileMapper;
 import com.futech.entertainment.packages.users.modelMappers.UserUpdateMapper;
@@ -50,6 +52,9 @@ public class UserManaController {
     public static int userType;
     @Autowired
     private UserServiceInterface userServiceiInterface;
+    @Autowired
+    private GameHistoryUserServiceInterface gameHistoryUserServiceInterface;
+
     @ModelAttribute("statusList")
     public Map<Integer, String> getStatusList() {
         Map<Integer, String> statusList = new HashMap<Integer, String>();
@@ -71,7 +76,7 @@ public class UserManaController {
 
     @GetMapping("/admin/users/all")
     public String ViewUser(Model mdl,@RequestParam int type, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Users");
         mdl.addAttribute("users",LoadData(1,"", 10,type) );
         mdl.addAttribute("is_player",true);
@@ -82,7 +87,7 @@ public class UserManaController {
 
     @GetMapping("/admin/users/create")
     public String showCreateForm(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Create | Users");
 
         mdl.addAttribute("userMapper", new UserMapper());
@@ -93,7 +98,7 @@ public class UserManaController {
     public String showMyProfile( Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
             session.setAttribute("title", "My profile | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
@@ -147,12 +152,13 @@ public class UserManaController {
     public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(id));
             model.addAttribute("formType", 1);
             model.addAttribute("userType", type);
+            model.addAttribute("paging", RowEvent(GetCountUserHistory("-1",LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).toString(),LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).toString(),String.valueOf(id)),10));
             userType=type;
             return "users/administrator/create-update";
         } catch(Exception ex){
@@ -256,6 +262,30 @@ public class UserManaController {
     }
   
     }
+
+
+ //Pagination for user history
+ @PostMapping("/admin/users/getDataUserHistory")
+ public @ResponseBody ResponseEntity<List<Map<String,Object>>> getDataUserHistory(int p, String gameid, String from, String to, String userid)
+ {
+     List<Map<String,Object>> emps = LoadDataUserHistory(p, gameid,from,to, userid);
+     return new ResponseEntity<List<Map<String,Object>>>(emps, HttpStatus.OK);
+ }
+
+ public List<Map<String,Object>>  LoadDataUserHistory(int p, String gameid, String from, String to, String userid)
+ {
+        int currentSkip = 12 * (p - 1); //limit
+        String[] limit = {String.valueOf(currentSkip),String.valueOf(12==0?1:12)};
+        var u = gameHistoryUserServiceInterface.getUserHistory(gameid, from, to, userid, limit);
+        return u;
+ }
+
+@PostMapping("/admin/users/getCountUserHistory")
+ public @ResponseBody int GetCountUserHistory(String gameid, String from, String to, String userid)
+ {
+     var u = gameHistoryUserServiceInterface.getUserHistory(gameid, from, to, userid, null);
+      return u==null?0:u.size();
+ }
  //Pagination
  @PostMapping("/admin/user/all/LoadDataUser")
  public @ResponseBody ResponseEntity<List<Map<String,Object>>> LoadDataUser(int p, String cond, int take, int is_admin)

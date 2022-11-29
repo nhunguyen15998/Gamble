@@ -689,12 +689,15 @@ function SearchFilter(pages,boo){
               contentType: false,
               success: function (data) {
                 $("#data-table").find('tbody').empty();
-                if(data==null)$("#data-table").append('<tr class="border-bottom odd table-item">No data</tr>') 
+                if(data.length==0){
+                  $("#data-table").parent().find('label').remove();
+                  $("#data-table").parent().append('<label class="border-bottom odd table-item container" style="text-align:center">No data</label>');}
                 else {
+                  $("#data-table").parent().find('label').remove();
                     var row = p == 1 ? 1 : 10 * (p - 1) + 1;
 
                     for(var i =0; i<data.length;i++){
-                      $("#data-table").append('<tr class="border-bottom odd table-item"><td>'+row+'</td><td><a href="/admin/users/update?id='+data[i].userID+'&&type='+(data[i].userType==false?0:1)+'">'+data[i].userName+'</td><td class="'+(data[i].res>=0?'text-success bg-success-transparent':'')+'">'+(data[i].res>=0?'+ $':'- $')+(data[i].res<0?-data[i].res:data[i].res)+'</td></tr>')
+                      $("#data-table").append('<tr class="border-bottom odd table-item"><td>'+row+'</td><td><a href="/admin/users/update?id='+data[i].userID+'&&type='+(data[i].userType==false?0:1)+'">'+data[i].userName+'</td><td class="'+(data[i].res>=0?'text-success bg-success-transparent':'text-warning bg-warning-transparent')+'">'+(data[i].res>=0?'+ $':'- $')+(data[i].res<0?-data[i].res:data[i].res)+'</td></tr>')
                         row++;
                       }
                     $.ajax({

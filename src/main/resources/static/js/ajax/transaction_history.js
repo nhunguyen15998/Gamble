@@ -1,6 +1,8 @@
 $('#pills-transaction-tab').on('click', () => {
     $.get('/users/transactions', (response) => {
         console.log(response)
+        $('#table-transaction-history').empty();
+
         let i = 1
         response.forEach(element => {
             let type = ''

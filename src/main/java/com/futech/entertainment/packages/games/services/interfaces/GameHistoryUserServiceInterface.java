@@ -11,5 +11,6 @@ public interface GameHistoryUserServiceInterface extends BaseServiceInterface<Ga
     public List<Map<String, Object>> getGameHistoryByEachUser( List<DataMapper> conditions);
     public  List<Map<Object,Object>> getStatistical(String from, String to, String gameid, Boolean total);
     public  List<Map<String,Object>> getUserStatistical(String from, String to, String gameid,int sort,List<DataMapper> cond, String [] limit);
+    public  List<Map<String,Object>> getUserHistory(String gameid, String from, String to, String userid, String [] limit);
 
 }

@@ -46,7 +46,7 @@ public class BlogCategoriesManaController {
 
     @GetMapping("/admin/blog-categories/all")
     public String ViewBlog(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Blog categories");
         mdl.addAttribute("blogCates",LoadData(1,"", 10) );
         mdl.addAttribute("paging", RowEvent(GetCount(""),10));
@@ -55,7 +55,7 @@ public class BlogCategoriesManaController {
 
     @GetMapping("/admin/blog-categories/create")
     public String showCreateForm(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Create | Blog categories");
 
         mdl.addAttribute("blogCateMapper", new BlogCateMapper());
@@ -91,7 +91,7 @@ public class BlogCategoriesManaController {
     public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Blog categories");
 
             model.addAttribute("blogCateMapper", getBlogCateMapperByID(id));

@@ -31,7 +31,7 @@ public class DashboardController {
     GameHistoryServiceInterface gameHistoryServiceInterface;
     @GetMapping("/admin/dashboard")
     public String Admin(HttpSession session, Model model){
-        if(session.getAttribute("user_id")==null) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Dashboard");
 
         //Total player compared to last month

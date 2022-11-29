@@ -1,5 +1,7 @@
 package com.futech.entertainment.packages.games.services;
 
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,4 +77,28 @@ public class GameHistoryUserService extends BaseService<GameHistoryUser> impleme
         return null;
        }
     }
+
+    @Override
+    public List<Map<String, Object>> getUserHistory(String gameid, String from, String to, String userid,
+            String[] limit) {
+                try {
+                    String[] selects = new String[]{"p.name,h.results, ROUND(bet_amount,3) as bet_amount, ROUND(received_amount,3) as received_amount,game_history_users.status, DATE_FORMAT(h.created_at,'%d-%m-%Y %H:%i') as created_at"};
+                    List<DataMapper> cond = new ArrayList<DataMapper>();
+                    var fromDefault= LocalDate.now().with(TemporalAdjusters.firstDayOfMonth()).toString();
+                    var toDefault =LocalDate.now().with(TemporalAdjusters.lastDayOfMonth()).toString();
+                    cond.add(DataMapper.getInstance("", "CAST(h.created_at as DATE) ", "between", from==null?fromDefault:from, " and '"+(to==null?toDefault:to)+"'"));
+                    cond.add(DataMapper.getInstance("", "and game_history_users.user_id", "=", userid, ""));
+                    if(Integer.parseInt(gameid)!=-1) cond.add(DataMapper.getInstance("and ", "h.game_id", "=", gameid, ""));
+
+                    List<JoinCondition> join = new ArrayList<JoinCondition>();
+                    join.add(JoinCondition.getInstance("join", "game_histories h", DataMapper.getInstance("", "game_history_id", "=", "h.id", "")));
+                    join.add(JoinCondition.getInstance("join", "games p", DataMapper.getInstance("", "p.id", "=", "h.game_id", "")));
+                    var ls = this.getAll(selects, cond, join, null, "h.created_at desc", limit);
+                    
+                    return ls;
+                   } catch (Exception e) {
+                    // TODO: handle exception
+                    return null;
+                   }
+                  }
 }

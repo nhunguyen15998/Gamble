@@ -14675,7 +14675,7 @@
                         W({}, e);
                 case "XOC_DIA": //random
                     for (var u = [], a = 0; a < 3; a++) {
-                        var o = Math.floor(6 * Math.random()+0.1)
+                        var o = Math.floor(6 * Math.random())
                           , i = e.danhSachCuoc[o];
                         u.push(i)
                     }
