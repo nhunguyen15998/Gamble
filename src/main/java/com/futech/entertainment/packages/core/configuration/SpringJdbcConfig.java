@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import org.springframework.core.env.Environment;
 
 import java.util.Timer;
@@ -41,5 +40,4 @@ public class SpringJdbcConfig {
     public Timer timer() {
         return new Timer();
     }
-
 }

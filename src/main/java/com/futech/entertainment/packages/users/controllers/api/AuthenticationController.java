@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ public class AuthenticationController {
     @Autowired
     private UserServiceInterface userServiceInterface;
 
+    @CrossOrigin
     @PostMapping("/user/register")
 	public ResponseEntity<String> register(@Valid @RequestBody SignUpMapper signUpMapper) {
         Gson gson = new Gson();
@@ -41,7 +43,7 @@ public class AuthenticationController {
             var confirmedPassword = signUpMapper.getconfirm_password();
             if(!password.equals(confirmedPassword)){
                 job.addProperty("code", 400);
-                job.addProperty("message", "Password do not match");
+                job.addProperty("message", "Passwords do not match");
                 return ResponseEntity.ok(gson.toJson(job));
             }
             var created = this.userServiceInterface.createUserSignUp(signUpMapper);
@@ -60,6 +62,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(gson.toJson(job));
     }
 
+    @CrossOrigin
     @PostMapping("/user/authenticate")
 	public ResponseEntity<Map<String, Object>> authentication(@Valid @RequestBody SignInMapper signInMapper, BindingResult bindingResult) {
         Map<String, Object> results = new HashMap<String, Object>();

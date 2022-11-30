@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +39,7 @@ public class UsersController {
     @Autowired
     private UserProfileServiceInterface userProfileService;
     
+    @CrossOrigin
     @GetMapping("/get-user")
 	public ResponseEntity<Map<String, Object>> getUser(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers) {
         Map<String, Object> user = new HashMap<String,Object>();
@@ -54,6 +56,7 @@ public class UsersController {
         }
 	}
 
+    @CrossOrigin
     @GetMapping("/get-user-by-phone")
 	public ResponseEntity<Map<String, Object>> getUserByPhone(@Authentication @RequestHeader Map<String, String> headers, @RequestParam String phone) {
         Map<String, Object> user = new HashMap<String, Object>();
@@ -73,6 +76,7 @@ public class UsersController {
         }
 	}
 
+    @CrossOrigin
     @PostMapping("/update-user")
     public ResponseEntity<Map<String, Object>> updateUser(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers, @Valid @RequestBody UserProfileMapper userProfileMapper) {
         Map<String, Object> items = new HashMap<String,Object>();
@@ -103,6 +107,7 @@ public class UsersController {
         }
     }
 
+    @CrossOrigin
     @PostMapping("/change-profile-photo")
     public ResponseEntity<Map<String, Object>> changeProfilePhoto(@Authentication @RequestHeader Map<String, String> headers, MultipartFile photo) throws IOException {
         try {
@@ -130,6 +135,7 @@ public class UsersController {
     }
 
     //change pass
+    @CrossOrigin
     @PostMapping("user/change-password")
     public ResponseEntity<Map<String, Object>> changePassword(
                 @Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers,

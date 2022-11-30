@@ -413,12 +413,18 @@ $(document).on('click', '#rotate-button', async function () {
         "isPartialBet" : isPartialBet
     }
 
-    let response = await $.post('/wheels/result', {"bet": JSON.stringify(bet)}, (rsp) => {
-                        // var response = await rsp
-                        return rsp
-                    }).fail((data) => {
-                        console.log(data)
-                    })
+    let response = await $.ajax({
+                            type: 'post',
+                            url: '/wheels/result',
+                            data: JSON.stringify(bet), 
+                            contentType: 'application/json; charset=utf-8',
+                            success: function(rsp) {
+                                return rsp
+                            },
+                            fail: function(data) {
+                                console.log(data)
+                            }
+                        })
     if(response.code == 200){
         $('#rotate-button').addClass('d-none')
         $('#ov-cv-large').removeClass('d-none')

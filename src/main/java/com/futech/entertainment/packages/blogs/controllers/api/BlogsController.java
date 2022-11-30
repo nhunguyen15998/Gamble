@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,6 +39,7 @@ public class BlogsController {
     private String[] limits = {startPoint, String.valueOf(itemPerPage)};
 
     //blog cates
+    @CrossOrigin
     @GetMapping("/article/cates/blogs")
     public ResponseEntity<List<Map<String, Object>>> getBlogCates(){//@RequestHeader("limit") Optional<String[]> limit){
         List<Map<String, Object>> cateBlogs = new ArrayList<Map<String, Object>>();
@@ -70,6 +72,7 @@ public class BlogsController {
     }
 
     //latest blogs
+    @CrossOrigin
     @GetMapping("/article/latest-blogs")
     public ResponseEntity<List<Map<String, Object>>> getLatestBlogs(){//@RequestHeader("limit") Optional<String[]> limit){
         List<Map<String, Object>> cates = new ArrayList<Map<String, Object>>();
@@ -88,6 +91,7 @@ public class BlogsController {
     }
 
     //blogs by cates 
+    @CrossOrigin
     @GetMapping("/articles")
     public ResponseEntity<List<Map<String, Object>>> getBlogs(@RequestParam Optional<String> cateId, @RequestParam String page){
         System.out.println("page:"+page);
@@ -114,6 +118,7 @@ public class BlogsController {
     }
 
     //blog by id
+    @CrossOrigin
     @GetMapping("/articles/detail")
     public ResponseEntity<Map<String, Object>> getBlog(@RequestParam String blogId){
         Map<String, Object> blog = new HashMap<String, Object>();
@@ -131,6 +136,7 @@ public class BlogsController {
     }
 
     //search
+    @CrossOrigin
     @GetMapping("/articles/search-results")
     public ResponseEntity<List<Map<String, Object>>> searchBlog(@Authentication(message = "Unauthenticated") @RequestHeader Map<String, String> headers, @RequestParam String search, @RequestParam String page){
         List<Map<String, Object>> blogs = new ArrayList<Map<String, Object>>();
