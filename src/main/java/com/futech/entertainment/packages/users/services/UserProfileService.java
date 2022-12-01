@@ -28,7 +28,7 @@ public class UserProfileService extends BaseService<UserProfile> implements User
             userProfile.setFirstName(signUpMapper.getfirst_name());
             userProfile.setLastName(signUpMapper.getlast_name());
             userProfile.setThumbnail("/images/defaults/no-user.jpeg");
-            userProfile.setThumbnail("/images/defaults/section-bg.jpg");
+            userProfile.setWallpaper("/images/defaults/section-bg.jpg");
             userProfile.setBirth(LocalDate.parse("1998-02-10"));
             userProfile.setGender(Helpers.MALE);
             return this.create(userProfile);

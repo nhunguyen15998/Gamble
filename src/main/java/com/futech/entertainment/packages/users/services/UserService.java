@@ -65,6 +65,23 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             String activateCode = Helpers.randomStringWithLength(10);
             User user = this.createUser(signUpMapper, activateCode);
             if(user != null){
+                var userId = user.getId();
+                //create user wallet
+                UserWallet userWallet = new UserWallet();
+                userWallet.setuser_id(userId);
+                userWallet.setcur_amount(0.0);
+                userWallet.setpre_amount(0.0);
+                userWallet.setcreated_at(LocalDateTime.now());
+                userWallet.setStatus(0);
+                this.userWalletServiceInterface.create(userWallet);
+
+                //create user default configs
+                UserConfig userConfig = new UserConfig();
+                userConfig.setuser_id(userId);
+                userConfig.setconfig_string(ConfigHelpers.USER_DEFAULT_GENERAL_CONFIGS);
+                userConfig.setType(ConfigHelpers.TYPE_USER_GENERAL_SETTINGS);
+                this.userConfigServiceInterface.createClientConfigs(userConfig);
+
                 UserProfile userProfile = this.userProfileServiceInterface.createUserProfile(user, signUpMapper);
                 if(userProfile != null){
                     boolean sent = this.emailServiceInterface.sendMailWithAttachment(new EmailDetails(
@@ -101,22 +118,6 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
                     updatedUser.setStatus(Helpers.ACTIVATED);
                     updatedUser.setactivate_code("");
                     this.update(updatedUser);
-
-                    //create user wallet
-                    UserWallet userWallet = new UserWallet();
-                    userWallet.setuser_id(userId);
-                    userWallet.setcur_amount(0.0);
-                    userWallet.setpre_amount(0.0);
-                    userWallet.setcreated_at(LocalDateTime.now());
-                    userWallet.setStatus(0);
-                    this.userWalletServiceInterface.create(userWallet);
-
-                    //create user default configs
-                    UserConfig userConfig = new UserConfig();
-                    userConfig.setuser_id(userId);
-                    userConfig.setconfig_string(ConfigHelpers.USER_DEFAULT_GENERAL_CONFIGS);
-                    userConfig.setType(ConfigHelpers.TYPE_USER_GENERAL_SETTINGS);
-                    this.userConfigServiceInterface.createClientConfigs(userConfig);
 
                     obj.put("code", 200);
                 } else {
@@ -210,11 +211,30 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             newUser.setactivate_code(null);
             newUser.setIs_admin(true);
             User user = this.create(newUser);
+
+            var userId = user.getId();
+            //create user wallet
+            UserWallet userWallet = new UserWallet();
+            userWallet.setuser_id(userId);
+            userWallet.setcur_amount(0.0);
+            userWallet.setpre_amount(0.0);
+            userWallet.setcreated_at(LocalDateTime.now());
+            userWallet.setStatus(0);
+            this.userWalletServiceInterface.create(userWallet);
+
+            //create user default configs
+            UserConfig userConfig = new UserConfig();
+            userConfig.setuser_id(userId);
+            userConfig.setconfig_string(ConfigHelpers.USER_DEFAULT_GENERAL_CONFIGS);
+            userConfig.setType(ConfigHelpers.TYPE_USER_GENERAL_SETTINGS);
+            this.userConfigServiceInterface.createClientConfigs(userConfig);
+
             UserProfile userProfile = new UserProfile();
             userProfile.setUserId(user.getId());
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
-            userProfile.setThumbnail(userMapper.getThumbnail());
+            userProfile.setThumbnail("/images/defaults/no-user.jpeg");
+            userProfile.setWallpaper("/images/defaults/section-bg.jpg");
             userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
             userProfile.setGender(userMapper.getGender());
             this.userProfileServiceInterface.create(userProfile);
