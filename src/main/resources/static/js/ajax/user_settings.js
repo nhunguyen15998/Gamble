@@ -7,7 +7,6 @@ $('#btn-settings-save').on('click', () => {
     $('input[name="require_password"]').val("")
     $(`.${ALERT_AREA}`).remove()
     let configs = {
-        "change_password" : $('#change-password-switch:checked').val() == null ? 0 : 1,
         "withdraw_password" : $('#withdraw-password-switch:checked').val() == null ? 0 : 1,
         "transfer_password" : $('#transfer-password-switch:checked').val() == null ? 0 : 1,
         "setting_password" : $('#setting-password-switch:checked').val() == null ? 0 : 1
