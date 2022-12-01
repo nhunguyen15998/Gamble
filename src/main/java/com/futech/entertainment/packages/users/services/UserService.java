@@ -190,7 +190,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             newUser.setcreated_at(LocalDateTime.now());
             newUser.setStatus(Helpers.DEACTIVATED);
             newUser.setactivate_code(activateCode);
-            newUser.setIs_admin(false);
+            newUser.setIs_admin(0);
             User user = this.create(newUser);
             return user;
         } catch (Exception e) {
@@ -208,8 +208,13 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             newUser.setcreated_at(LocalDateTime.now());
             newUser.setStatus(Helpers.ACTIVATED);
             newUser.setactivate_code(null);
-            newUser.setIs_admin(true);
+            newUser.setIs_admin(1);
             User user = this.create(newUser);
+            UserConfig config = new UserConfig();
+            config.setType(1);
+            config.setuser_id(user.getId());
+            config.setconfig_string("{'withdraw_password':0,'transfer_password':0,'setting_password':0}");
+            this.userConfigServiceInterface.create(config);
             UserProfile userProfile = new UserProfile();
             userProfile.setUserId(user.getId());
             userProfile.setFirstName(userMapper.getFirst_name());

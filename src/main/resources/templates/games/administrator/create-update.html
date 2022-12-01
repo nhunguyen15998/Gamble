@@ -588,11 +588,12 @@
 
       function checkValue(ele){
         var str=$(ele).val();
-        var double =(parseFloat((str.replace('X','')))||parseFloat((str.replace('+','')))||parseFloat((str.replace('/',''))));
-        var dot = (!str.includes('0')||(str.includes('.0'))||(str.includes('0')&&str.length==2))?true:(str.includes('0.'))
-          if(!(((str.includes("+")||str.includes("/")||str.includes("X"))&&double&&dot)||str=="NEXT")){
+        var operator = str.slice(0,1);
+        var newStr=parseFloat(str.slice(1,str.length));
+          if(!(((operator.includes("+")||operator.includes("/")||operator.includes("X"))&&newStr)||str=="NEXT")){
             $(ele).parent().find('label').html('Value is incorrect');
           }else{
+            $(ele).val(operator+newStr);
             $(ele).parent().find('label').html('');
           }
       }
@@ -635,7 +636,7 @@
           round += '"textColors":[';
           $("#round"+i).find(".txtColor").each(function(index, element) {
             if(index==($("#round"+i).find(".txtColor").length - 1))
-                    round +=  '"'+ $(element).val()+'"]}'+ (i==3?'':'\\');
+                    round +=  '"'+ $(element).val()+'"]}'+ (i==3?'':',');
             else    round += '"'+ $(element).val()+'",';
           });
           res+=round;
@@ -647,7 +648,7 @@
         "code": $('input[name="gameCode"]').val(),
         "name": $('input[name="gameName"]').val(),
         "status": $('input[name="gameStatus"]').val(),
-        "configs":res
+        "configs":'['+res+']'
         }
         console.log(JSON.stringify(data))
           $.ajax({

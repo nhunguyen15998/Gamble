@@ -76,7 +76,7 @@ public class UserManaController {
 
     @GetMapping("/admin/users/all")
     public String ViewUser(Model mdl,@RequestParam int type, HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Users");
         mdl.addAttribute("users",LoadData(1,"", 10,type) );
         mdl.addAttribute("is_player",true);
@@ -87,7 +87,7 @@ public class UserManaController {
 
     @GetMapping("/admin/users/create")
     public String showCreateForm(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Create | Users");
 
         mdl.addAttribute("userMapper", new UserMapper());
@@ -98,7 +98,7 @@ public class UserManaController {
     public String showMyProfile( Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             session.setAttribute("title", "My profile | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(Integer.parseInt(session.getAttribute("user_id").toString())));
@@ -152,7 +152,7 @@ public class UserManaController {
     public String showUpdateForm(@RequestParam int id, @RequestParam int type, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Users");
 
             model.addAttribute("userMapper", getUserMapperByID(id));
