@@ -44,7 +44,7 @@ public class GamesController {
     WheelServiceInterface wheelServiceInterface;
     @GetMapping("/admin/games/all")
     public String ViewGames(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Games");
 
         mdl.addAttribute("games",LoadData(1,Helpers.EMPTY, 10) );
@@ -63,7 +63,7 @@ public class GamesController {
     public String showFormUpdate(@RequestParam String code, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Games");
 
             model.addAttribute("gameMapper",getWheel(code));
@@ -100,7 +100,7 @@ public class GamesController {
 //Statistical
     @GetMapping("/admin/games/statistical")
     public String gameStatistical(HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Statistical | Games");
         return "games/administrator/statistical";
     }

@@ -27,7 +27,7 @@ public class User extends BaseModel {
     private Integer id;
     private String phone;
     private String email;
-    private Boolean is_admin;
+    private int is_admin;
     private String plain_password;
     private String hash_password;
     private LocalDateTime created_at;
@@ -56,11 +56,11 @@ public class User extends BaseModel {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Boolean isIs_admin() {
+    public int isIs_admin() {
         return is_admin;
     }
 
-    public void setIs_admin(Boolean is_admin) {
+    public void setIs_admin(int is_admin) {
         this.is_admin = is_admin;
     }
     public String getplain_password() {

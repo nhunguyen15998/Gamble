@@ -36,7 +36,7 @@ public class ContactManaController {
 
        @GetMapping("/admin/contacts/all")
        public String ViewContact(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Contacts");
 
            mdl.addAttribute("contacts",LoadData(1,"", 10,-1) );
@@ -48,7 +48,7 @@ public class ContactManaController {
        public String showUpdateForm(@RequestParam String caseNumber, Model model, RedirectAttributes atts, HttpSession session)
        {
            try{
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Contacts"); 
 
                var contact=contactService.getContactByCaseNumber(caseNumber);

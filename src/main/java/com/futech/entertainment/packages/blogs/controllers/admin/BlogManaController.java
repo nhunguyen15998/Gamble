@@ -63,7 +63,7 @@ public class BlogManaController {
 
     @GetMapping("/admin/blogs/all")
     public String ViewBlogs(Model mdl, HttpSession session, RedirectAttributes attr){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Blogs");
 
         mdl.addAttribute("blogs",LoadData(1,Helpers.EMPTY, 10) );
@@ -73,7 +73,7 @@ public class BlogManaController {
 
     @GetMapping("/admin/blogs/create")
     public String showCreateForm(Model mdl, HttpSession session){
-        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+        if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "Create | Blogs");
 
         mdl.addAttribute("blogMapper", new BlogMapper());
@@ -87,7 +87,7 @@ public class BlogManaController {
     
         try {
             
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             blogMapper.setAuthor_id(Integer.parseInt(session.getAttribute("user_id").toString()));
             if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
             if(!blogMapper.getUrl_slug().isBlank()&&!blogServiceInterface.checkUrlSlug(blogMapper.getUrl_slug(), 0)) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
@@ -120,7 +120,7 @@ public class BlogManaController {
     public String showUpdateForm(@RequestParam int id, Model model, RedirectAttributes atts, HttpSession session)
     {
         try{
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             session.setAttribute("title", "Update | Blogs");
 
             BlogMapper temp= getBlogMapperByID(id);
@@ -138,7 +138,7 @@ public class BlogManaController {
     public String updateBlog(@Valid @ModelAttribute("blogMapper") BlogMapper blogMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model, HttpSession session,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
         try {
             
-            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Boolean.parseBoolean(session.getAttribute("is_admin").toString())==false)) return "redirect:/user/sign-in";
+            if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
             if(imgViewer.isEmpty())  bindingResult.addError(new FieldError("blogMapper", "thumbnail", "Thumbnail is required"));
             if(!blogMapper.getUrl_slug().isBlank()&&!blogServiceInterface.checkUrlSlug(blogMapper.getUrl_slug(), blogMapper.getId())) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
            
