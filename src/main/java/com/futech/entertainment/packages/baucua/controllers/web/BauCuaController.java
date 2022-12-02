@@ -64,8 +64,8 @@ public class BauCuaController {
     @PostMapping("/saveResults")
     public @ResponseBody Boolean SaveResults( Double totalPointBet,Double totalPoint, Double received, String bet, String result, HttpSession session){
       try {
-        var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));                            // 0 break even=== 1 win === -1 lose
-        var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received-totalPointBet==0?0:(received-totalPointBet<0?-1:1)));
+        var bHistory = historyServiceInterface.createBauCuaHistory(new BauCuaHistory(2, "bet: "+bet+", result: "+result, 1, result, null, LocalDateTime.now()));                            // 2 drawn=== 1 win === 0 lose
+        var createUserHistory = userHistoryServiceInterface.createBauCuaHistory(new BauCuaUserHistory(bHistory.getId(), Integer.parseInt(session.getAttribute("user_id").toString()), totalPointBet, received, received-totalPointBet==0?2:(received-totalPointBet<0?0:1)));
        List<DataMapper> cond = new ArrayList<DataMapper>();
        cond.add(DataMapper.getInstance("", "h.created_at", ">=", "2022-11-22", ""));
         gameHistoryUserService.getGameHistoryByEachUser(cond);

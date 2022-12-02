@@ -70,7 +70,7 @@ public class ContactManaController {
                 }
                if(bindingResult.hasErrors()){
                    model.addAttribute("contactMapper", contactMapper);
-                   model.addAttribute("formType", 0);
+                   model.addAttribute("formType", 1);
                    return "contacts/administrator/update";
                }
 

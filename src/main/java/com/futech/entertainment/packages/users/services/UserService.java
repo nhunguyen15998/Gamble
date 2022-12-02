@@ -233,7 +233,7 @@ public class UserService extends BaseService<User> implements UserServiceInterfa
             userProfile.setUserId(user.getId());
             userProfile.setFirstName(userMapper.getFirst_name());
             userProfile.setLastName(userMapper.getLast_name());
-            userProfile.setThumbnail("/images/defaults/no-user.jpeg");
+            userProfile.setThumbnail("");
             userProfile.setWallpaper("/images/defaults/section-bg.jpg");
             userProfile.setBirth(LocalDate.parse(userMapper.getBirth()));
             userProfile.setGender(userMapper.getGender());

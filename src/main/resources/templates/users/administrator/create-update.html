@@ -163,7 +163,7 @@
                           <div class="table-responsive">
                           <div id="data-table_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                          <div class="row">
-                         <div class="col-sm-12 col-md-6">
+                         <div class="col-xl-12">
                          <div class="dataTables_length" id="data-table_length">
                           <label>
                             Game: <select class="form-select" style="width:100px;font-size:15px;padding:0 5px; text-align:center" id="take-game">
@@ -176,16 +176,17 @@
                               From: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-from"/></label>
                             <label style="margin-left:1.5vw ;">
                               To: <input type="date" class="form-select" style="width: 140px; padding: 0 10px;" id="take-to"/></label>
+                              <span style="width:7%;float:right ;margin-top:-0.5vh" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;padding:10px;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
   
                        </div>
                        
                       </div>
-                        <div class="col-sm-12 col-md-6">
+                        <!-- <div class="col-sm-12 col-md-6">
                           <label style="width:100%">
                             <span style="width:10%;float:left;margin-top:-0.5vh" onclick="ClearFilter();"><li  class="icons-list-item" style="height:80%;padding:10px;cursor: pointer;" ><i class="fa fa-history" style="pointer-events: none;"></i></li></span>
                            
                           </label>
-                       </div>
+                       </div> -->
                        </div>
                        
                         <div class="card-body p-0">
@@ -671,14 +672,12 @@ function LoadStatis(p,from, to, game,cond,sort, boo){
    //DATA FOR CHART
  var ft = new FormData()
     ft.append("p",p)
-    ft.append("dateFrom",from)
-    ft.append("dateTo",to)
+    ft.append("from",from)
+    ft.append("to",to)
     ft.append("gameid",game)
     ft.append("userid",userid)
  
 
-    
-    
     $.ajax({
               type: "POST",
               url: "/admin/users/getDataUserHistory",
@@ -688,16 +687,17 @@ function LoadStatis(p,from, to, game,cond,sort, boo){
               contentType: false,
               success: function (data) {
                 $("#data-table").find('tbody').empty();
+                $("#data-table").parent().find('label').remove();
                 if(data.length==0){$("#data-table").parent().append('<label class="border-bottom odd table-item container" style="text-align:center">No data</label>'); }
                 else {
                     var row = p == 1 ? 1 : 12 * (p - 1) + 1;
 
                     for(var i =0; i<data.length;i++){
                       var res=((data[i].received_amount-data[i].bet_amount)<0?-(data[i].received_amount-data[i].bet_amount):(data[i].received_amount-data[i].bet_amount));
-                      var status = "Lose -$"+res;
+                      var status = "Lose -$"+Math.round(res * 100) / 100;
                       var cls = "text-warning bg-warning-transparent";
-                      if(data[i].status==1) { status = "Win +$"+res;  cls = "text-success bg-success-transparent";}
-                      else if(data[i].status==0){ status = "Break even"; cls = ""}
+                      if(data[i].status==1) { status = "Win +$"+Math.round(res * 100) / 100;  cls = "text-success bg-success-transparent";}
+                      else if(data[i].status==2){ status = "Drawn"; cls = ""}
                       $("#data-table").append('<tr class="border-bottom odd table-item"><td>'+row+'</td><td>'+data[i].name+'</td><td>'+data[i].results+'</td><td>$ '+data[i].bet_amount+'</td><td> $'+data[i].received_amount+'</td><td class="'+cls+'">'+status +'</td><td>'+data[i].created_at+'</td></tr>')
                         row++;
                       }

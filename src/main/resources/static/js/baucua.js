@@ -14696,7 +14696,6 @@
                         });
                       }
                        
-                        -1 !== r && (e.tongDiem += e.danhSachCuoc[r].diemCuoc)
                     }
                     )),console.log(JSON.stringify(lsReceived)),
                     e.danhSachCuoc.forEach((function(n,t){
@@ -14706,14 +14705,15 @@
                     console.log("bet:",bet),
                     e.danhSachCuoc.forEach((function(n, t) {
                         if( n.diemCuoc>0){
+                            var i = 0;
                             lsReceived.forEach((function(k,j){
                                     //get result
                                     if(!results.includes(k.code))
                                         results+=k.qty+k.code+ (j==lsReceived.length-1?"":", ");
-
                                     
-                                    if(k.code===n.ma) {received+=n.diemCuoc + n.diemCuoc*k.qty; e.tongDiem+=received; totalPoints=e.tongDiem;console.log(k.code+"==="+n.ma+"received:"+received+" == total:"+e.tongDiem);}
-                                    else{ received+=0;  e.tongDiem+=0; totalPoints=e.tongDiem;console.log("received:"+received+" == total:"+e.tongDiem);}
+                                    console.log("pre: "+e.tongDiem)
+                                    if(k.code===n.ma) {i+=n.diemCuoc+n.diemCuoc*k.qty; e.tongDiem+=i; totalPoints=e.tongDiem,received+=i,i=0;console.log(k.code+"==="+n.ma+" X"+k.qty+"====received:"+received+" ==== total:"+totalPoints);}
+                                    else{ received+=0;  e.tongDiem+=0; totalPoints=e.tongDiem;console.log("received:"+received+" === total:"+totalPoints);}
                                 
                             }));
                        }
@@ -14876,7 +14876,7 @@
      function SaveResults(totalPointBet,totalPoint, received,bet,result){
         if(totalPointBet>0){
             var difference=received-totalPointBet;
-        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+totalPoint.toLocaleString()+'</td><td>'+(difference==0?"Break even":(difference<0?"Lose -$"+ -difference:"Win +$"+difference))+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
+        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+(totalPoint).toLocaleString()+'</td><td>'+(difference==0?"Drawn":(difference<0?"Lose -$"+ -difference:"Win +$"+difference))+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
         var fdt= new FormData();
         fdt.append("totalPoint",totalPoint);
         fdt.append("totalPointBet",totalPointBet);
