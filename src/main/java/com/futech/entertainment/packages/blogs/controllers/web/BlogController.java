@@ -114,6 +114,9 @@ public class BlogController {
             List<DataMapper> conditions = new ArrayList<DataMapper>();
             conditions.add(DataMapper.getInstance("", "blogs.id", "=", id, "and"));
             var blog = this.blogServiceInterface.getBlog(conditions);
+            if(blog == null){
+                return "redirect:/results/not-found";
+            }
             conditions.clear();
             //conditions.add(DataMapper.getInstance("", "blogs.is_featured", "=", "1", "and"));
             String orderBy = "blogs.created_at desc";

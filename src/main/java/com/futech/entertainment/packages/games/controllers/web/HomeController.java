@@ -33,4 +33,10 @@ public class HomeController {
     public String errorResult(Model model){
         return "results/error";
     }
+
+    //get 404
+    @GetMapping("/results/not-found")
+    public String pageNotFound(){
+        return "results/404";
+    }
 }

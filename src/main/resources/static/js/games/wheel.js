@@ -576,3 +576,7 @@ $('#wheel-pause-music').on('click', () => {
 $('#wheel-quit-game').on('click', () => {
     $('#quit-game-modal').modal('show')
 })
+
+$('#btn-quit-wheel').on('click', () => {
+   window.location.href = "/games"
+})

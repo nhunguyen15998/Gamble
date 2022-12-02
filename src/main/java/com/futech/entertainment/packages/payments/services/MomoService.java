@@ -61,14 +61,13 @@ public class MomoService implements MomoServiceInterface {
             var extraData = "";
             var redirectUrl = "http://localhost:9090/proceed/transaction";
             var ipnUrl = "http://localhost:9090/momoCallback/"+orderId;
-
             var lang = "vi";
 
             var rawHash = String.format("accessKey=%s&amount=%s&extraData=%s&ipnUrl=%s&orderId=%s&orderInfo=%s&partnerCode=%s&redirectUrl=%s&requestId=%s&requestType=%s", 
                                                 accessKey, amount, extraData, ipnUrl, orderId, orderInfo, partnerCode, redirectUrl, requestId, requestType);
             var signature = PaymentHelpers.hmacSHA256(secretKey, rawHash);
 
-            momo_Params.put("accessKey", accessKey);
+            // momo_Params.put("accessKey", accessKey);
             momo_Params.put("amount", amount);
             momo_Params.put("extraData", extraData);
             momo_Params.put("ipnUrl", ipnUrl);
