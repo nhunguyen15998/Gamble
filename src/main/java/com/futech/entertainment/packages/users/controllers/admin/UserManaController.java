@@ -185,13 +185,16 @@ public class UserManaController {
 
                 return "users/administrator/create-update";
             }
-            if(!multipartFile.getOriginalFilename().isEmpty()){
+            boolean check = multipartFile.getOriginalFilename().isEmpty();
                 var tn = getUserMapperByID(userMapper.getUser_id()).getThumbnail();
                 if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);
-                String fileName = Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
-                userMapper.setThumbnail("/images/users/"+fileName);
-                FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
-            }
+                String fileName = null;
+                if(check==false){
+                    fileName= Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
+                    FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
+                }
+                userMapper.setThumbnail(!check?"/images/users/"+fileName:"");
+           
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
                 atts.addFlashAttribute("successMsg", "Successfully update user");

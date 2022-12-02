@@ -588,13 +588,18 @@
 
       function checkValue(ele){
         var str=$(ele).val();
+        if(str != "NEXT"){
         var operator = str.slice(0,1);
         var newStr=parseFloat(str.slice(1,str.length));
-          if(!(((operator.includes("+")||operator.includes("/")||operator.includes("X"))&&newStr)||str=="NEXT")){
+        }
+          if(!(((operator=="+")||operator=="/"||operator=="X")&& !isNaN(newStr)||str=="NEXT")||(operator=="/"&&newStr<0)){
             $(ele).parent().find('label').html('Value is incorrect');
           }else{
+            if(str!="NEXT")
             $(ele).val(operator+newStr);
+            
             $(ele).parent().find('label').html('');
+
           }
       }
       
