@@ -168,7 +168,7 @@ public class UserManaController {
         }
     }
     @PostMapping("/admin/users/update")
-    public String updateUser(@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
+    public String updateUser(HttpSession session,@RequestParam int type, @Valid @ModelAttribute("userMapper") UserUpdateMapper userMapper, BindingResult bindingResult, Model model, RedirectAttributes atts,@RequestParam("pathImg") MultipartFile multipartFile,@RequestParam String imgViewer)  throws IOException {
         try {
             if(userMapper.getBirth().isEmpty()) 
             bindingResult.addError(new FieldError("userMapper", "birth", "Birth is required."));
@@ -194,9 +194,12 @@ public class UserManaController {
                     FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
                 }
                 userMapper.setThumbnail(!check?"/images/users/"+fileName:"");
-           
+                userMapper.setIs_admin(type);
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
+                System.out.println(userMapper.getUser_id().equals(session.getAttribute("user_id")));
+                if(userMapper.getUser_id().equals(session.getAttribute("user_id")))
+                    session.setAttribute("thumbnail", userMapper.getThumbnail());
                 atts.addFlashAttribute("successMsg", "Successfully update user");
             } else {
                 atts.addFlashAttribute("errorMsg", "Cannot update user");
@@ -239,7 +242,11 @@ public class UserManaController {
         if(userMapper.getCurrent_password().isBlank()) items.put("current", "Current password is required.");
         if(userMapper.getNew_password().isBlank()) items.put("newPass", "New password is required.");
         if(items.size()>0) items.put("code",400);
-        else userServiceiInterface.updateUserUserProfile(userMapper);
+        else{
+            userMapper.setIs_admin(Integer.parseInt(session.getAttribute("is_admin").toString())); 
+            userServiceiInterface.updateUserUserProfile(userMapper);
+
+        }
         return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
     }
     @PostMapping("/admin/users/my-profile/update-infomation")
@@ -256,6 +263,8 @@ public class UserManaController {
         
         userMapper.setUser_id(Integer.parseInt(session.getAttribute("user_id").toString()));
         userMapper.setUser_profile_id(Integer.parseInt(session.getAttribute("user_profile_id").toString()));
+        userMapper.setIs_admin(Integer.parseInt(session.getAttribute("is_admin").toString())); 
+       
         boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
         return new ResponseEntity<Map<String, Object>>(items, HttpStatus.OK);
 

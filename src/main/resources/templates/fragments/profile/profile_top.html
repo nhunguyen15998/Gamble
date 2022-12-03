@@ -17,7 +17,7 @@
                         <div class="profile-photo">
                             <div class="img">
                                 <!--avatar-->
-                                <img class="thumbnails" th:src='${session.thumbnail == null ? "/images/defaults/no-user.jpeg" : session.thumbnail}' style="border-radius: 50%; margin-right: 10px; height: 160px;"/>
+                                <img class="thumbnails" th:src='${(session.thumbnail == null OR session.thumbnail == "") ? "/images/defaults/no-user.jpeg" : session.thumbnail}' style="border-radius: 50%; margin-right: 10px; height: 160px;"/>
                             </div>
                             <div class="mybadge">
                                 <img th:src="@{/images/defaults/badge.png}" alt="">
