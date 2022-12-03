@@ -18,7 +18,7 @@
           <div class="d-flex justify-content-between">
             <div class="align-items-center d-flex flex-column" style="width: 27%">
               <div style="position: relative;">
-                <img th:src="*{thumbnail}?:'/images/defaults/no-user.jpeg'" width="150" height="150" style="border-radius: 50%;" id="img-avatar"/>
+                <img th:src="*{thumbnail!=''}?*{thumbnail}:'/images/defaults/no-user.jpeg'" width="150" height="150" style="border-radius: 50%;" id="img-avatar"/>
                 <input type="file" id="upload-avatar" hidden/>
                 <label for="upload-avatar" class="align-items-center d-flex justify-content-center"
                         style="background-color: #54068f;color: #fff;position: absolute;right: 10px;bottom: 0;border-radius: 50%;cursor: pointer;width: 30px;height: 30px;">

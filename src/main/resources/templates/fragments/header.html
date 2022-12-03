@@ -113,7 +113,7 @@
                                     <th:block th:if="${session.phone != null}">
                                         <li class="nav-item dropdown">
                                             <div class="align-items-center d-flex">
-                                                <img class="thumbnails" th:src='${session.thumbnail == null ? "/images/defaults/no-user.jpeg" : session.thumbnail}' width="30" height="30" style="border-radius: 50%;margin: 0 10px 0 15px;"/>
+                                                <img class="thumbnails" th:src='${(session.thumbnail == null OR session.thumbnail =="") ? "/images/defaults/no-user.jpeg" : session.thumbnail}' width="30" height="30" style="border-radius: 50%;margin: 0 10px 0 15px;"/>
                                                 <a href="#" th:class="@{'nav-link dropdown-toggle d-flex align-items-center user-name '+${profileURL != null?'active':''}}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" th:text='${session.firstName + " " + session.lastName}'
                                                    style="padding-left: 0;"></a>
                                             </div>

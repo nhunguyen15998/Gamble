@@ -35,8 +35,18 @@ public class UserUpdateMapper {
     private String confirm_password;
     
 
-    // private boolean is_admin;
+    private int is_admin;
     
+
+    public int getIs_admin() {
+        return is_admin;
+    }
+
+
+    public void setIs_admin(int is_admin) {
+        this.is_admin = is_admin;
+    }
+
 
     public UserUpdateMapper() {
     }
