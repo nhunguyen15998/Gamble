@@ -6,6 +6,7 @@
     var received=0;
     var sequence=0;
     var betVal=1;
+    var count=1;
     var results = "";
     var bet = "";
     var lsReceived = [];
@@ -14653,6 +14654,7 @@
             BauCuaReducer:  function() {
                 var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : Q
                   , n = arguments.length > 1 ? arguments[1] : void 0;
+                  
                 switch (n.type) {
                 case "DAT_CUOC_BAU_CUA":
                     console.log("action", n);
@@ -14719,6 +14721,7 @@
                        }
                     }
                     )),SaveResults(totalPointBet, totalPoints,received,bet,results),lsReceived=[],totalPointBet=0, totalPoints=0,received=0,results="",bet="",
+                    e.tongDiem=getBalance(),
                     e.danhSachCuoc = e.danhSachCuoc.map((function(e, n) {
                         return W(W({}, e), {}, {
                             diemCuoc: 0
@@ -14874,11 +14877,12 @@
      }
     
      function SaveResults(totalPointBet,totalPoint, received,bet,result){
+       // console.log(getBalance()-totalPointBet+received==totalPoint)
         if(totalPointBet>0){
             var difference=received-totalPointBet;
-        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+(totalPoint).toLocaleString()+'</td><td>'+(difference==0?"Drawn":(difference<0?"Lose -$"+ -difference:"Win +$"+difference))+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
+        $('#baucua-game-history').prepend('<tr><td>'+(sequence+=1)+'</td><td>'+result+'</td><td>'+bet+' ($'+totalPointBet+')</td><td>$'+received+'</td><td>$'+(getBalance()-totalPointBet+received).toLocaleString()+'</td><td>'+(difference==0?"Drawn":(difference<0?"Lose -$"+ -difference:"Win +$"+difference))+'</td><td>'+moment().format("DD-MM-YYYY HH:mm")+'</td></tr>')
         var fdt= new FormData();
-        fdt.append("totalPoint",totalPoint);
+        fdt.append("totalPoint",getBalance()-totalPointBet+received);
         fdt.append("totalPointBet",totalPointBet);
         fdt.append("received",received);
         fdt.append("bet",bet);

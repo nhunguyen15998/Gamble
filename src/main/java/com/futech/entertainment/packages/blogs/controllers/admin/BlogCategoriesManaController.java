@@ -67,7 +67,7 @@ public class BlogCategoriesManaController {
     public String CreateUser(@Valid @ModelAttribute("blogCateMapper") BlogCateMapper blogCateMapper,BindingResult bindingResult,RedirectAttributes redirAttrs,Model model)  
     {
         try {
-            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), 0)) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
+            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), 0)) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog category with this url slug already exists."));
             
             if(bindingResult.hasErrors()){
                 model.addAttribute("blogCateMapper", blogCateMapper);
@@ -106,7 +106,7 @@ public class BlogCategoriesManaController {
     @PostMapping("/admin/blog-categories/update")
     public String updateUser(@Valid @ModelAttribute("blogCateMapper") BlogCateMapper blogCateMapper, BindingResult bindingResult, RedirectAttributes atts, Model model) {
         try {
-            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), blogCateMapper.getId())) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog with this url slug already exists."));
+            if(!blogCateMapper.getUrl_slug().isBlank()&&!blogCateServiceInterface.checkUrlSlug(blogCateMapper.getUrl_slug(), blogCateMapper.getId())) bindingResult.addError(new FieldError("blogMapper", "url_slug", "The blog category with this url slug already exists."));
 
             if(bindingResult.hasErrors()){
                 model.addAttribute("oldData", blogCateMapper);
