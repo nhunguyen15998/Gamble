@@ -109,7 +109,7 @@ public class PaymentProcessController {
         Gson gson = new Gson();
         try {
             var transactionCode = Helpers.randomStringWithLength(15);
-            var address = "abc1345";//this.bitcoinServiceInterface.getAddress(transactionCode);
+            var address = this.bitcoinServiceInterface.getAddress(transactionCode); //"abc1345";//
             JsonObject obj = new JsonObject();
             obj.addProperty("bcaddress", address);
             obj.addProperty("transactionCode", transactionCode);

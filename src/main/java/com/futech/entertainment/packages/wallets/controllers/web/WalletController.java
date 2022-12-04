@@ -74,13 +74,14 @@ public class WalletController {
     public void getCallbackBitcoin(@PathVariable String trid){
         try {
             var transaction = this.bitcoinServiceInterface.getTransaction(trid);
-            System.out.println(transaction);
-            var detail = transaction.mapStr("details").replace("[", "").replace("]", "");
-            JsonElement json = JsonParser.parseString(detail);
-            var transactionCode = json.getAsJsonObject().get("label").getAsString();
-            var amount = transaction.mapStr("amount");
+            String details = transaction.mapStr("details");
+            System.out.println(details);
+            JsonElement json = JsonParser.parseString(details);
+            json.getAsJsonArray().get(0);
+            var transactionCode = json.getAsJsonArray().get(0).getAsJsonObject().get("label").getAsString();
+            var amount = json.getAsJsonArray().get(0).getAsJsonObject().get("amount").getAsString();
             var txid = transaction.mapStr("txid");
-            var address = json.getAsJsonObject().get("address").getAsString();
+            var address = json.getAsJsonArray().get(0).getAsJsonObject().get("address").getAsString();
             JsonObject js = new JsonObject();
             js.addProperty("transactionCode", transactionCode);
             js.addProperty("amount", amount);

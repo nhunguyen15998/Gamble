@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.futech.entertainment.packages.core.middlewares.auth.interfaces.Authentication;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
+import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.settings.services.interfaces.ConfigServiceInterface;
@@ -61,6 +62,8 @@ public class WalletsController {
     private UserConfigServiceInterface userConfigServiceInterface;
     @Autowired
     private ConfigServiceInterface configServiceInterface;
+    @Autowired
+    private BitcoinServiceInterface bitcoinServiceInterface;
 
     //get exchange rate
     @GetMapping("/getExRateAndBalance")
@@ -193,7 +196,7 @@ public class WalletsController {
         Map<String, String> item = new HashMap<String,String>();
         try {
             var transactionCode = Helpers.randomStringWithLength(15);
-            var address = "abc1345";//this.bitcoinServiceInterface.getAddress(transactionCode);
+            var address = this.bitcoinServiceInterface.getAddress(transactionCode); //"abc1345";//
             item.put("bcaddress", address);
             item.put("transactionCode", transactionCode);
             return new ResponseEntity<Map<String, String>>(item, HttpStatus.OK);

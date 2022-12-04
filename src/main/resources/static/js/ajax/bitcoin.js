@@ -28,6 +28,7 @@ function startTimer(duration, display) {
             $.post('/updateTransaction/'+transactionCode, (response) => {
                 let rsp = JSON.parse(response)
                 console.log(rsp.code)
+                window.location.href = "/results/error"
             })
         }
     }, 1000);

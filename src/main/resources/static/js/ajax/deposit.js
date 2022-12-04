@@ -113,7 +113,7 @@ $('#bitcoin').on('click', () => {   ///BITCOIN
     paymentWithBTCExRate()
     $('#deposit-currency').text('BTC')
     $('#deposit-amount').text('0')
-    document.querySelector('#deposit-note small:last-child span').innerHTML = `0,0001 - 10 BTC`
+    document.querySelector('#deposit-note small:last-child span').innerHTML = `0 - 1 BTC`
 })
 $('#momo').on('click', () => {   ///MOMO
     $('input[name="amount"]').val("")

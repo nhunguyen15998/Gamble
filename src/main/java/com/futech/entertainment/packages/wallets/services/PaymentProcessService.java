@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.payments.services.interfaces.MomoServiceInterface;
 import com.futech.entertainment.packages.payments.services.interfaces.VNPayServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
@@ -51,6 +52,8 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
     private TransactionWithdrawServiceInterface transactionWithdrawServiceInterface;
     @Autowired
     private UserServiceInterface userServiceInterface;
+    @Autowired
+    private BitcoinServiceInterface bitcoinServiceInterface;
 
     @Transactional
     public Map<String, Object> depositProcess(DepositMapper depositMapper, HttpServletRequest req){
@@ -110,7 +113,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                             }
                             break;
                         case PaymentHelpers.BITCOIN:
-                            if(dp < 0.0001 || dp > 10){
+                            if(dp < 0 || dp > 1){
                                 obj.put("code", 400);
                                 obj.put("amount", "Invalid amount");
                                 return obj;
@@ -119,7 +122,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                             transaction.setexchange_rate(bitcoinExchangeRate);
                             transaction.setfrom_currency("BITCOIN");
                             transaction.setAmount(Double.parseDouble(deposit));
-                            var bcaddress = "abc123";//bitcoinServiceInterface.getAddress(transactionCode);
+                            var bcaddress = this.bitcoinServiceInterface.getAddress(transactionCode); //"abc123";//
                             transaction.setBcaddress(bcaddress);
                             var bitcoinTransaction = this.transactionServiceInterface.createTransaction(transaction);
                             obj.put("code", 200);
@@ -171,7 +174,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             conditions.add(DataMapper.getInstance("", "code", "=", transactionCode, ""));
             var transaction = this.transactionServiceInterface.getFirstBy(null, conditions, null);
             if(transaction != null){
-                var bcaddress = "abc123";//bitcoinServiceInterface.getAddress(transactionCode);
+                var bcaddress = this.bitcoinServiceInterface.getAddress(transactionCode); //"abc123";//
                 Transaction trans = new Transaction();
                 trans.setId(Integer.parseInt(transaction.get("id").toString()));
                 trans.setBcaddress(bcaddress);
