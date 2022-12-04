@@ -87,6 +87,7 @@
                                                 <div class="col-xl-12 mb-3">
                                                     <label for="configs" >Configs</label>
                                                     <th:block th:if="${gameMapper.code=='LUCKYWHEEL'}">
+                                                    <label class="alert alert-warning bg-warning-transparent"> First character of value must be one of these(/, X, +). Then comes a number and it must be larger than 0; in case of '/', it must be larger than 1. If not a number, value can only accept the word 'NEXT'</label>
                                                     <div class="col-xl-12 round form-control"  style="float:left"id="round1">
                                                     <label for="configs" >Round 1</label> <br/>
                                                     <table class="table">
@@ -98,6 +99,8 @@
                                                       </table>
 
                                                     </div>
+                                                    <label class="alert alert-warning bg-warning-transparent"> First character of value must be one of these(/, X, +). Then comes a number and it must be larger than 0; in case of '/', it must be larger than 1. If not a number, value can only accept the word 'NEXT'</label>
+                                                    
                                                     <div class="col-xl-12 round form-control"  style="float:left" id="round2">
                                                     <label for="configs" >Round 2</label> <br/>
                                                     <table class="table">
@@ -108,6 +111,8 @@
                                                       </tr>
                                                       </table>
                                                     </div>
+                                                    <label class="alert alert-warning bg-warning-transparent"> First character of value must be one of these(/, X, +). Then comes a number and it must be larger than 0; in case of '/', it must be larger than 1. If not a number, value can only accept the word 'NEXT'</label>
+                                                    
                                                     <div class="col-xl-12 round form-control" style="float:left" id="round3">
                                                     <label for="configs" >Round 3</label> <br/>
                                                     <table class="table">
@@ -592,14 +597,14 @@
         var operator = str.slice(0,1);
         var newStr=parseFloat(str.slice(1,str.length));
         }
-          if(!(((operator=="+")||operator=="/"||operator=="X")&& !isNaN(newStr)||str=="NEXT")||(operator=="/"&&newStr<0)){
+          if(!((operator=="+"||operator=="/"||operator=="X")&& !isNaN(newStr)||str=="NEXT")||(operator=="/"&&newStr<=0)||(operator=="+"||operator=="X")&&newStr<0){
             $(ele).parent().find('label').html('Value is incorrect');
+            return false;
           }else{
             if(str!="NEXT")
             $(ele).val(operator+newStr);
-            
             $(ele).parent().find('label').html('');
-
+          return true;
           }
       }
       
@@ -608,21 +613,61 @@
           let regex= /^#([A-F0-9]{3,4}|[A-F0-9]{6}|[A-F0-9]{8})$/i;
           if(!regex.test(str)){
             $(ele).parent().parent().find('label').html('HEX value is incorrect');
-          }else {$(ele).parent().parent().find('label').html('');
-          $(ele).parent().find('div').css('background-color',str)}
+            return false;
+          }else {
+            $(ele).parent().parent().find('label').html('');
+            $(ele).parent().find('div').css('background-color',str)
+            return true;
+        }
+      }
+      function checkAll(){
+        var err = 0;
+        var ls= [];
+        errorRound =$('.valueRound');
+        errorbgColor =$('.bgColor');
+        errortxtColor =$('.txtColor');
+        for (var i = 0, n = errorRound.length; i < n; i++) {
+              if(!checkValue($(errorRound[i]))){
+                ls.push({
+                  ele: $(errorRound[i]),
+                  type: 1
+                });
+                 err++;
+              }
+        }
+
+        for (var i = 0, n = errorbgColor.length; i < n; i++) {
+              if(!checkHEX($(errorbgColor[i]))) {
+                ls.push({
+                  ele:$(errorbgColor[i]),
+                  type:2
+                } );
+                err++;}
+        }
+        for (var i = 0, n = errortxtColor.length; i < n; i++) {
+              if(!checkHEX($(errortxtColor[i]))){
+                ls.push({
+                  ele: $(errortxtColor[i]),
+                  type:2
+                });
+                 err++;
+              }
+        }
+        ls.forEach((function(n,t) {
+          if(n.type==1) $(n.ele).parent().find('label').html('Value is incorrect');
+          else if(n.type==2) $(n.ele).parent().find('label').html('HEX value is incorrect');
+        }));
+        if(err > 0) return false;
+        else return true;
       }
       function SaveConfigs(){
-        error =$('.text-danger-value');
-        var check=true;
-        for (var i = 0, n = error.length; i < n; i++) {
-          if($(error[i]).html()!=''){ check = false; break;}
-        }
+       
 
         $("#msgUpdated").removeClass("alert-warning");
         $("#msgUpdated").removeClass("alert-success");
         $("#msgUpdated").html('');
 
-        if(check==true){
+        if(checkAll()){
         //GET JSON STRING
         var res ='';
         for(var i = 1; i<=3;i++ ){
@@ -672,7 +717,7 @@
         },
         error: function(data){
             console.log(data)
-            data.responseJSON.errors.forEach(err => {
+            data.responseJSON.errors.forEach(err => {alert(err.field)
                 $(`#${err.field}_err`).text(err.defaultMessage ?? "")
                 $("#msgUpdated").addClass('alert-warning');
                 $("#msgUpdated").html('Please check the input data !');

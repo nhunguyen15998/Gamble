@@ -187,13 +187,16 @@ public class UserManaController {
             }
             boolean check = multipartFile.getOriginalFilename().isEmpty();
                 var tn = getUserMapperByID(userMapper.getUser_id()).getThumbnail();
-                if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);
                 String fileName = null;
-                if(check==false){
+                if(!check){
                     fileName= Helpers.randomStringDate()+"_"+StringUtils.cleanPath(multipartFile.getOriginalFilename());
                     FileUploadUtil.saveFile("src/main/resources/static/images/users/", fileName, multipartFile);
+                    userMapper.setThumbnail("/images/users/"+fileName);
+                    if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);
                 }
-                userMapper.setThumbnail(!check?"/images/users/"+fileName:"");
+                else if(check && !imgViewer.isEmpty())
+                    userMapper.setThumbnail(tn);
+                else{ userMapper.setThumbnail(""); if(!tn.isEmpty()) FileUploadUtil.deleteFile(tn);}
                 userMapper.setIs_admin(type);
             boolean updated = userServiceiInterface.updateUserUserProfile(userMapper);
             if(updated){
@@ -338,8 +341,8 @@ public class UserManaController {
      List<DataMapper> lsCond = new ArrayList<DataMapper>();
      lsCond.add(DataMapper.getInstance("", "users.is_admin", "=", is_admin==1?"1":"0", ""));
       if(!cond.isEmpty()&&cond!=null){
-          lsCond.add(DataMapper.getInstance("and (users.email like '%"+cond+"%' or ", "users.phone", "like", "'%"+cond+"%'", "p.first_name like '%"+cond+"%' or p.last_name like '%"+cond+"%')"));
-      }
+        lsCond.add(DataMapper.getInstance("and (users.email like '%"+cond+"%' or ", "users.phone", "like", "%"+cond+"%", "or p.first_name like '%"+cond+"%' or p.last_name like '%"+cond+"%')"));
+    }
       var u = userServiceiInterface.getAll(selects, lsCond, lsJoin, null, null, null);
       return u==null?0:u.size();
  }
