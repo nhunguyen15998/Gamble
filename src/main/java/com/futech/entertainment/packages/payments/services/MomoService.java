@@ -5,11 +5,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.payments.services.interfaces.MomoServiceInterface;
@@ -26,7 +29,9 @@ import com.futech.entertainment.packages.wallets.models.Transaction;
 import com.futech.entertainment.packages.wallets.models.UserWallet;
 import com.futech.entertainment.packages.wallets.services.interfaces.TransactionServiceInterface;
 import com.futech.entertainment.packages.wallets.services.interfaces.UserWalletServiceInterface;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Service
 public class MomoService implements MomoServiceInterface {
@@ -53,7 +58,7 @@ public class MomoService implements MomoServiceInterface {
             // var partnerCode = "MOMOCIST20211013";
             // var secretKey = "pB9obDs5kHLdKSB4gRYFuL5j6y9CYvgR";
 
-            var amount = String.valueOf(Math.round(Double.parseDouble(req.getAttribute("amount").toString())));
+            var amount = Math.round(Double.parseDouble(req.getAttribute("amount").toString()));
             var orderId = req.getAttribute("transactionCode").toString();
             var orderInfo = "MomoTest";
             var requestType = "captureWallet";
@@ -79,14 +84,18 @@ public class MomoService implements MomoServiceInterface {
             momo_Params.put("requestId", requestId);
             momo_Params.put("requestType", requestType);
             momo_Params.put("signature", signature);
-            
+            System.out.println(momo_Params.toString());
+
+            var objectMapper = new ObjectMapper();
+            String requestBody = objectMapper.writeValueAsString(momo_Params);
+                    
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .headers("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(momo_Params.toString()))
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             System.out.println(response);
 
             var rp = PaymentHelpers.jsonStringToJsonObject(response.body());
