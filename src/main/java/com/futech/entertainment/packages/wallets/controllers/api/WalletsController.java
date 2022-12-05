@@ -222,6 +222,8 @@ public class WalletsController {
             withdrawBitcoinMapper.setSender(sender);
             withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
             withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
+            var transactionCode = Helpers.randomStringWithLength(15);
+            withdrawBitcoinMapper.setTransaction_code(transactionCode);
             item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, withdrawPassword);
             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
         } catch (Exception e) {
@@ -257,10 +259,11 @@ public class WalletsController {
             WithdrawBitcoinMapper withdrawBitcoinMapper = new WithdrawBitcoinMapper();
             withdrawBitcoinMapper.setBitcoin_amount(jo.get("bitcoin_amount").getAsString());
             withdrawBitcoinMapper.setBcaddress(jo.get("bcaddress").getAsString());
-            withdrawBitcoinMapper.setTransaction_code(jo.get("transaction_code").getAsString());
             withdrawBitcoinMapper.setSender(sender);
             withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
             withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
+            var transactionCode = Helpers.randomStringWithLength(15);
+            withdrawBitcoinMapper.setTransaction_code(transactionCode);
             item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, ConfigHelpers.IS_OFF);
             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
         } catch (Exception e) {

@@ -16,6 +16,16 @@ import com.google.gson.JsonParser;
 
 @Service
 public class ConfigService extends BaseService<Config> implements ConfigServiceInterface{
+
+    public List<Map<String, Object>> getConfigList(){
+        try {
+            var config = this.getAll(null, null, null, null, "type", null);
+            return config;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     
     public JsonElement getConfigStringElement(Integer type, String name, String configStringElement){
         try {
@@ -26,7 +36,7 @@ public class ConfigService extends BaseService<Config> implements ConfigServiceI
             JsonObject cf = JsonParser.parseString(config.get("config_string").toString()).getAsJsonObject();
             return cf.get(configStringElement);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
             return null;
         }
     }
@@ -40,10 +50,18 @@ public class ConfigService extends BaseService<Config> implements ConfigServiceI
             System.out.println(config);
             return config;
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
             return null;
         }
     }
 
+    public boolean updateConfig(Config config){
+        try {
+            return this.update(config);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

@@ -246,8 +246,9 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                 return obj;
             }
             transaction.setexchange_rate(exchangeRate);
-            transaction.setAmount(amount*exchangeRate);
+            transaction.setAmount(amount);//*exchangeRate);
             transaction.setfrom_currency(fromCurrency);
+            transaction.setreceived_amount(amount*exchangeRate);
             var trans = this.transactionServiceInterface.createTransaction(transaction);
 
             //create transaction withdraw
@@ -289,9 +290,9 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                 return obj;
             }
             var amount = Double.parseDouble(withdrawBitcoinMapper.getBitcoin_amount());
-            if(amount <= 0){
+            if(amount < 0.0000546){
                 obj.put("code", 400);
-                obj.put("amount", "Invalid amount"); 
+                obj.put("amount", "Invalid amount, withdraw amount must be at least 0.0000546 BTC"); 
                 return obj; 
             }
             //check if amount <= userwallet
@@ -330,8 +331,9 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             }
             transaction.setexchange_rate(exchangeRate);
             //no need to exchange to USD
-            transaction.setAmount(amount*exchangeRate);
+            transaction.setAmount(amount);//*exchangeRate);
             transaction.setfrom_currency(fromCurrency);
+            transaction.setreceived_amount(amount*exchangeRate);
             this.transactionServiceInterface.createTransaction(transaction);
 
             var currentAmount = userAmount - withdrawAmount;
@@ -417,6 +419,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
             wallet.setpre_amount(userAmount);
 
             transaction.setAmount(amount);
+            transaction.setreceived_amount(amount);
             this.transactionServiceInterface.createTransaction(transaction);
 
             var currentAmount = userAmount - amount;

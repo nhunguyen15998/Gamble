@@ -168,10 +168,9 @@ public class VNPayService implements VNPayServiceInterface{
                 //check result code returned by vnpay
                 if(req.getParameter("vnp_ResponseCode").equals("00")){
                     //update transaction stt
-                    var exchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "VND", "rate").getAsString());
+                    var exchangeRate = Double.parseDouble(transaction.get("exchange_rate").toString());
                     Transaction trans = new Transaction();
                     trans.setId(Integer.parseInt(transaction.get("id").toString()));
-                    trans.setAmount(transactionAmount*exchangeRate);
                     trans.setreceived_amount(transactionAmount*exchangeRate);
                     trans.setStatus(PaymentHelpers.SUCCESS);
                     this.transactionServiceInterface.update(trans);

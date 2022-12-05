@@ -77,7 +77,6 @@ public class WalletController {
             String details = transaction.mapStr("details");
             System.out.println(details);
             JsonElement json = JsonParser.parseString(details);
-            json.getAsJsonArray().get(0);
             var transactionCode = json.getAsJsonArray().get(0).getAsJsonObject().get("label").getAsString();
             var amount = json.getAsJsonArray().get(0).getAsJsonObject().get("amount").getAsString();
             var txid = transaction.mapStr("txid");

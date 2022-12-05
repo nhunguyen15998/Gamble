@@ -20,4 +20,8 @@ public class ConfigHelpers {
         return Integer.parseInt(configStr.get(key).toString());
     }
 
+    public static String createCurrencyConfigString(String currency, String rate){
+        return String.format("{\"currency\":\"%s\", \"rate\":\"%s\"}", currency, rate);
+    } 
+
 }

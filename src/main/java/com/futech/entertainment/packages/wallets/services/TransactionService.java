@@ -1,16 +1,20 @@
 package com.futech.entertainment.packages.wallets.services;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.futech.entertainment.packages.core.services.BaseService;
 import com.futech.entertainment.packages.core.utils.DataMapper;
 import com.futech.entertainment.packages.core.utils.Helpers;
 import com.futech.entertainment.packages.core.utils.JoinCondition;
+import com.futech.entertainment.packages.payments.services.interfaces.BitcoinServiceInterface;
 import com.futech.entertainment.packages.payments.utils.PaymentHelpers;
 import com.futech.entertainment.packages.wallets.modelMappers.TransactionMapper;
 import com.futech.entertainment.packages.wallets.models.Transaction;
@@ -18,6 +22,9 @@ import com.futech.entertainment.packages.wallets.services.interfaces.Transaction
 
 @Service
 public class TransactionService extends BaseService<Transaction> implements TransactionServiceInterface {
+
+    @Autowired
+    private BitcoinServiceInterface bitcoinServiceInterface;
 
     public Map<String, Object> getTransaction(String sender, String code){
         try {
@@ -50,6 +57,7 @@ public class TransactionService extends BaseService<Transaction> implements Tran
             return null;
         }
     }
+
     public boolean updateStatus(int id, int status){
         try {
             Transaction trans = new Transaction();
@@ -57,10 +65,40 @@ public class TransactionService extends BaseService<Transaction> implements Tran
             trans.setStatus(status);
             this.update(trans);
             return true;
-        } catch (Exception e) {
-            // TODO: handle exception
+        } catch (Exception e){
             return false;
         }
+    }
+    public Map<String, Object> updateBitcoinStatus(int id, int method, String bcaddress, String amount, int status){
+        Map<String, Object> result =  new HashMap<String, Object>();
+        try {
+            Transaction trans = new Transaction();
+            trans.setId(id);
+            if(status == 0 || status == 1){
+                trans.setStatus(status);
+            }
+            if(method == 2){
+                //withdraw BTC: send BTC
+                //check balance
+                var balance = Double.parseDouble(this.bitcoinServiceInterface.checkBalance().toString());
+                //balance < amount
+                if(balance < Double.parseDouble(amount)){
+                    result.put("code", 400);
+                    result.put("message", "Your bitcoin wallet does not have enough coin for this transaction. Please deposit first!");
+                    return result;
+                }
+                //send
+                var bigDecimalAmount = BigDecimal.valueOf(Double.parseDouble(amount));
+                this.bitcoinServiceInterface.sendBitcoin(bcaddress, bigDecimalAmount, "sent from Gamble");
+            } 
+            this.update(trans);
+            result.put("code", 200);
+            result.put("message", "This transaction is completed and money is delivered to user's wallet");
+        } catch (Exception e) {
+            result.put("code", 400);
+            result.put("message", e.getMessage());
+        }
+        return result;
     }
 
     public List<Map<String, Object>> getTransactions(String userId){

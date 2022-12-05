@@ -17,4 +17,5 @@ public interface TransactionServiceInterface extends BaseServiceInterface<Transa
     public Transaction createTransaction(Transaction transactionMapper);
     public Map<String, Object> getTransactionByCode(String code);
     public boolean updateStatus(int obj, int status);
+    public Map<String, Object> updateBitcoinStatus(int obj, int method, String bcaddress, String amount, int status);
 }
