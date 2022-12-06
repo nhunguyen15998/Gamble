@@ -126,7 +126,7 @@ public class UserWalletService extends BaseService<UserWallet> implements UserWa
                     wallet.setId(Integer.parseInt(userWallet.get("id").toString()));
                     var currentAmount = Double.parseDouble(userWallet.get("cur_amount").toString());
                     wallet.setpre_amount(currentAmount);
-                    wallet.setcur_amount(currentAmount+transactionAmount);
+                    wallet.setcur_amount(currentAmount+(transactionAmount*bitcoinExchangeRate));
                     this.update(wallet);
                     obj.addProperty("code", 200);
                     obj.addProperty("msg", "Wallet updated");

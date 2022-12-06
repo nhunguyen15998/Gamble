@@ -347,7 +347,7 @@ public class WalletsController {
             var verifiedToken = headers.get("auth").toString();
             var currentUserId = this.userServiceInterface.getUserByToken(new String[]{"users.id as user_id"}, verifiedToken).get("user_id").toString();
             String[] selects = {"transactions.id as transaction_id, transactions.amount, transactions.code, transactions.method, transactions.type, transactions.note,"+
-                "transactions.sender, transactions.receiver, transactions.created_at as transaction_created_at, transactions.status as transaction_status,"+
+                "transactions.sender, transactions.receiver, transactions.created_at as transaction_created_at, transactions.status as transaction_status, transactions.received_amount,"+
                 "users.id as user_id, user_profiles.first_name, user_profiles.last_name, up.first_name as receiver_first_name, up.last_name as receiver_last_name"};
             int itemPerPage = 6;
             String[] limit = {String.valueOf(Integer.parseInt(page)*itemPerPage-itemPerPage), String.valueOf(itemPerPage)};
@@ -373,7 +373,7 @@ public class WalletsController {
                 return new ResponseEntity<Map<String, Object>>(transactions, HttpStatus.OK);
             }
             String[] selects = {"transactions.id as transaction_id, transactions.amount, transactions.code, transactions.method, transactions.type, transactions.note, transactions.bcaddress,"+
-                "transactions.sender, transactions.receiver, transactions.created_at as transaction_created_at, transactions.status as transaction_status,"+
+                "transactions.sender, transactions.receiver, transactions.created_at as transaction_created_at, transactions.status as transaction_status, transactions.received_amount,"+
                 "user_profiles.first_name as sender_first_name, user_profiles.last_name as sender_last_name,"+
                 "up.first_name as receiver_first_name, up.last_name as receiver_last_name,"+
                 "transaction_withdraws.transaction_id, transaction_withdraws.account_name, transaction_withdraws.account_number, transaction_withdraws.bank"

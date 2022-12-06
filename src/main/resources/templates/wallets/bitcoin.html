@@ -45,7 +45,7 @@ th:replace="~{layouts/main-layout :: main-fragment(
             <div class="row">
                 <div class="col-12">
                     <img th:src="@{'https://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data='+${bcaddress}+'&qzone=1&margin=0&size=440x440&ecc=L'}"/>
-                    <p class="mb-3 mt-3" style="padding: 0 80px;">To complete your payment, please send <strong style="color: #fa009f;" th:text="${transactionAmount}+' BTC'">0.0001 BTC</strong> to the address below in <span style="color: #fa009f;" id="bitcoin-timer">05:00</span> minute(s)</p>
+                    <p class="mb-3 mt-3" style="padding: 0 80px;">To complete your payment, please send <strong style="color: #fa009f;" th:text="${transactionAmount}+' BTC'">0.0001 BTC</strong> to the address below in <span style="color: #fa009f;" id="bitcoin-timer">15:00</span> minute(s)</p>
                     <p th:text="${bcaddress}" class="text-center" style="color: #fa009f;"></p>
                 </div>
                 <div class="col-12 mt-5">

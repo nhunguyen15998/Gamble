@@ -37,5 +37,5 @@ function startTimer(duration, display) {
 window.onload = function () {
     var fifteenMinutes = 60 * 15
     var display = document.querySelector('#bitcoin-timer')
-    startTimer(fiveMinutes, display)
+    startTimer(fifteenMinutes, display)
 };

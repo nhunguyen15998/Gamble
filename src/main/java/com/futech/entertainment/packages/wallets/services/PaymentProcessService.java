@@ -113,7 +113,7 @@ public class PaymentProcessService implements PaymentProcessServiceInterface {
                             }
                             break;
                         case PaymentHelpers.BITCOIN:
-                            if(dp < 0 || dp > 1){
+                            if(dp <= 0 || dp >= 1){
                                 obj.put("code", 400);
                                 obj.put("amount", "Invalid amount");
                                 return obj;

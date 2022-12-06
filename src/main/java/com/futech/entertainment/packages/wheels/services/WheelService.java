@@ -113,6 +113,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
             var sm = (int)Math.floor(Math.random() * smSize);
             var small = Array.get(configs.get("slices1"), sm).toString();
             bet = WheelHelpers.countBettingResult(small, bet);
+            boolean isPlus = small.charAt(0) == '+' ? true : false;
             String results = String.format("%s", small);
             obj.put("sm", sm);
             
@@ -121,6 +122,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                 var md = (int)Math.floor(Math.random() * mdSize);
                 var medium = Array.get(configs.get("slices2"), md).toString();
                 bet = WheelHelpers.countBettingResult(medium, bet);
+                isPlus = medium.charAt(0) == '+' ? true : false;
                 results += String.format(",%s", medium);
                 obj.put("md", md);
                 obj.put("small", small);
@@ -129,6 +131,7 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                     var lg = (int)Math.floor(Math.random() * lgSize);
                     var large = Array.get(configs.get("slices3"), lg).toString();
                     bet = WheelHelpers.countBettingResult(large, bet);
+                    isPlus = large.charAt(0) == '+' ? true : false;
                     results += String.format(",%s", large);
                     obj.put("lg", lg);
                     obj.put("medium", medium);
@@ -152,7 +155,11 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
                 gameHistoryUser.setStatus(status);
                 gameHistoryUser.setReceived_amount(bet);
                 this.gameHistoryUserServiceInterface.create(gameHistoryUser);
-                obj.put("amount", Math.abs(betamount - bet));
+                if(isPlus){
+                    obj.put("amount", Math.abs(bet == betamount ? 0 : bet - betamount));
+                } else {
+                    obj.put("amount", Math.abs(bet == 0 ? betamount : bet));
+                }
                 switch (status) {
                     case 0:
                         obj.put("status", 0);
@@ -171,7 +178,13 @@ public class WheelService extends BaseService<Game> implements WheelServiceInter
 
             //update user wallet
             var curAmount = Double.parseDouble(userWallet.get("cur_amount").toString());
-            var updatedAmount = curAmount - betamount + bet;
+            var updatedAmount = betamount > bet ? curAmount - bet : (betamount == bet ?  curAmount : curAmount + bet);
+            if(bet == 0){
+                updatedAmount = curAmount - betamount;
+            }
+            if(isPlus){
+                updatedAmount = curAmount + bet - betamount;
+            }
             var updateWallet = new UserWallet();
             updateWallet.setId(Integer.parseInt(userWallet.get("id").toString()));
             updateWallet.setpre_amount(curAmount);
