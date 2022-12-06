@@ -91,7 +91,7 @@
                                 Status: <select class="form-select" style="width:80px;font-size:15px;padding:0 5px; text-align:center" id="take-status">
                                         <option value="-1" >All</option>
                                         <option value="0" >Pending</option>
-                                        <option value="1" >Success</option>
+                                        <option value="1" >Completed</option>
                                         <option value="2" >Fail</option>
                                 </select></label>
                             <label style="margin-left:1.5vw ;">
@@ -721,14 +721,17 @@
                   for (var i = 0; i < data.length; i++) {
                     var typeTrans='';
                     var methodTrans='';
+                    let currency = 'USD'
                     switch(data[i].type) {
                             case 0:
                                typeTrans = 'Deposit'
                                methodTrans = data[i].method == 0 ? 'VNPAY' : (data[i].method == 1 ? 'MOMO' : 'BTC')
+                               currency = data[i].status == 1 ? 'USD' : (data[i].status == 0 && data[i].method == 2 ? 'BTC' : 'VND')
                                 break
                             case 1: 
                                 typeTrans = 'Withdraw'
                                 methodTrans = data[i].method == 1 ? 'Bank' : 'BTC'
+                                currency = data[i].status == 1 ? 'USD' : (data[i].status == 0 && data[i].method == 1 ? 'VND' : 'BTC')
                                 break
                             case 2:
                                 typeTrans = 'Transfer'
@@ -741,8 +744,17 @@
                           +'<div class="mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+row+'</h6></div>'
                           +'</td> <td> <div class="d-flex"> <div class="ms-3 mt-0 mt-sm-2 d-block"><h6 class="mb-0 fs-14 fw-semibold">'+data[i].code+'</h6></div></div>'
                           +'</td><td> <div class="d-flex"> <div class="mt-0 mt-sm-3 d-block"> <h6 class="mb-0 fs-14 fw-semibold">'+typeTrans+'</h6>'
-                          +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+methodTrans+'</span> </td> <td> <span class="mt-sm-2 d-block">'+(data[i].status==1?parseFloat(data[i].amount).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:6}):parseFloat(data[i].amount).toLocaleString('it-IT', {style : 'currency', currency : 'VND',minimumFractionDigits:6}))+'</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
-                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Success':(data[i].status==0?'Pending':'Fail'))
+                          +'</div> </div> </td> <td> <span class="mt-sm-2 d-block">'+methodTrans+'</span> </td> <td> <span class="mt-sm-2 d-block">'
+                              // +(data[i].status == 1 ? 
+                              //   parseFloat(data[i].amount).toLocaleString('en-US', {style: 'currency', currency: 'USD', minimumFractionDigits:6}) : 
+                              //   parseFloat(data[i].amount).toLocaleString('it-IT', {style : 'currency', currency : 'VND',minimumFractionDigits:6}))+
+                              +(
+                                data[i].status == 1 || typeTrans == 'Transfer'? 
+                                parseFloat(data[i].received_amount).toLocaleString('en-US', {style: 'currency', currency: currency, minimumFractionDigits:6}):
+                                parseFloat(data[i].amount).toLocaleString('en-US', {minimumFractionDigits:6})+currency
+                              )+
+                            '</span> </td> <td><span class="fw-semibold mt-sm-2 d-block">'+data[i].created_at+'</span>'
+                          +'</td> <td> <div class="mt-sm-1 d-block"> <span class="badge bg-success-transparent rounded-pill p-2 px-3 '+(data[i].status==1?'text-success':'')+'">'+(data[i].status==1?'Completed':(data[i].status==0?'Pending':'Failed'))
                           +'</span> </div> </td> <td> <div class="g-2"> <a href="/admin/transactions/view?code='+data[i].code+'" class="btn text-primary btn-sm" data-bs-original-title="Edit">'
                           +'<span class="zmdi zmdi-eye text-muted ml-3" style="font-size:15px;">  </span> </a>  </div> </td> </tr>')
                             row = row + 1;

@@ -31,8 +31,7 @@ $('#btn-require-password').on('click', () => {
                 "require_password": $('input[name="require_password"]').val(),
                 "withdrawBitcoin":{
                     "bitcoin_amount": $('input[name="bitcoin_amount"]').val(),
-                    "transaction_code": transactionCode,
-                    "bcaddress": bcaddress
+                    "bcaddress": $('input[name="bitcoin_address"]').val(),
                 }
             }
             break

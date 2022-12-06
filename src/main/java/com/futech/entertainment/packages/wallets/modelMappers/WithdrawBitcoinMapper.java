@@ -14,7 +14,6 @@ public class WithdrawBitcoinMapper {
     private Integer type;
     private Integer method;
 
-    @NotBlank(message = "Transaction code is required")
     private String transaction_code;
 
     public WithdrawBitcoinMapper() {}

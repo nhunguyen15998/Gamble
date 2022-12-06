@@ -103,7 +103,7 @@ public class UserWalletService extends BaseService<UserWallet> implements UserWa
                 return obj;
             }
             var transactionAmount = Double.parseDouble(transaction.get("amount").toString());
-            var bitcoinExchangeRate = Double.parseDouble(this.configServiceInterface.getConfigStringElement(0, "BITCOIN", "rate").getAsString());
+            var bitcoinExchangeRate = Double.parseDouble(transaction.get("exchange_rate").toString());
             var receivedAmount = Double.parseDouble(json.get("amount").getAsString());
             //req: 10000 > send: 2000
             if(transactionAmount > receivedAmount){

@@ -107,16 +107,15 @@ $('#withdraw-bitcoin-tab').on('click', () => {
     AREA_ID = '#withdraw-bitcoin div'
     paymentWithBTCExRate()
 })
-let transactionCode = ""
-let bcaddress = ""
-$('#btn-bitcoin-address').on('click', () => {
-    $.get('/generateBCAddress', (response) => {
-        let rsp = JSON.parse(response)
-        transactionCode = rsp.transactionCode
-        bcaddress = rsp.bcaddress
-        $('input[name="bitcoin_address"]').val(rsp.bcaddress)
-    })
-})
+
+// $('#btn-bitcoin-address').on('click', () => {
+//     $.get('/generateBCAddress', (response) => {
+//         let rsp = JSON.parse(response)
+//         transactionCode = rsp.transactionCode
+//         bcaddress = rsp.bcaddress
+//         $('input[name="bitcoin_address"]').val(rsp.bcaddress)
+//     })
+// })
 $('#btn-bitcoin-request').prop('disabled', false)
 $('#btn-bitcoin-request').on('click', () => {
     $('#btn-bitcoin-request').prop('disabled', true)
@@ -128,8 +127,7 @@ $('#btn-bitcoin-request').on('click', () => {
     
     let data = {
         "bitcoin_amount": $('input[name="bitcoin_amount"]').val(),
-        "transaction_code": transactionCode,
-        "bcaddress": bcaddress
+        "bcaddress": $('input[name="bitcoin_address"]').val(),
     }
     $.ajax({
         url: '/withdrawBitcoinProccess',

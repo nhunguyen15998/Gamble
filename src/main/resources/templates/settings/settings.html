@@ -21,12 +21,12 @@
                     <div class="main-container container-fluid">
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title"> Transactions</h1>
+                            <h1 class="page-title">Settings</h1>
                             <div>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="/admin/dashboard">Home</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="/admin/transactions/all">Transations</a>
+                                    <li class="breadcrumb-item"><a href="/admin/settings/all">Settings</a>
                                     </li>
                                 </ol>
                             </div>
@@ -37,71 +37,32 @@
                             <div class="col-lg-12 col-md-12">
                                 <div class="card" style="padding-bottom: 25px;">
                                     <div class="card-header">
-                                        <h3 class="card-title"><a href="/admin/transactions/all"><i class="fa fa-angle-left" style="pointer-events: none; margin-right: 1vw;"></i></a>Infomation</h3> </div>
-                                        <style>
-                                            .form-row label{
-                                                color:rgba(251, 251, 251, 0.726);
-                                            }
-                                            .form-row span{
-                                                color:rgba(251, 251, 251, 0.979);
-                                            }
-                                        </style>
-                                    <div class="card-body">    
-                                        <div class="form-row">
-                                            <div class="col-xl-6 mb-3" style="display: table-row;border-right: 1.5px solid rgba(251, 251, 251, 0.1);">
-                                                <label>No:</label>      <span th:text="${transaction.code}"></span><br/>
-                                                <label>Type:</label>    <span th:text="${type}"></span><br/>
-                                                <label>Method:</label>  <span th:text="${method}"></span> <br/>
-                                                <label th:text="${(transaction.type==0 OR transaction.type==1) ? 'User :' : 'Sender :'}"></label>  <a style="text-decoration: underline;" th:href="@{/admin/users/update?id={id}(id=${transaction.sender},type=${sender.is_admin})}" th:text="${sender != null ? (sender.first_name+' '+sender.last_name) : ''}"></a><br/>
-                                                <label th:text="${(transaction.type==2) ? 'Receiver :' : 'Error :'}" th:if="${receiver}"></label>  <a style="text-decoration: underline;" th:if="${receiver}" th:href="@{/admin/users/update?id={id}(id=${transaction.receiver},type=${receiver.is_admin})}" th:text="${receiver != null ? (receiver.first_name+' '+receiver.last_name) : ''}"></a><br th:if="${receiver}"/><br/>
-                                                <label>Amount: </label>  <span th:text="${transaction.status==1 OR transaction.type==2 ? 
-                                                                                          ('$'+#numbers.formatDecimal(transaction.received_amount, 0, 'COMMA', 6, 'POINT'))
-                                                                                        : (#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+(transaction.type == 0 AND transaction.method == 2 OR transaction.type == 1 AND transaction.method != 1 ? ' BTC' : ' VND'))}"></span> <br/>
-                                                <label  th:if="${receiver}">Received amount: </label>  <span  th:if="${receiver}" th:text="${((transaction.status==1)?'$ ':'')+#numbers.formatDecimal(transaction.amount, 0, 'COMMA', 6, 'POINT')+((transaction.status==0||transaction.status==2)?' VND':'')}"></span> <br  th:if="${receiver}"/>
-                                                <label>Title:</label>  <span th:text="${transaction.title}"></span> <br/>
-                                                <label>Note:</label>  <span th:text="${transaction.note}"></span> <br/>
-                                                <!-- <label>Exchange rate:</label>  <span th:text="${transaction.exchange_rate}"></span> <br/>
-                                                <label>From currency:</label>  <span th:text="${transaction.from_currency}"></span> <br/> -->
-                                                <label>Address:</label>  <span th:text="${transaction.bcaddress}" id="bcaddress"></span> 
-                                                                         <span class="mx-2"><button th:if="${transaction.bcaddress!=null}" type="button" class="btn text-white" id="btn-copy-address"><i class="fa-copy fa-regular" style="font-size: 15px;"></i></button></span>
-                                                                         <br/>
-                                                  <script>
-                                                    $("#btn-copy-address").on('click', () => {
-                                                      navigator.clipboard.writeText($("#bcaddress").text());
-                                                    })
-                                                  </script>
-                                                <label>Transaction time:</label>  <span th:text="${#temporals.format(transaction.created_at,'dd-MM-yyyy HH:mm:ss')}"></span> <br/>
-                                                <label th:if="${transaction.type!=1 || transaction.type==1 && transaction.status!=0}">Status:  <span th:text="${transaction.status==1?'Completed':(transaction.status==0?'Pending':'Failed')}" class="badge bg-success-transparent rounded-pill p-2 px-3" th:classappend="${transaction.status==1?'text-success':''}" style="font-size:13px"></span></label>
-                                                <div th:if="${transaction.type==1 && transaction.status==0}" class="col-xl-6 p-0">
-                                                  <label for="validationCustom04">Status</label>
-                                                  <form th:action="@{/admin/transactions/update?id={id}(id=${transaction.id},method=${transaction.method},bcaddress=${transaction.bcaddress?:''},amount=${transaction.amount})}" th:object="${transaction}" method="post">
-                                                  <select class="form-control select2" name="status">
-                                                    <option th:each="stt : ${statusList}"
-                                                    th:value="${stt.key}" th:disabled="${stt.key == 2}"
-                                                    th:selected="(${oldData!=null}?${oldData.status}==${stt.key}:false) OR ${transaction.status}==${stt.key}"
-                                                    th:text="${stt.value}" style="background-color:#8677d3;" ></option> 
-                                                  </select>
-                                                  <button class="btn btn-primary" style="margin:4vh 0 auto 0;" type="submit">Update status</button>
-                                                  </form>
+                                        <h3 class="card-title">Setting features</h3> </div>
+                                    <div class="card-body">
+                                      <form action="" method="post" id="settings-form" th:data-items="${settingQty}">
+                                        <div th:each="setting, row : ${settings}">
+                                          <!-- type 0 -->
+                                          <div th:if="${setting.type == 0}" class="row">
+                                            <div class="form-row align-items-center">
+                                              <div class="col-2 mb-3">
+                                                <p class="mb-0" th:text="${'A '+setting.name+' equals'}"></p>
+                                              </div>
+                                              <div class="col-3 mb-3">
+                                                <input type="text" class="form-control" th:data-id="${setting.id}" th:name="${'currency'+row.count}" th:value="${#strings.substring(#strings.arraySplit(setting.config_string,':')[2], 1, #strings.length(#strings.arraySplit(setting.config_string,':')[2]) - 2 )}"/>
+                                              </div>
+                                              <div class="col-1 mb-3">
+                                                <p th:text="${'USD'}" class="mb-0"></p>
                                               </div>
                                             </div>
-                                            <div class="col-xl-6 mb-3 pl-3" style="display: table-row;padding-left:1.5vw"  th:if="${transaction.type==1 AND transaction.method == 1}">
-                                                <label>Account name:</label>      <span th:text="${transaction.account_name}"></span><br/>
-                                                <label>Account number:</label>    <span th:text="${transaction.account_number}"></span><br/>
-                                                <label>Bank:</label>  <span th:text="${transaction.bank}"></span> <br/>
-                                                <label>Amount:</label>  <span th:text="${#numbers.formatDecimal(transaction.wAmount, 0, 'COMMA', 6, 'POINT')+' VND'}"></span> <br/>
-                                                <label>Notes:</label>  <span th:text="${transaction.wNotes}"></span> <br/>
-                                               
-
-                                           </div>
-
-                                         </div>
-                                     </div>
-                                            
+                                          </div>
+                                          <!-- end type 0 -->
+                                        </div>
+                                        <button class="btn btn-primary" style="margin:4vh 0 auto 0;" type="button" id="btn-save-settings">Save</button>
+                                      </form>
                                     </div>
                                 </div>
                             </div>
-                    
+                            <script src="/js/ajax/settings.js"></script>
                         </div>
                         <!-- ROW CLOSED -->
                     </div>
@@ -475,4 +436,10 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script> -->
 
 <script>
+  function showUrlValue(event)
+{
+    var value = event.target.value;
+    document.getElementById("url_slug").value = value.replaceAll(' ','-');
+}
+   
 </script>

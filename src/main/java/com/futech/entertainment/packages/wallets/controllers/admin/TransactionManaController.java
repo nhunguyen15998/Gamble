@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,9 +36,9 @@ public class TransactionManaController {
     @ModelAttribute("statusList")
     public Map<Integer, String> getStatusList() {
         Map<Integer, String> statusList = new HashMap<Integer, String>();
-        statusList.put(1, "Success");
+        statusList.put(1, "Completed");
         statusList.put(0, "Pending");
-        statusList.put(-1, "Fail");
+        statusList.put(2, "Failed");
 
         return statusList;
     }
@@ -46,21 +47,19 @@ public class TransactionManaController {
     public String showAll(Model mdl, HttpSession session){
         if(session.getAttribute("user_id")==null ||(session.getAttribute("user_id")!=null&&Integer.parseInt(session.getAttribute("is_admin").toString())==0)) return "redirect:/user/sign-in";
         session.setAttribute("title", "All | Transactions");
-
         mdl.addAttribute("transaction",LoadData(1, 10,-1,-1,-1, Helpers.EMPTY, Helpers.EMPTY) );
         mdl.addAttribute("paging", RowEvent(GetCount(-1,-1,-1,Helpers.EMPTY,Helpers.EMPTY),10));
         return "/transactions/administrator/all";
     }
     @PostMapping("/admin/transactions/update")
-    public String updateStatus(@RequestParam int id,Transaction transaction, RedirectAttributes attrs){
-        boolean check = transactionServiceInterface.updateStatus(id, transaction.getStatus());
-        if(check){
-            attrs.addFlashAttribute("successMsg", "Update status successfully!");
+    public String updateStatus(@RequestParam int id,@RequestParam int method,@RequestParam String bcaddress,@RequestParam String amount, Transaction transaction, RedirectAttributes attrs){
+        var update = transactionServiceInterface.updateBitcoinStatus(id, method, bcaddress, amount, transaction.getStatus());
+        if(Integer.parseInt(update.get("code").toString()) == 200){
+            attrs.addFlashAttribute("successMsg", update.get("message").toString());
             return "redirect:/admin/transactions/all";
         } 
-        attrs.addFlashAttribute("errorMsg", "Update status failed !");
-
-         return "redirect:/admin/transactions/all";
+        attrs.addFlashAttribute("errorMsg", update.get("message").toString());
+        return "redirect:/admin/transactions/all";
     }
     @GetMapping("/admin/transactions/view")
     public String viewTransaction(Model mdl, @RequestParam String code, HttpSession session){
@@ -68,6 +67,7 @@ public class TransactionManaController {
 
         String[] selects = {"first_name, last_name, is_admin"};
         var transation = transactionServiceInterface.getTransactionByCode(code);
+        System.out.println(transation.get("received_amount"));
         var sender = transation.get("sender")!=null ? userServiceInterface.getUserById(selects, Integer.parseInt(transation.get("sender").toString())):null;
         var receiver = transation.get("receiver")!=null ? userServiceInterface.getUserById(selects, Integer.parseInt(transation.get("receiver").toString())):null;
         String typeTrans = Helpers.EMPTY, methodTrans = Helpers.EMPTY;
@@ -92,6 +92,7 @@ public class TransactionManaController {
         mdl.addAttribute("sender", sender);
         mdl.addAttribute("receiver", receiver);
         mdl.addAttribute("type", typeTrans);
+        // mdl.addAttribute("bcaddress", transation.get("bcaddress").toString());
         return "/transactions/administrator/view";
     }
      //Pagination
@@ -106,7 +107,7 @@ public class TransactionManaController {
  {
         int currentSkip = take * (p - 1);
         //select
-        String[] selects = {"transactions.id,code,type,method, DATE_FORMAT(transactions.created_at,'%d-%m-%Y %H:%i') as created_at, transactions.status,amount"};
+        String[] selects = {"transactions.id,code,type,method,received_amount, DATE_FORMAT(transactions.created_at,'%d-%m-%Y %H:%i') as created_at, transactions.status,amount"};
       
         String[] limit = {String.valueOf(currentSkip),String.valueOf(take==0?1:take)};
        //condition

@@ -104,7 +104,7 @@ public class PaymentProcessController {
         }
     }   
 
-    @GetMapping("/generateBCAddress")
+    @GetMapping("/generateBCAddress") //obmitted
     public ResponseEntity<String> generateBCAddress(){
         Gson gson = new Gson();
         try {
@@ -194,6 +194,8 @@ public class PaymentProcessController {
             withdrawBitcoinMapper.setSender(sender);
             withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
             withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
+            var transactionCode = Helpers.randomStringWithLength(15);
+            withdrawBitcoinMapper.setTransaction_code(transactionCode);
             item = this.paymentProcessServiceInterface.withdrawBitcoinProccess(withdrawBitcoinMapper, withdrawPassword);
             return new ResponseEntity<Map<String, Object>>(item, HttpStatus.OK);
         } catch (Exception e) {
@@ -223,10 +225,11 @@ public class PaymentProcessController {
             item.clear();
 
             var sender = Integer.parseInt(session.getAttribute("user_id").toString());
+            var transactionCode = Helpers.randomStringWithLength(15);
             WithdrawBitcoinMapper withdrawBitcoinMapper = new WithdrawBitcoinMapper();
             withdrawBitcoinMapper.setBitcoin_amount(withdraw.get("bitcoin_amount").getAsString());
             withdrawBitcoinMapper.setBcaddress(withdraw.get("bcaddress").getAsString());
-            withdrawBitcoinMapper.setTransaction_code(withdraw.get("transaction_code").getAsString());
+            withdrawBitcoinMapper.setTransaction_code(transactionCode);
             withdrawBitcoinMapper.setSender(sender);
             withdrawBitcoinMapper.setType(PaymentHelpers.WITHDRAW);
             withdrawBitcoinMapper.setMethod(PaymentHelpers.BITCOIN);
